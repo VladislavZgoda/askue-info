@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('sim_cards', function (Blueprint $table) {
-            //
+            $table->ipAddress('ip')->nullable(false)->change();
         });
     }
 };
