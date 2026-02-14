@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Meter extends Model
 {
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = ['model', 'serial_number'];
+
     public function simCards(): BelongsToMany
     {
-        return $this->belongsToMany(SimCard::class);
+        return $this->belongsToMany(SimCard::class)
+                    ->using(MeterSimCard::class);
     }
 }
