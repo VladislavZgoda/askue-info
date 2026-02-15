@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InstallationObject extends Model
 {
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = ['name', 'address', 'type'];
+
     public function meters(): HasMany
     {
         return $this->hasMany(Meter::class);
