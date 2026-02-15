@@ -11,4 +11,9 @@ class InstallationObject extends Model
     {
         return $this->hasMany(Meter::class);
     }
+
+    public function uspds(): HasMany
+    {
+        return $this->hasMany(Uspd::class);
+    }
 }
