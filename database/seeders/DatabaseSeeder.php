@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Meter;
 use App\Models\User;
+use App\Models\Uspd;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Вызов SimCardSeeder должен быть после InstallationObjectSeeder.
+        $this->call([
+            InstallationObjectSeeder::class,
+            SimCardSeeder::class,
         ]);
+
+        Meter::factory()
+            ->count(2)
+            ->withoutInstallationObject()
+            ->create();
+
+        Uspd::factory()
+            ->count(2)
+            ->withoutInstallationObject()
+            ->create();
     }
 }
