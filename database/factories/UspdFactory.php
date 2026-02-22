@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\InstallationObject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,7 +28,7 @@ class UspdFactory extends Factory
             'model'         => $this->faker->randomElement($this->allowedModels),
             'serial_number' => $this->faker->unique()->numberBetween(4000000, 4999999),
             'lan_ip'        => $this->faker->localIpv4(),
-            'installation_object_id'  => InstallationObjectFactory::class,
+            'installation_object_id'  => InstallationObject::factory(),
         ];
     }
 

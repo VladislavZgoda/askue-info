@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\InstallationObject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class MeterFactory extends Factory
         return [
             'model'         => $this->faker->randomElement(['CE303', 'CE308', 'Меркурий 236', 'Меркурий 234']),
             'serial_number' => $this->faker->unique()->numerify('########'),
-            'installation_object_id'  => InstallationObjectFactory::class,
+            'installation_object_id'  => InstallationObject::factory(),
         ];
     }
 
