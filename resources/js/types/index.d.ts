@@ -18,3 +18,14 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface InstallationObject {
+    id: number;
+    name: string;
+    address: string;
+    type: string;
+}
+
+export interface InstallationObjectsProps {
+    installationObjects: InstallationObject[];
+}
