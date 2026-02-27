@@ -10,11 +10,10 @@ class InstallationObjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(InstallationObject $installationObject)
+    public function index()
     {
         return inertia('InstallationObject/Index', [
-            'installationObjects' => $installationObject::all()
-                ->select(['id', 'name', 'address', 'type']),
+            'installationObjects' => InstallationObject::all(['id', 'name', 'address'])
         ]);
     }
 

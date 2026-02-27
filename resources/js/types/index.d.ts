@@ -27,5 +27,5 @@ export interface InstallationObject {
 }
 
 export interface InstallationObjectsProps {
-    installationObjects: InstallationObject[];
+    installationObjects: Omit<InstallationObject, 'type'>[];
 }

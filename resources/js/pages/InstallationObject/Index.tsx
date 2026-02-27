@@ -2,10 +2,9 @@ import type { InstallationObjectsProps } from '@/types';
 
 export default function InstallationObjects({ installationObjects }: InstallationObjectsProps) {
     const listItems = installationObjects.map((installationObject) => (
-        <li key={installationObject.id}>
+        <li key={installationObject.id} className="mb-1.5 flex gap-3">
             <p>{installationObject.name}</p>
             <p>{installationObject.address}</p>
-            <p className="mb-4">{installationObject.type}</p>
         </li>
     ));
 
