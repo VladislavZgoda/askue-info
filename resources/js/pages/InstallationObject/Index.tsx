@@ -1,12 +1,25 @@
+import { Link } from '@inertiajs/react';
+import { View } from 'lucide-react';
+
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
 import type { InstallationObjectsProps } from '@/types';
 
 export default function InstallationObjects({ installationObjects }: InstallationObjectsProps) {
-    const listItems = installationObjects.map((installationObject) => (
-        <li key={installationObject.id} className="mb-1.5 flex gap-3">
-            <p>{installationObject.name}</p>
-            <p>{installationObject.address}</p>
-        </li>
-    ));
-
-    return <ul className="mt-1 ml-3">{listItems}</ul>;
+    return (
+        <ItemGroup className="mt-2 ml-1 max-w-xs gap-2">
+            {installationObjects.map((installationObject) => (
+                <Item asChild key={installationObject.id} variant="outline" size="sm">
+                    <Link>
+                        <ItemContent className="gap-1">
+                            <ItemTitle>{installationObject.name}</ItemTitle>
+                            <ItemDescription>{installationObject.address}</ItemDescription>
+                        </ItemContent>
+                        <ItemActions>
+                            <View className="size-4" />
+                        </ItemActions>
+                    </Link>
+                </Item>
+            ))}
+        </ItemGroup>
+    );
 }
