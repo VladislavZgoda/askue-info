@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('uspds', function (Blueprint $table) {
             $table->integer('serial_number', unsigned: true)
-                  ->change();
+                ->change();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('uspds', function (Blueprint $table) {
             $table->smallInteger('serial_number', unsigned: false)
-                  ->change();
+                ->change();
         });
     }
 };

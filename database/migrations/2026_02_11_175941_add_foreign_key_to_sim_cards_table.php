@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::table('sim_cards', function (Blueprint $table) {
             $table->foreignIdFor(Uspd::class)
-                  ->nullable()
-                  ->constrained()
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
         });
     }
 

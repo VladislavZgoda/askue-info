@@ -25,16 +25,16 @@ class UspdFactory extends Factory
     public function definition(): array
     {
         return [
-            'model'         => $this->faker->randomElement($this->allowedModels),
+            'model' => $this->faker->randomElement($this->allowedModels),
             'serial_number' => $this->faker->unique()->numberBetween(4000000, 4999999),
-            'lan_ip'        => $this->faker->localIpv4(),
-            'installation_object_id'  => InstallationObject::factory(),
+            'lan_ip' => $this->faker->localIpv4(),
+            'installation_object_id' => InstallationObject::factory(),
         ];
     }
 
     public function withoutInstallationObject()
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'installation_object_id' => null,
         ]);
     }

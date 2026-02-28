@@ -19,8 +19,8 @@ class SimCardFactory extends Factory
     public function definition(): array
     {
         return [
-            'number'   => $this->faker->unique()->numerify('89##########'),
-            'ip'       => $this->faker->optional()->ipv4(),
+            'number' => $this->faker->unique()->numerify('89##########'),
+            'ip' => $this->faker->optional()->ipv4(),
             'operator' => $this->faker->randomElement($this->allowedOperators),
         ];
     }

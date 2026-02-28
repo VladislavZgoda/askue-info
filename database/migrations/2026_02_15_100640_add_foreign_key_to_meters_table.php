@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::table('meters', function (Blueprint $table) {
             $table->foreignIdFor(InstallationObject::class)
-                  ->nullable()
-                  ->constrained()
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
         });
     }
 

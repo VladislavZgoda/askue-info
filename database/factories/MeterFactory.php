@@ -18,15 +18,15 @@ class MeterFactory extends Factory
     public function definition(): array
     {
         return [
-            'model'         => $this->faker->randomElement(['CE303', 'CE308', 'Меркурий 236', 'Меркурий 234']),
+            'model' => $this->faker->randomElement(['CE303', 'CE308', 'Меркурий 236', 'Меркурий 234']),
             'serial_number' => $this->faker->unique()->numerify('########'),
-            'installation_object_id'  => InstallationObject::factory(),
+            'installation_object_id' => InstallationObject::factory(),
         ];
     }
 
     public function withoutInstallationObject()
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'installation_object_id' => null,
         ]);
     }

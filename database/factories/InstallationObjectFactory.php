@@ -17,10 +17,10 @@ class InstallationObjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'    => $this->faker->unique()->numerify('ТП-##'),
+            'name' => $this->faker->unique()->numerify('ТП-##'),
             'address' => $this->faker->streetAddress(),
-            'type'    => $this->faker
-                              ->randomElement(['Учёт внутри ТП', 'Щит учёта']),
+            'type' => $this->faker
+                ->randomElement(['Учёт внутри ТП', 'Щит учёта']),
         ];
     }
 }

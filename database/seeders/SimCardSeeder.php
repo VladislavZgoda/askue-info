@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Meter;
 use App\Models\SimCard;
 use App\Models\Uspd;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SimCardSeeder extends Seeder
@@ -32,7 +31,7 @@ class SimCardSeeder extends Seeder
             ->get()
             ->groupBy('installation_object_id');
 
-        foreach ($metersByObject as $objectId => $meters ) {
+        foreach ($metersByObject as $objectId => $meters) {
             $simCards = SimCard::factory()
                 ->count(2)
                 ->create();
