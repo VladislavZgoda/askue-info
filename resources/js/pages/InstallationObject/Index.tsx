@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { View } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 import { show } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
@@ -16,7 +16,7 @@ export default function InstallationObjects({ installationObjects }: Installatio
                             <ItemDescription>{installationObject.address}</ItemDescription>
                         </ItemContent>
                         <ItemActions>
-                            <View className="size-4" />
+                            <Eye className="size-5" />
                         </ItemActions>
                     </Link>
                 </Item>
