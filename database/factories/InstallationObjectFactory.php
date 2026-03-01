@@ -19,8 +19,6 @@ class InstallationObjectFactory extends Factory
         return [
             'name' => $this->faker->unique()->numerify('ТП-##'),
             'address' => $this->faker->streetAddress(),
-            'type' => $this->faker
-                ->randomElement(['Учёт внутри ТП', 'Щит учёта']),
         ];
     }
 }
