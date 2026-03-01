@@ -28,3 +28,18 @@ export interface InstallationObject {
 export interface InstallationObjectsProps {
     installationObjects: InstallationObject[];
 }
+
+export interface InstallationObjectShowProps {
+    id: InstallationObject['id'];
+    name: InstallationObject['name'];
+    meters: {
+        id: number;
+        model: string;
+        serialNumber: string;
+    }[];
+    uspds: {
+        id: number;
+        model: string;
+        serialNumber: number;
+    }[];
+}

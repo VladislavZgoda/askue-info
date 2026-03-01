@@ -38,7 +38,24 @@ class InstallationObjectController extends Controller
      */
     public function show(InstallationObject $installationObject)
     {
-        //
+        $installationObject->load(['meters', 'uspds']);
+
+        $data = [
+            'id' => $installationObject->id,
+            'name' => $installationObject->name,
+            'meters' => $installationObject->meters->map(fn ($meter) => [
+                'id' => $meter->id,
+                'model' => $meter->model,
+                'serialNumber' => $meter->serial_number,
+            ]),
+            'uspds' => $installationObject->uspds->map(fn ($uspd) => [
+                'id' => $uspd->id,
+                'model' => $uspd->model,
+                'serialNumber' => $uspd->serial_number,
+            ]),
+        ];
+
+        return inertia('InstallationObject/Show', $data);
     }
 
     /**
