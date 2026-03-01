@@ -23,9 +23,8 @@ export interface InstallationObject {
     id: number;
     name: string;
     address: string;
-    type: string;
 }
 
 export interface InstallationObjectsProps {
-    installationObjects: Omit<InstallationObject, 'type'>[];
+    installationObjects: InstallationObject[];
 }
