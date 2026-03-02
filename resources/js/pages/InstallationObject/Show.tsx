@@ -1,14 +1,18 @@
 import { Link } from '@inertiajs/react';
-import { Pencil, Trash2, Unplug, Eye } from 'lucide-react';
+import { Cpu, Eye, MoveLeft, Pencil, Plus, Pyramid, Trash2, Unplug, Zap } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
+import { ButtonGroup } from '@/components/ui/button-group';
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
 import type { InstallationObjectShowProps } from '@/types';
 
 export default function InstallationObject({ id, name, meters, uspds }: InstallationObjectShowProps) {
     return (
         <div className="mt-1.5 ml-1 flex max-w-xs flex-col gap-6">
             <Item variant="outline">
+                <ItemMedia variant="icon">
+                    <Pyramid />
+                </ItemMedia>
                 <ItemContent>
                     <ItemTitle>{name}</ItemTitle>
                 </ItemContent>
@@ -18,16 +22,20 @@ export default function InstallationObject({ id, name, meters, uspds }: Installa
                             <Pencil />
                         </Link>
                     </Button>
-                    <Button asChild variant="outline" size="sm">
+                    <Button asChild variant="destructive" size="sm">
                         <Link>
                             <Trash2 />
                         </Link>
                     </Button>
                 </ItemActions>
             </Item>
+
             <ItemGroup className="max-w-xs gap-1.5">
                 {meters.map((meter) => (
                     <Item key={meter.id} variant="outline" size="sm">
+                        <ItemMedia variant="icon">
+                            <Zap />
+                        </ItemMedia>
                         <ItemContent className="gap-1">
                             <ItemTitle>{meter.model}</ItemTitle>
                             <ItemDescription>{meter.serialNumber}</ItemDescription>
@@ -47,9 +55,13 @@ export default function InstallationObject({ id, name, meters, uspds }: Installa
                     </Item>
                 ))}
             </ItemGroup>
+
             <ItemGroup className="max-w-xs gap-1.5">
                 {uspds.map((uspd) => (
                     <Item key={uspd.id} variant="outline" size="sm">
+                        <ItemMedia variant="icon">
+                            <Cpu />
+                        </ItemMedia>
                         <ItemContent className="gap-1">
                             <ItemTitle>{uspd.model}</ItemTitle>
                             <ItemDescription>{uspd.serialNumber}</ItemDescription>
@@ -69,6 +81,27 @@ export default function InstallationObject({ id, name, meters, uspds }: Installa
                     </Item>
                 ))}
             </ItemGroup>
+
+            <ButtonGroup orientation="vertical" className="w-full">
+                <Button asChild size="sm" variant="outline">
+                    <Link>
+                        <Plus />
+                        Добавить УСПД
+                    </Link>
+                </Button>
+                <Button asChild size="sm" variant="outline">
+                    <Link>
+                        <Plus />
+                        Добавить ПУ
+                    </Link>
+                </Button>
+                <Button asChild size="sm" variant="outline">
+                    <Link>
+                        <MoveLeft />
+                        Назад
+                    </Link>
+                </Button>
+            </ButtonGroup>
         </div>
     );
 }
