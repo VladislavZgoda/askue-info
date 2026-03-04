@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 import { index } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Button } from '@/components/ui/button';
 
-export default function Welcome() {
+export default function Home() {
     return (
         <>
             <Button asChild variant="outline" className="mt-5 ml-12">

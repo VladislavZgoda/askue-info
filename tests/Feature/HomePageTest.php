@@ -5,13 +5,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('visits the Welcome page', function () {
+it('visits the Home page', function () {
     $page = visit('/')->on()->mobile();
 
     $page->assertSeeLink('Просмотр объектов установки');
 });
 
-it('navigates from the Welcome page to the InstallationObjects page', function () {
+it('navigates from the Home page to the InstallationObjects page', function () {
     InstallationObject::factory()->create([
         'name' => 'ТП-1',
         'address' => 'ул. Сосновая 10',
