@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('renders page with data', function () {
+it('renders a page with data', function () {
     InstallationObject::factory()
         ->hasMeters(2)
         ->hasUspds(2)
