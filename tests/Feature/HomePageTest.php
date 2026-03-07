@@ -9,15 +9,12 @@ it('visits the Home page', function () {
 });
 
 it('navigates from the Home page to the InstallationObjects page', function () {
-    InstallationObject::factory()->create([
-        'name' => 'ТП-1',
-        'address' => 'ул. Сосновая 10',
-    ]);
+    $installationObject = InstallationObject::factory()->create();
 
     $page = visit('/')->on()->mobile();
 
     $page->click('Просмотр объектов установки')
-        ->assertPathIs('/installation-objects')
-        ->assertSee('ТП-1')
-        ->assertSee('ул. Сосновая 10');
+        ->assertUrlIs(route('installation-objects.index'))
+        ->assertSee($installationObject->name)
+        ->assertSee($installationObject->address);
 });

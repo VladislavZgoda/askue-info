@@ -2,16 +2,10 @@
 
 use App\Models\InstallationObject;
 
-it('renders a page with data', function () {
-    InstallationObject::factory()
-        ->hasMeters(2)
-        ->hasUspds(2)
-        ->create();
+it('renders a page with data with :dataset', function (InstallationObject $installationObject) {
+    $installationObject->load(['meters', 'uspds']);
 
-    $installationObject = InstallationObject::with(['meters', 'uspds'])
-        ->first();
-
-    $page = visit("/installation-objects/$installationObject->id")
+    $page = visit(route('installation-objects.show', $installationObject))
         ->on()
         ->mobile();
 
@@ -30,4 +24,7 @@ it('renders a page with data', function () {
         $page->assertSee($uspd->model)
             ->assertSee($uspd->serial_number);
     }
-});
+})->with([
+    'one meter and one uspd' => fn () => InstallationObject::factory()->hasMeters(1)->hasUspds(1)->create(),
+    'two meters and two uspds' => fn () => InstallationObject::factory()->hasMeters(2)->hasUspds(2)->create(),
+]);
