@@ -1,9 +1,6 @@
 <?php
 
 use App\Models\InstallationObject;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 it('renders a page with data', function () {
     InstallationObject::factory()

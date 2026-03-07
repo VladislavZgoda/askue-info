@@ -1,10 +1,7 @@
 <?php
 
 use App\Models\InstallationObject;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
-
-uses(RefreshDatabase::class);
 
 it('can view the list of installation objects', function () {
     InstallationObject::factory()

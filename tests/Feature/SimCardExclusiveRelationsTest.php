@@ -4,9 +4,6 @@ use App\Models\InstallationObject;
 use App\Models\Meter;
 use App\Models\SimCard;
 use App\Models\Uspd;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 it('checks that sim card with meter cannot be assigned to uspd', function () {
     $meter = Meter::factory()->create();

@@ -1,9 +1,6 @@
 <?php
 
 use App\Models\InstallationObject;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 it('visits the Home page', function () {
     $page = visit('/')->on()->mobile();
