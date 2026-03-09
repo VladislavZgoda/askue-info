@@ -21,13 +21,25 @@ export default function Edit({ id, name, address }: InstallationObject) {
                         <CardContent>
                             <Field data-invalid={errors.name}>
                                 <FieldLabel htmlFor="name">Наименование</FieldLabel>
-                                <Input type="text" id="name" name="name" defaultValue={name} data-invalid={errors.name} />
+                                <Input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    defaultValue={name}
+                                    data-invalid={errors.name}
+                                />
                                 <FieldDescription>Выберете уникальное наименование.</FieldDescription>
                                 {errors.name && <FieldError>{errors.name}</FieldError>}
                             </Field>
                             <Field data-invalid={errors.address} className="mt-2">
                                 <FieldLabel htmlFor="address">Адрес</FieldLabel>
-                                <Input type="text" id="address" name="address" defaultValue={address} data-invalid={errors.address} />
+                                <Input
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    defaultValue={address}
+                                    data-invalid={errors.address}
+                                />
                                 {errors.address && <FieldError>{errors.address}</FieldError>}
                             </Field>
                         </CardContent>
