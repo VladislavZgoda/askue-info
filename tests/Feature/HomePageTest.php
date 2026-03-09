@@ -8,7 +8,7 @@ it('visits the Home page', function () {
     $page->assertSeeLink('Просмотр объектов установки');
 });
 
-it('navigates from the Home page to the InstallationObjects page', function () {
+it('navigates from the Home page to installation-objects.show using the link', function () {
     $installationObject = InstallationObject::factory()->create();
 
     $page = visit('/')->on()->mobile();
