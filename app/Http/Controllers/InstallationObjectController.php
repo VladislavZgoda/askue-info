@@ -63,7 +63,7 @@ class InstallationObjectController extends Controller
      */
     public function edit(InstallationObject $installationObject)
     {
-        //
+        return inertia('InstallationObject/Edit', $installationObject->only(['id', 'name', 'address']));
     }
 
     /**
@@ -71,7 +71,14 @@ class InstallationObjectController extends Controller
      */
     public function update(Request $request, InstallationObject $installationObject)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'max:255'],
+            'address' => ['required', 'max:255'],
+        ]);
+
+        $installationObject->update($validated);
+
+        return to_route('installation-objects.show', ['installation_object' => $installationObject->id]);
     }
 
     /**

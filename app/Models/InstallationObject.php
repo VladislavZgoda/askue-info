@@ -13,7 +13,7 @@ class InstallationObject extends Model
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'address', 'type'];
+    protected $fillable = ['name', 'address'];
 
     public function meters(): HasMany
     {

@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { Cpu, Eye, MoveLeft, Pencil, Plus, Pyramid, Trash2, Unplug, Zap } from 'lucide-react';
 
+import { edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
@@ -17,8 +18,8 @@ export default function InstallationObject({ id, name, meters, uspds }: Installa
                     <ItemTitle>{name}</ItemTitle>
                 </ItemContent>
                 <ItemActions>
-                    <Button asChild variant="outline" size="sm">
-                        <Link>
+                    <Button asChild variant="outline" size="sm" aria-label="Редактировать">
+                        <Link href={edit(id)} prefetch>
                             <Pencil />
                         </Link>
                     </Button>
