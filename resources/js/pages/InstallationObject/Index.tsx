@@ -5,7 +5,7 @@ import { show } from '@/actions/App/Http/Controllers/InstallationObjectControlle
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
 import type { InstallationObjectsProps } from '@/types';
 
-export default function InstallationObjects({ installationObjects }: InstallationObjectsProps) {
+export default function Index({ installationObjects }: InstallationObjectsProps) {
     return (
         <ItemGroup className="mt-2 ml-1 max-w-xs gap-2">
             {installationObjects.map((installationObject) => (

@@ -7,7 +7,7 @@ import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
 import type { InstallationObjectShowProps } from '@/types';
 
-export default function InstallationObject({ id, name, meters, uspds }: InstallationObjectShowProps) {
+export default function Show({ id, name, meters, uspds }: InstallationObjectShowProps) {
     return (
         <div className="mt-1.5 ml-1 flex max-w-xs flex-col gap-6">
             <Item variant="outline">
