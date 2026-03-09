@@ -72,7 +72,7 @@ class InstallationObjectController extends Controller
     public function update(Request $request, InstallationObject $installationObject)
     {
         $validated = $request->validate([
-            'name' => ['required', 'max:255'],
+            'name' => ['required', 'unique:installation_objects', 'max:255'],
             'address' => ['required', 'max:255'],
         ]);
 
