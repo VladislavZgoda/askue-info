@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateInstallationObjectRequest;
 use App\Models\InstallationObject;
 use Illuminate\Http\Request;
 
@@ -69,14 +70,10 @@ class InstallationObjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, InstallationObject $installationObject)
+    public function update(UpdateInstallationObjectRequest $request, InstallationObject $installationObject)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'unique:installation_objects', 'max:255'],
-            'address' => ['required', 'max:255'],
-        ]);
 
-        $installationObject->update($validated);
+        $installationObject->update($request->validated());
 
         return to_route('installation-objects.show', ['installation_object' => $installationObject->id]);
     }

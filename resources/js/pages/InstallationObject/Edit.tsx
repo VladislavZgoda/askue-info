@@ -14,7 +14,7 @@ export default function Edit({ id, name, address }: InstallationObject) {
     return (
         <>
             <Form action={update(id)} setDefaultsOnSuccess disableWhileProcessing>
-                {({ errors, processing, reset }) => (
+                {({ errors, processing, resetAndClearErrors, invalid, validate }) => (
                     <Card className="mx-auto mt-2 w-full max-w-xs">
                         <CardHeader>
                             <CardTitle>Редактировать объект установки</CardTitle>
@@ -23,23 +23,35 @@ export default function Edit({ id, name, address }: InstallationObject) {
                             <Field data-invalid={errors.name ? true : false}>
                                 <FieldLabel htmlFor="name">Наименование</FieldLabel>
                                 <InputGroup>
-                                    <InputGroupInput type="text" id="name" name="name" defaultValue={name} />
+                                    <InputGroupInput
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        defaultValue={name}
+                                        onBlur={() => validate('name')}
+                                    />
                                     <InputGroupAddon align="inline-start">
                                         <FactoryIcon />
                                     </InputGroupAddon>
                                 </InputGroup>
                                 <FieldDescription>Выберете уникальное наименование.</FieldDescription>
-                                {errors.name && <FieldError>{errors.name}</FieldError>}
+                                {invalid('name') && <FieldError>{errors.name}</FieldError>}
                             </Field>
                             <Field data-invalid={errors.address ? true : false} className="mt-2">
                                 <FieldLabel htmlFor="address">Адрес</FieldLabel>
                                 <InputGroup>
-                                    <InputGroupInput type="text" id="address" name="address" defaultValue={address} />
+                                    <InputGroupInput
+                                        type="text"
+                                        id="address"
+                                        name="address"
+                                        defaultValue={address}
+                                        onBlur={() => validate('address')}
+                                    />
                                     <InputGroupAddon align="inline-start">
                                         <MapPinHouseIcon />
                                     </InputGroupAddon>
                                 </InputGroup>
-                                {errors.address && <FieldError>{errors.address}</FieldError>}
+                                {invalid('address') && <FieldError>{errors.address}</FieldError>}
                             </Field>
                         </CardContent>
                         <CardFooter>
@@ -52,7 +64,12 @@ export default function Edit({ id, name, address }: InstallationObject) {
                                     )}
                                     {processing ? 'Подождите' : 'Изменить'}
                                 </Button>
-                                <Button type="button" variant="outline" onClick={() => reset()} disabled={processing}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => resetAndClearErrors()}
+                                    disabled={processing}
+                                >
                                     <RotateCcwIcon data-icon="inline-start" /> Сбросить
                                 </Button>
                             </Field>
