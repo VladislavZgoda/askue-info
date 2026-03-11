@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateInstallationObjectRequest;
 use App\Models\InstallationObject;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class InstallationObjectController extends Controller
 {
@@ -72,8 +73,9 @@ class InstallationObjectController extends Controller
      */
     public function update(UpdateInstallationObjectRequest $request, InstallationObject $installationObject)
     {
-
         $installationObject->update($request->validated());
+
+        Inertia::flash('message', 'Данные успешно обновлены');
 
         return to_route('installation-objects.show', ['installation_object' => $installationObject->id]);
     }
