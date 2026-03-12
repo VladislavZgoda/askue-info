@@ -17,7 +17,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
     }, [flash?.message]);
 
     return (
-        <div className="mt-1.5 ml-1 flex max-w-xs flex-col gap-6">
+        <div className="mx-auto mt-1.5 flex max-w-xs flex-col gap-6">
             <Item variant="outline">
                 <ItemMedia variant="icon">
                     <Pyramid />

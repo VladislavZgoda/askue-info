@@ -7,7 +7,7 @@ import type { InstallationObjectsProps } from '@/types';
 
 export default function Index({ installationObjects }: InstallationObjectsProps) {
     return (
-        <ItemGroup className="mt-2 ml-1 max-w-xs gap-2">
+        <ItemGroup className="mx-auto mt-2 max-w-xs gap-2">
             {installationObjects.map((installationObject) => (
                 <Item asChild key={installationObject.id} variant="outline" size="sm">
                     <Link href={show(installationObject.id)} prefetch>
