@@ -1,7 +1,5 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Cpu, Eye, MoveLeft, Pencil, Plus, Pyramid, Trash2, Unplug, Zap } from 'lucide-react';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
 
 import { edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Button } from '@/components/ui/button';
@@ -10,14 +8,6 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, 
 import type { InstallationObjectShowProps } from '@/types';
 
 export default function Show({ id, name, meters, uspds }: InstallationObjectShowProps) {
-    const { flash } = usePage();
-
-    const flashMessage = flash.message;
-
-    useEffect(() => {
-        if (flashMessage) toast.success(flashMessage, { position: 'bottom-center' });
-    }, [flashMessage]);
-
     return (
         <div className="mx-auto mt-1.5 flex max-w-xs flex-col gap-6">
             <Item variant="outline">
