@@ -18,7 +18,10 @@ export default function Edit({ id, name, address }: InstallationObject) {
     }).withPrecognition(update(id));
 
     const handleSubmit = () => {
-        submit({ onSuccess: () => setDefaults({ name, address }) });
+        submit({
+            onSuccess: () => setDefaults({ name, address }),
+            invalidateCacheTags: ['installationObjects', 'InstallationObjectEdit'],
+        });
     };
 
     return (
@@ -90,7 +93,7 @@ export default function Edit({ id, name, address }: InstallationObject) {
 
             <ButtonGroup orientation="vertical" className="mx-auto mt-2 w-full max-w-xs rounded-md shadow-sm">
                 <Button asChild variant="outline">
-                    <Link href={index()} prefetch>
+                    <Link href={index()} prefetch cacheTags="installationObjects">
                         <ListStart data-icon="inline-start" /> Список объектов
                     </Link>
                 </Button>

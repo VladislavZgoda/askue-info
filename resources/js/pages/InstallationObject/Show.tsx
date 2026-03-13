@@ -19,7 +19,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="sm" aria-label="Редактировать">
-                        <Link href={edit(id)} prefetch>
+                        <Link href={edit(id)} prefetch cacheTags="InstallationObjectEdit">
                             <Pencil />
                         </Link>
                     </Button>

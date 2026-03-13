@@ -7,7 +7,7 @@ export default function Home() {
     return (
         <>
             <Button asChild variant="outline" className="mt-5 ml-12">
-                <Link href={index()} prefetch>
+                <Link href={index()} prefetch cacheTags="installationObjects">
                     Просмотр объектов установки
                 </Link>
             </Button>
