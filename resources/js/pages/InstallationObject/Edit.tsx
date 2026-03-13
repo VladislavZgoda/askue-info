@@ -18,8 +18,8 @@ export default function Edit({ id, name, address }: InstallationObject) {
     }).withPrecognition(update(id));
 
     const handleSubmit = () => {
-        submit({onSuccess : () => setDefaults({name, address})})
-    }
+        submit({ onSuccess: () => setDefaults({ name, address }) });
+    };
 
     return (
         <>

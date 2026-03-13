@@ -12,7 +12,7 @@ import type { InstallationObjectShowProps } from '@/types';
 export default function Show({ id, name, meters, uspds }: InstallationObjectShowProps) {
     const { flash } = usePage();
 
-    const flashMessage = flash?.message as string | undefined;
+    const flashMessage = flash.message;
 
     useEffect(() => {
         if (flashMessage) toast.success(flashMessage, { position: 'bottom-center' });
