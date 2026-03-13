@@ -6,28 +6,17 @@ import { createRoot } from 'react-dom/client';
 
 import RootLayout from './layouts/RootLayout';
 
-interface PageModule {
-    default: React.ComponentType & {
-        layout: React.ComponentType<React.ReactNode>;
-    };
-}
-
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: async (name) => {
-        const page = await resolvePageComponent<PageModule>(
-            `./pages/${name}.tsx`,
-            import.meta.glob<PageModule>('./pages/**/*.tsx'),
-        );
-        page.default.layout ??= RootLayout;
-        return page;
-    },
+    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
-        const root = createRoot(el);
-
-        root.render(<App {...props} />);
+        createRoot(el).render(
+            <RootLayout>
+                <App {...props} />
+            </RootLayout>,
+        );
     },
     progress: {
         color: '#4B5563',
