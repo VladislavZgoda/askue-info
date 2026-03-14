@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InstallationObjectController;
 use App\Models\InstallationObject;
 use Illuminate\Database\Eloquent\Collection;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -69,3 +70,62 @@ it('can view the installation object with :dataset', function (InstallationObjec
     'one meter and two uspds' => fn () => InstallationObject::factory()->hasMeters(1)->hasUspds(2)->create(),
     'two meters and one uspd' => fn () => InstallationObject::factory()->hasMeters(2)->hasUspds(1)->create(),
 ]);
+
+it('can view the Edit page for the :dataset', function (InstallationObject $installationObject) {
+    $response = $this->get(action([InstallationObjectController::class, 'edit'], $installationObject));
+
+    $response->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('InstallationObject/Edit')
+            ->has('id')
+            ->has('name')
+            ->has('address')
+            ->where('id', $installationObject->id)
+            ->where('name', $installationObject->name)
+            ->where('address', $installationObject->address)
+            ->whereType('id', 'integer')
+            ->whereType('name', 'string')
+            ->whereType('address', 'string')
+        );
+})->with([
+    'ТП-1' => fn () => InstallationObject::factory()->create(['name' => 'ТП-1']),
+    'ТП-2' => fn () => InstallationObject::factory()->create(['name' => 'ТП-2']),
+]);
+
+describe('InstallationObject update', function () {
+    it('can update the InstallationObject', function () {
+        $installationObject = InstallationObject::factory()->create();
+
+        $response = $this->put(action([InstallationObjectController::class, 'update'], $installationObject), [
+            'name' => 'Updated name',
+            'address' => 'Updated address',
+        ]);
+
+        $response->assertValid(['name', 'address'])
+            ->assertRedirect(action([InstallationObjectController::class, 'show'], $installationObject))
+            ->assertInertiaFlash('message', 'Данные успешно обновлены');
+
+        expect($installationObject->fresh())
+            ->name->toBe('Updated name')
+            ->address->toBe('Updated address');
+    });
+
+    it('validates required fields', function () {
+        $installationObject = InstallationObject::factory()->create();
+
+        $response = $this->put(action([InstallationObjectController::class, 'update'], $installationObject), []);
+
+        $response->assertRedirectBackWithErrors(['name', 'address']);
+    });
+
+    it('validates that the name is unique', function () {
+        $installationObject1 = InstallationObject::factory()->create();
+        $installationObject2 = InstallationObject::factory()->create();
+
+        $response = $this->put(action([InstallationObjectController::class, 'update'], $installationObject2), [
+            'name' => $installationObject1->name,
+        ]);
+
+        $response->assertRedirectBackWithErrors(['name']);
+    });
+});
