@@ -1,5 +1,5 @@
 import { Form, Link } from '@inertiajs/react';
-import { FactoryIcon, ListStart, MapPinHouseIcon, MoveLeft, RotateCcwIcon, SaveIcon } from 'lucide-react';
+import { FactoryIcon, MapPinHouseIcon, MoveLeft, RotateCcwIcon, SaveIcon } from 'lucide-react';
 
 import { update } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { Spinner } from '@/components/ui/spinner';
-import { index, show } from '@/routes/installation-objects';
+import ViewInstallationObjectsButton from '@/components/ViewInstallationObjectsButton';
+import { show } from '@/routes/installation-objects';
 import type { InstallationObject } from '@/types';
 
 export default function Edit({ id, name, address }: InstallationObject) {
@@ -84,11 +85,7 @@ export default function Edit({ id, name, address }: InstallationObject) {
             </Form>
 
             <ButtonGroup orientation="vertical" className="mx-auto mt-2 w-full max-w-xs rounded-md shadow-sm">
-                <Button asChild variant="outline">
-                    <Link href={index()} prefetch cacheTags="installationObjects">
-                        <ListStart data-icon="inline-start" /> Список объектов
-                    </Link>
-                </Button>
+                <ViewInstallationObjectsButton />
                 <Button asChild variant="outline">
                     <Link href={show(id)} prefetch>
                         <MoveLeft data-icon="inline-start" /> Назад

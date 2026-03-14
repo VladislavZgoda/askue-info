@@ -1,16 +1,9 @@
-import { Link } from '@inertiajs/react';
-
-import { index } from '@/actions/App/Http/Controllers/InstallationObjectController';
-import { Button } from '@/components/ui/button';
+import ViewInstallationObjectsButton from '@/components/ViewInstallationObjectsButton';
 
 export default function Home() {
     return (
-        <>
-            <Button asChild variant="outline" className="mt-5 ml-12">
-                <Link href={index()} prefetch cacheTags="installationObjects">
-                    Просмотр объектов установки
-                </Link>
-            </Button>
-        </>
+        <div className="mt-5 flex">
+            <ViewInstallationObjectsButton className="mx-auto w-full max-w-xs" />
+        </div>
     );
 }
