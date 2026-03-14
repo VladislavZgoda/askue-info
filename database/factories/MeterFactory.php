@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\InstallationObject;
+use App\Models\Meter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Meter>
+ * @extends Factory<Meter>
  */
 class MeterFactory extends Factory
 {

@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\InstallationObject;
+use App\Models\Uspd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Uspd>
+ * @extends Factory<Uspd>
  */
 class UspdFactory extends Factory
 {
