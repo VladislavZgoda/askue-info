@@ -85,7 +85,7 @@ export default function Edit({ id, name, address }: InstallationObject) {
             </Form>
 
             <ButtonGroup orientation="vertical" className="mx-auto mt-2 w-full max-w-xs rounded-md shadow-sm">
-                <ViewInstallationObjectsButton />
+                <ViewInstallationObjectsButton>Список объектов установки</ViewInstallationObjectsButton>
                 <Button asChild variant="outline">
                     <Link href={show(id)} prefetch>
                         <MoveLeft data-icon="inline-start" /> Назад
