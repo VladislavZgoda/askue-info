@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateInstallationObjectRequest extends FormRequest
 {
@@ -22,8 +23,14 @@ class UpdateInstallationObjectRequest extends FormRequest
      */
     public function rules(): array
     {
+        $installationObjectId = $this->route('installation_object')?->id;
+
         return [
-            'name' => ['required', 'unique:installation_objects', 'max:255'],
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('installation_objects')->ignore($installationObjectId),
+            ],
             'address' => ['required', 'max:255'],
         ];
     }
