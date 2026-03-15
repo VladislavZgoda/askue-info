@@ -1,10 +1,11 @@
 import { Link } from '@inertiajs/react';
-import { Cpu, Eye, MoveLeft, Pencil, Plus, Pyramid, Trash2, Unplug, Zap } from 'lucide-react';
+import { Cpu, Eye, Pencil, Plus, Pyramid, Trash2, Unplug, Zap } from 'lucide-react';
 
 import { edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
+import ViewInstallationObjectsButton from '@/components/ViewInstallationObjectsButton';
 import type { InstallationObjectShowProps } from '@/types';
 
 export default function Show({ id, name, meters, uspds }: InstallationObjectShowProps) {
@@ -84,6 +85,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
             </ItemGroup>
 
             <ButtonGroup orientation="vertical" className="w-full">
+                <ViewInstallationObjectsButton size="sm">Список объектов установки</ViewInstallationObjectsButton>
                 <Button asChild size="sm" variant="outline">
                     <Link>
                         <Plus />
@@ -94,12 +96,6 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                     <Link>
                         <Plus />
                         Добавить ПУ
-                    </Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                    <Link>
-                        <MoveLeft />
-                        Назад
                     </Link>
                 </Button>
             </ButtonGroup>
