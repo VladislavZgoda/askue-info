@@ -10,10 +10,12 @@ it('renders a page with data with :dataset', function (InstallationObject $insta
         ->mobile();
 
     $page->assertSee($installationObject->name)
+        ->assertSourceHas("href=\"/installation-objects/$installationObject->id/edit\"")
+        ->assertSeeLink('Список объектов установки')
         ->assertSeeLink('Добавить УСПД')
         ->assertSeeLink('Добавить ПУ')
-        ->assertSeeLink('Назад')
-        ->assertCount('.group\/item-group', 2);
+        ->assertCount('.group\/item-group', 2)
+        ->assertNoJavaScriptErrors();
 
     foreach ($installationObject->meters as $meter) {
         $page->assertSee($meter->model)
@@ -26,5 +28,35 @@ it('renders a page with data with :dataset', function (InstallationObject $insta
     }
 })->with([
     'one meter and one uspd' => fn () => InstallationObject::factory()->hasMeters(1)->hasUspds(1)->create(),
-    'two meters and two uspds' => fn () => InstallationObject::factory()->hasMeters(2)->hasUspds(2)->create(),
+    'two meters and two uspds' => fn () => InstallationObject::factory()->hasMeters(2)->hasUspds(2)->create(['id' => 5]),
 ]);
+
+it('navigates from the Show page to the Edit using the link :dataset', function (InstallationObject $installationObject) {
+    $page = visit(route('installation-objects.show', $installationObject))
+        ->on()
+        ->mobile();
+
+    $page->click("a[href=\"/installation-objects/$installationObject->id/edit\"]")
+        ->assertUrlIs(route('installation-objects.edit', [$installationObject]))
+        ->assertSee('Редактировать объект установки')
+        ->assertSee('Наименование')
+        ->assertSee('Адрес')
+        ->assertValue('input[name=name]', $installationObject->name)
+        ->assertValue('input[name=address]', $installationObject->address);
+})->with([
+    'ТП-1' => fn () => InstallationObject::factory()->create(['name' => 'ТП-1']),
+    'ТП-2' => fn () => InstallationObject::factory()->create(['id' => 10, 'name' => 'ТП-2']),
+]);
+
+it('navigates from the Show page to the Index page using the link "Список объектов установки"', function () {
+    $installationObject = InstallationObject::factory()->create();
+
+    $page = visit(route('installation-objects.show', [$installationObject]))
+        ->on()
+        ->mobile();
+
+    $page->click('Список объектов установки')
+        ->assertUrlIs(route('installation-objects.index'))
+        ->assertSee($installationObject->name)
+        ->assertSee($installationObject->address);
+});
