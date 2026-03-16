@@ -104,3 +104,21 @@ it('navigates from the Edit page to the Index page using the link', function () 
         ->assertUrlIs(route('installation-objects.index'))
         ->assertNoJavaScriptErrors();
 });
+
+it('navigates back in the browser history after clicking on "Назад"', function () {
+    $installationObject = InstallationObject::factory()->create();
+
+    $showUrl = route('installation-objects.show', $installationObject);
+
+    $page = visit($showUrl)->on()->mobile();
+
+    $page->assertUrlIs($showUrl)
+        ->assertSee($installationObject->name)
+        ->click("a[href=\"/installation-objects/$installationObject->id/edit\"]")
+        ->assertUrlIs(route('installation-objects.edit', $installationObject))
+        ->assertSee('Редактировать объект установки')
+        ->pressAndWaitFor('Назад', 2)
+        ->assertUrlIs($showUrl)
+        ->assertSee($installationObject->name)
+        ->assertNoJavaScriptErrors();
+});
