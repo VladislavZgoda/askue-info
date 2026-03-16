@@ -7,8 +7,9 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 it('can view a list of the :dataset installation objects', function (Collection $installationObjects) {
     $installationObjectCount = $installationObjects->count();
+    $indexUrl = action([InstallationObjectController::class, 'index']);
 
-    $response = $this->get(route('installation-objects.index'));
+    $response = $this->get($indexUrl);
 
     $response->assertOk()
         ->assertInertia(fn (Assert $page) => $page
@@ -29,12 +30,14 @@ it('can view a list of the :dataset installation objects', function (Collection 
 ]);
 
 it('can view the installation object with :dataset', function (InstallationObject $installationObject) {
+    $showUrl = action([InstallationObjectController::class, 'show'], $installationObject);
+
     $installationObject->load(['meters', 'uspds']);
 
     $meterCount = $installationObject->meters_count;
     $uspdCount = $installationObject->uspds_count;
 
-    $response = $this->get(route('installation-objects.show', $installationObject));
+    $response = $this->get($showUrl);
 
     $response->assertOk()
         ->assertInertia(fn (Assert $page) => $page
@@ -72,7 +75,8 @@ it('can view the installation object with :dataset', function (InstallationObjec
 ]);
 
 it('can view the Edit page for the :dataset', function (InstallationObject $installationObject) {
-    $response = $this->get(action([InstallationObjectController::class, 'edit'], $installationObject));
+    $editUrl = action([InstallationObjectController::class, 'edit'], $installationObject);
+    $response = $this->get($editUrl);
 
     $response->assertOk()
         ->assertInertia(fn (Assert $page) => $page
@@ -96,13 +100,16 @@ describe('InstallationObject update', function () {
     it('can update the InstallationObject', function () {
         $installationObject = InstallationObject::factory()->create();
 
-        $response = $this->put(action([InstallationObjectController::class, 'update'], $installationObject), [
+        $showUrl = action([InstallationObjectController::class, 'show'], $installationObject);
+        $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject);
+
+        $response = $this->put($updateUrl, [
             'name' => 'Updated name',
             'address' => 'Updated address',
         ]);
 
         $response->assertValid(['name', 'address'])
-            ->assertRedirect(action([InstallationObjectController::class, 'show'], $installationObject))
+            ->assertRedirect($showUrl)
             ->assertInertiaFlash('message', 'Данные успешно обновлены');
 
         expect($installationObject->fresh())
@@ -112,8 +119,9 @@ describe('InstallationObject update', function () {
 
     it('validates required fields', function () {
         $installationObject = InstallationObject::factory()->create();
+        $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject);
 
-        $response = $this->put(action([InstallationObjectController::class, 'update'], $installationObject), []);
+        $response = $this->put($updateUrl, []);
 
         $response->assertRedirectBackWithErrors(['name', 'address']);
     });
@@ -122,7 +130,9 @@ describe('InstallationObject update', function () {
         $installationObject1 = InstallationObject::factory()->create();
         $installationObject2 = InstallationObject::factory()->create();
 
-        $response = $this->put(action([InstallationObjectController::class, 'update'], $installationObject2), [
+        $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject2);
+
+        $response = $this->put($updateUrl, [
             'name' => $installationObject1->name,
         ]);
 
