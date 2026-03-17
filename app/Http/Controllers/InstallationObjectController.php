@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreInstallationObjectRequest;
 use App\Http\Requests\UpdateInstallationObjectRequest;
 use App\Models\InstallationObject;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 
 class InstallationObjectController extends Controller
@@ -24,15 +25,19 @@ class InstallationObjectController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('InstallationObject/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreInstallationObjectRequest $request): RedirectResponse
     {
-        //
+        $installationObject = InstallationObject::create($request->validated());
+
+        Inertia::flash('message', 'Объект установки успешно создан.');
+
+        return to_route('installation-objects.show', $installationObject);
     }
 
     /**
@@ -71,7 +76,7 @@ class InstallationObjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInstallationObjectRequest $request, InstallationObject $installationObject)
+    public function update(UpdateInstallationObjectRequest $request, InstallationObject $installationObject): RedirectResponse
     {
         $installationObject->update($request->validated());
 
