@@ -80,7 +80,7 @@ class InstallationObjectController extends Controller
     {
         $installationObject->update($request->validated());
 
-        Inertia::flash('message', 'Данные успешно обновлены');
+        Inertia::flash('message', 'Данные успешно обновлены.');
 
         return to_route('installation-objects.show', ['installation_object' => $installationObject->id]);
     }

@@ -25,7 +25,7 @@ it('renders the page with data', function () {
         ->assertNoJavaScriptErrors();
 });
 
-it('display validation errors', function () {
+it('displays validation errors', function () {
     $installationObject1 = InstallationObject::factory()->create();
     $installationObject2 = InstallationObject::factory()->create();
 
@@ -64,7 +64,7 @@ it('redirects to the Show page after successfully submitting the form', function
         ->typeSlowly('name', 'ТП-2')
         ->pressAndWaitFor('Изменить', 2)
         ->assertUrlIs(route('installation-objects.show', $installationObject))
-        ->assertSee('Данные успешно обновлены')
+        ->assertSee('Данные успешно обновлены.')
         ->assertSee('ТП-2')
         ->assertNoJavaScriptErrors();
 });

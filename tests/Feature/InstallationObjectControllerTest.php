@@ -122,7 +122,7 @@ describe('InstallationObject update', function () {
 
         $response->assertValid(['name', 'address'])
             ->assertRedirect($showUrl)
-            ->assertInertiaFlash('message', 'Данные успешно обновлены');
+            ->assertInertiaFlash('message', 'Данные успешно обновлены.');
 
         expect($installationObject->fresh())
             ->name->toBe('Updated name')
