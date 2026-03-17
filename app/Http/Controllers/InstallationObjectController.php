@@ -90,6 +90,10 @@ class InstallationObjectController extends Controller
      */
     public function destroy(InstallationObject $installationObject)
     {
-        //
+        $installationObject->delete();
+
+        Inertia::flash('message', 'Объект установки успешно удалён.');
+
+        return to_route('installation-objects.index');
     }
 }
