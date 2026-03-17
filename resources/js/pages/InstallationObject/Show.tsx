@@ -32,57 +32,61 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                 </ItemActions>
             </Item>
 
-            <ItemGroup className="max-w-xs gap-1.5">
-                {meters.map((meter) => (
-                    <Item key={meter.id} variant="outline" size="sm">
-                        <ItemMedia variant="icon">
-                            <Zap />
-                        </ItemMedia>
-                        <ItemContent className="gap-1">
-                            <ItemTitle>{meter.model}</ItemTitle>
-                            <ItemDescription>{meter.serialNumber}</ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                            <Button asChild variant="outline" size="sm">
-                                <Link>
-                                    <Eye />
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline" size="sm">
-                                <Link>
-                                    <Unplug />
-                                </Link>
-                            </Button>
-                        </ItemActions>
-                    </Item>
-                ))}
-            </ItemGroup>
+            {meters.length > 0 && (
+                <ItemGroup className="max-w-xs gap-1.5">
+                    {meters.map((meter) => (
+                        <Item key={meter.id} variant="outline" size="sm">
+                            <ItemMedia variant="icon">
+                                <Zap />
+                            </ItemMedia>
+                            <ItemContent className="gap-1">
+                                <ItemTitle>{meter.model}</ItemTitle>
+                                <ItemDescription>{meter.serialNumber}</ItemDescription>
+                            </ItemContent>
+                            <ItemActions>
+                                <Button asChild variant="outline" size="sm">
+                                    <Link>
+                                        <Eye />
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline" size="sm">
+                                    <Link>
+                                        <Unplug />
+                                    </Link>
+                                </Button>
+                            </ItemActions>
+                        </Item>
+                    ))}
+                </ItemGroup>
+            )}
 
-            <ItemGroup className="max-w-xs gap-1.5">
-                {uspds.map((uspd) => (
-                    <Item key={uspd.id} variant="outline" size="sm">
-                        <ItemMedia variant="icon">
-                            <Cpu />
-                        </ItemMedia>
-                        <ItemContent className="gap-1">
-                            <ItemTitle>{uspd.model}</ItemTitle>
-                            <ItemDescription>{uspd.serialNumber}</ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                            <Button asChild variant="outline" size="sm">
-                                <Link>
-                                    <Eye />
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline" size="sm">
-                                <Link>
-                                    <Unplug />
-                                </Link>
-                            </Button>
-                        </ItemActions>
-                    </Item>
-                ))}
-            </ItemGroup>
+            {uspds.length > 0 && (
+                <ItemGroup className="max-w-xs gap-1.5">
+                    {uspds.map((uspd) => (
+                        <Item key={uspd.id} variant="outline" size="sm">
+                            <ItemMedia variant="icon">
+                                <Cpu />
+                            </ItemMedia>
+                            <ItemContent className="gap-1">
+                                <ItemTitle>{uspd.model}</ItemTitle>
+                                <ItemDescription>{uspd.serialNumber}</ItemDescription>
+                            </ItemContent>
+                            <ItemActions>
+                                <Button asChild variant="outline" size="sm">
+                                    <Link>
+                                        <Eye />
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline" size="sm">
+                                    <Link>
+                                        <Unplug />
+                                    </Link>
+                                </Button>
+                            </ItemActions>
+                        </Item>
+                    ))}
+                </ItemGroup>
+            )}
 
             <ButtonGroup orientation="vertical" className="w-full">
                 <ViewInstallationObjectsButton size="sm">Список объектов установки</ViewInstallationObjectsButton>
