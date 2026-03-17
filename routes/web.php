@@ -10,4 +10,4 @@ Route::get('/', function () {
 });
 
 Route::resource('installation-objects', InstallationObjectController::class)
-    ->middlewareFor(['update'], [HandlePrecognitiveRequests::class]);
+    ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
