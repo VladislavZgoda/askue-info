@@ -3,6 +3,7 @@
 use App\Http\Controllers\InstallationObjectController;
 use App\Models\InstallationObject;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 
 it('can view a list of the :dataset installation objects', function (Collection $installationObjects) {
@@ -74,6 +75,17 @@ it('can view the installation object with :dataset', function (InstallationObjec
     'two meters and one uspd' => fn () => InstallationObject::factory()->hasMeters(2)->hasUspds(1)->create(),
 ]);
 
+it('can view the Create page', function () {
+    $createUrl = action([InstallationObjectController::class, 'create']);
+    $response = $this->get($createUrl);
+
+    $response->assertOk()
+        ->assertInertia(
+            fn (Assert $page) => $page
+                ->component('InstallationObject/Create')
+        );
+});
+
 it('can view the Edit page for the :dataset', function (InstallationObject $installationObject) {
     $editUrl = action([InstallationObjectController::class, 'edit'], $installationObject);
     $response = $this->get($editUrl);
@@ -137,5 +149,67 @@ describe('InstallationObject update', function () {
         ]);
 
         $response->assertRedirectBackWithErrors(['name']);
+    });
+
+    it('validates the maximum length of input fields', function () {
+        $installationObject = InstallationObject::factory()->create();
+        $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject);
+
+        $response = $this->put($updateUrl, [
+            'name' => Str::random(256),
+            'address' => Str::random(256),
+        ]);
+
+        $response->assertRedirectBackWithErrors(['name', 'address']);
+    });
+});
+
+describe('InstallationObject store', function () {
+    it('can store the InstallationObject', function () {
+        $storeUrl = action([InstallationObjectController::class, 'store']);
+
+        $response = $this->post($storeUrl, [
+            'name' => 'Created object',
+            'address' => 'Created address',
+        ]);
+
+        $installationObject = InstallationObject::where('name', 'Created object')->first();
+
+        $showUrl = action([InstallationObjectController::class, 'show'], $installationObject);
+
+        $response->assertValid(['name', 'address'])
+            ->assertRedirect($showUrl)
+            ->assertInertiaFlash('message', 'Объект установки успешно создан.');
+    });
+
+    it('validates required fields', function () {
+        $storeUrl = action([InstallationObjectController::class, 'store']);
+
+        $response = $this->post($storeUrl, []);
+
+        $response->assertRedirectBackWithErrors(['name', 'address']);
+    });
+
+    it('validates that the name is unique', function () {
+        $installationObject = InstallationObject::factory()->create();
+
+        $storeUrl = action([InstallationObjectController::class, 'store']);
+
+        $response = $this->post($storeUrl, [
+            'name' => $installationObject->name,
+        ]);
+
+        $response->assertRedirectBackWithErrors(['name']);
+    });
+
+    it('validates the maximum length of input fields', function () {
+        $storeUrl = action([InstallationObjectController::class, 'store']);
+
+        $response = $this->post($storeUrl, [
+            'name' => Str::random(256),
+            'address' => Str::random(256),
+        ]);
+
+        $response->assertRedirectBackWithErrors(['name', 'address']);
     });
 });
