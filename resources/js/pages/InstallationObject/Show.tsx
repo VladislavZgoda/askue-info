@@ -38,7 +38,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                     </Button>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="destructive" size="sm">
+                            <Button name="delete" variant="destructive" size="sm">
                                 <Trash2 />
                             </Button>
                         </AlertDialogTrigger>
