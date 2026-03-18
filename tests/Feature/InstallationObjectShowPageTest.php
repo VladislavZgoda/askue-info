@@ -11,6 +11,7 @@ it('renders a page with data with :dataset', function (InstallationObject $insta
 
     $page->assertSee($installationObject->name)
         ->assertSourceHas("href=\"/installation-objects/$installationObject->id/edit\"")
+        ->assertButtonEnabled('delete')
         ->assertSeeLink('Список объектов установки')
         ->assertSeeLink('Добавить УСПД')
         ->assertSeeLink('Добавить ПУ')
@@ -60,3 +61,26 @@ it('navigates from the Show page to the Index page using the link "Список 
         ->assertSee($installationObject->name)
         ->assertSee($installationObject->address);
 });
+
+it('can delete :dataset', function (InstallationObject $installationObject) {
+    $showUrl = route('installation-objects.show', [$installationObject]);
+
+    $page = visit($showUrl)->on()->mobile();
+
+    $page->assertUrlIs($showUrl)
+        ->press('delete')
+        ->assertSee('Удалить объект установки?')
+        ->assertSee('Это навсегда удалит объект установки без возможности восстановления.')
+        ->assertButtonEnabled('Отменить')
+        ->assertSeeLink('Удалить')
+        ->click('Удалить')
+        ->assertUrlIs(route('installation-objects.index'))
+        ->assertSee('Объект установки успешно удалён.');
+
+    $this->assertDatabaseMissing('installation_objects', [
+        'id' => $installationObject->id,
+    ]);
+})->with([
+    'ТП-1' => fn () => InstallationObject::factory()->create(['name' => 'ТП-1']),
+    'ТП-2' => fn () => InstallationObject::factory()->create(['name' => 'ТП-2']),
+]);
