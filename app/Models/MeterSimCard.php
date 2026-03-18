@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+#[Table(name: 'meter_sim_card', timestamps: false)]
 class MeterSimCard extends Pivot
 {
-    protected $table = 'meter_sim_card';
-
-    public $timestamps = false;
-
     protected static function booted()
     {
         static::creating(function ($pivot) {
