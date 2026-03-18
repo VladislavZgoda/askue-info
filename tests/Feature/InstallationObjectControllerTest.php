@@ -213,3 +213,19 @@ describe('InstallationObject store', function () {
         $response->assertRedirectBackWithErrors(['name', 'address']);
     });
 });
+
+it('deletes installationObject', function () {
+    $installationObject = InstallationObject::factory()->create();
+
+    $indexUrl = action([InstallationObjectController::class, 'index']);
+    $destroyUrl = action([InstallationObjectController::class, 'destroy'], $installationObject);
+
+    $response = $this->delete($destroyUrl);
+
+    $this->assertDatabaseMissing('installation_objects', [
+        'id' => $installationObject->id,
+    ]);
+
+    $response->assertRedirect($indexUrl)
+        ->assertInertiaFlash('message', 'Объект установки успешно удалён.');
+});
