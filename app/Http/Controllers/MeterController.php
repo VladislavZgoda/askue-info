@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meter;
 use Illuminate\Http\Request;
 
 class MeterController extends Controller
@@ -11,7 +12,9 @@ class MeterController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia('Meter/Index', [
+            'meters' => Meter::all()->toResourceCollection(),
+        ]);
     }
 
     /**

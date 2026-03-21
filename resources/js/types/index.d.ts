@@ -43,3 +43,13 @@ export interface InstallationObjectShowProps {
         serialNumber: number;
     }[];
 }
+
+export interface Meter {
+    id: number;
+    model: string;
+    serialNumber: string;
+}
+
+export interface MetersProps {
+    meters: Meter[];
+}
