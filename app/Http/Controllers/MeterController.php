@@ -10,10 +10,17 @@ class MeterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search');
+
+        $meters = Meter::whereAny(['model', 'serial_number'], 'ilike', "%$search%")
+            ->get()
+            ->toResourceCollection();
+
         return Inertia('Meter/Index', [
-            'meters' => Meter::all()->toResourceCollection(),
+            'meters' => $meters,
+            'filter' => $request->only(['search']),
         ]);
     }
 

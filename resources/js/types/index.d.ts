@@ -44,6 +44,7 @@ export interface Meter {
 
 export interface MetersProps {
     meters: Meter[];
+    filter: { search: string | null };
 }
 
 export interface Uspd {
