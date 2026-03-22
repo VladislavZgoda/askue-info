@@ -16,7 +16,8 @@ class InstallationObjectController extends Controller
     public function index()
     {
         return inertia('InstallationObject/Index', [
-            'installationObjects' => InstallationObject::all(['id', 'name', 'address']),
+            'installationObjects' => InstallationObject::all()
+                ->toResourceCollection(),
         ]);
     }
 
