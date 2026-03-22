@@ -14,10 +14,12 @@ class InstallationObjectResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $showRoute = $request->routeIs('installation-objects.show');
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address,
+            'address' => $this->when(! $showRoute, $this->address),
             'meters' => MeterResource::collection($this->whenLoaded('meters')),
             'uspds' => UspdResource::collection($this->whenLoaded('uspds')),
         ];
