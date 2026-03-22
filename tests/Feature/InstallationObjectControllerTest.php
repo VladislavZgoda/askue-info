@@ -52,23 +52,23 @@ it('can view the installation object with :dataset', function (InstallationObjec
             ->has('meters', $meterCount, fn (Assert $meter) => $meter
                 ->has('id')
                 ->has('model')
-                ->has('serialNumber')
+                ->has('serial_number')
                 ->where('id', $installationObject->meters->first()->id)
                 ->where('model', $installationObject->meters->first()->model)
-                ->where('serialNumber', $installationObject->meters->first()->serial_number)
+                ->where('serial_number', $installationObject->meters->first()->serial_number)
                 ->whereType('id', 'integer')
                 ->whereType('model', 'string')
-                ->whereType('serialNumber', 'string'))
+                ->whereType('serial_number', 'string'))
             ->has('uspds', $uspdCount, fn (Assert $uspd) => $uspd
                 ->has('id')
                 ->has('model')
-                ->has('serialNumber')
+                ->has('serial_number')
                 ->where('id', $installationObject->uspds->first()->id)
                 ->where('model', $installationObject->uspds->first()->model)
-                ->where('serialNumber', $installationObject->uspds->first()->serial_number)
+                ->where('serial_number', $installationObject->uspds->first()->serial_number)
                 ->whereType('id', 'integer')
                 ->whereType('model', 'string')
-                ->whereType('serialNumber', 'integer'))
+                ->whereType('serial_number', 'integer'))
         );
 })->with([
     'one meter and two uspds' => fn () => InstallationObject::factory()->hasMeters(1)->hasUspds(2)->create(),

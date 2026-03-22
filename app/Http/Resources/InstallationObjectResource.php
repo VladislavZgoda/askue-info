@@ -18,6 +18,8 @@ class InstallationObjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'address' => $this->address,
+            'meters' => MeterResource::collection($this->whenLoaded('meters')),
+            'uspds' => UspdResource::collection($this->whenLoaded('uspds')),
         ];
     }
 }

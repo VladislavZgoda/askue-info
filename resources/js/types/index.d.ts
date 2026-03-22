@@ -32,16 +32,8 @@ export interface InstallationObjectsProps {
 export interface InstallationObjectShowProps {
     id: InstallationObject['id'];
     name: InstallationObject['name'];
-    meters: {
-        id: number;
-        model: string;
-        serialNumber: string;
-    }[];
-    uspds: {
-        id: number;
-        model: string;
-        serialNumber: number;
-    }[];
+    meters: Meter[];
+    uspds: Uspd[];
 }
 
 export interface Meter {
@@ -52,4 +44,10 @@ export interface Meter {
 
 export interface MetersProps {
     meters: Meter[];
+}
+
+export interface Uspd {
+    id: number;
+    model: string;
+    serial_number: number;
 }

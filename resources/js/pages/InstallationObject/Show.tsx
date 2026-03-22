@@ -72,7 +72,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                             </ItemMedia>
                             <ItemContent className="gap-1">
                                 <ItemTitle>{meter.model}</ItemTitle>
-                                <ItemDescription>{meter.serialNumber}</ItemDescription>
+                                <ItemDescription>{meter.serial_number}</ItemDescription>
                             </ItemContent>
                             <ItemActions>
                                 <Button asChild variant="outline" size="sm">
@@ -100,7 +100,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                             </ItemMedia>
                             <ItemContent className="gap-1">
                                 <ItemTitle>{uspd.model}</ItemTitle>
-                                <ItemDescription>{uspd.serialNumber}</ItemDescription>
+                                <ItemDescription>{uspd.serial_number}</ItemDescription>
                             </ItemContent>
                             <ItemActions>
                                 <Button asChild variant="outline" size="sm">

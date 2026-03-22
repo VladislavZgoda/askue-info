@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInstallationObjectRequest;
 use App\Http\Requests\UpdateInstallationObjectRequest;
+use App\Http\Resources\InstallationObjectResource;
 use App\Models\InstallationObject;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -48,22 +49,11 @@ class InstallationObjectController extends Controller
     {
         $installationObject->load(['meters', 'uspds']);
 
-        $data = [
-            'id' => $installationObject->id,
-            'name' => $installationObject->name,
-            'meters' => $installationObject->meters->map(fn ($meter) => [
-                'id' => $meter->id,
-                'model' => $meter->model,
-                'serialNumber' => $meter->serial_number,
-            ]),
-            'uspds' => $installationObject->uspds->map(fn ($uspd) => [
-                'id' => $uspd->id,
-                'model' => $uspd->model,
-                'serialNumber' => $uspd->serial_number,
-            ]),
-        ];
-
-        return inertia('InstallationObject/Show', $data);
+        return inertia(
+            'InstallationObject/Show',
+            new InstallationObjectResource($installationObject)
+                ->resolve()
+        );
     }
 
     /**
@@ -71,7 +61,11 @@ class InstallationObjectController extends Controller
      */
     public function edit(InstallationObject $installationObject)
     {
-        return inertia('InstallationObject/Edit', $installationObject->only(['id', 'name', 'address']));
+        return inertia(
+            'InstallationObject/Edit',
+            new InstallationObjectResource($installationObject)
+                ->resolve()
+        );
     }
 
     /**
