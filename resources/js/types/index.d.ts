@@ -47,7 +47,7 @@ export interface InstallationObjectShowProps {
 export interface Meter {
     id: number;
     model: string;
-    serialNumber: string;
+    serial_number: string;
 }
 
 export interface MetersProps {

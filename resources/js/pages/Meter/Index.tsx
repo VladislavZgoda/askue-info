@@ -23,7 +23,7 @@ export default function Index({ meters }: MetersProps) {
                             <Link prefetch>
                                 <ItemContent className="gap-1">
                                     <ItemTitle>{meter.model}</ItemTitle>
-                                    <ItemDescription>{meter.serialNumber}</ItemDescription>
+                                    <ItemDescription>{meter.serial_number}</ItemDescription>
                                 </ItemContent>
                                 <ItemActions>
                                     <Eye className="size-5" />

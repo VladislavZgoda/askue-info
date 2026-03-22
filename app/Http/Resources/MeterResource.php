@@ -17,7 +17,7 @@ class MeterResource extends JsonResource
         return [
             'id' => $this->id,
             'model' => $this->model,
-            'serialNumber' => $this->serial_number,
+            'serial_number' => $this->serial_number,
         ];
     }
 }
