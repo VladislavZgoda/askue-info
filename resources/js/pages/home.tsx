@@ -13,7 +13,7 @@ export default function Home() {
             </ViewInstallationObjectsButton>
 
             <Button asChild variant="outline" className="mx-auto w-full max-w-xs">
-                <Link href={index()}>
+                <Link href={index()} prefetch>
                     <ListStart data-icon="inline-start" />
                     Просмотр приборов учёта
                 </Link>
