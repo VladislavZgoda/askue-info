@@ -41,7 +41,7 @@ export default function Index({ meters, filter }: MetersProps) {
     };
 
     return (
-        <div className="mx-auto mt-2.5 flex h-[calc(100dvh-4rem)] w-full max-w-xs flex-col gap-2">
+        <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-xs flex-col gap-2 p-2.5">
             <Button asChild variant="outline" className="w-full">
                 <Link prefetch>
                     <ParkingMeter data-icon="inline-start" />
@@ -49,7 +49,7 @@ export default function Index({ meters, filter }: MetersProps) {
                 </Link>
             </Button>
 
-            <InputGroup className="mx-auto max-w-xs">
+            <InputGroup>
                 <InputGroupInput
                     type="text"
                     value={searchText}
@@ -69,7 +69,7 @@ export default function Index({ meters, filter }: MetersProps) {
                 </InputGroupAddon>
             </InputGroup>
 
-            <ScrollArea className="mx-auto w-full max-w-xs flex-initial overflow-auto rounded-md border p-2.5">
+            <ScrollArea className="flex-initial overflow-auto rounded-md border p-2.5">
                 <ItemGroup className="gap-2">
                     {meters.map((meter) => (
                         <Item asChild key={meter.id} variant="outline" size="sm">

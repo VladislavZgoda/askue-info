@@ -7,12 +7,12 @@ import ViewInstallationObjectsButton from '@/components/ViewInstallationObjectsB
 
 export default function Home() {
     return (
-        <div className="mt-5 flex flex-col gap-2">
-            <ViewInstallationObjectsButton className="mx-auto w-full max-w-xs">
+        <div className="mx-auto flex max-w-xs flex-col gap-2 p-2">
+            <ViewInstallationObjectsButton className="w-full">
                 Просмотр объектов установки
             </ViewInstallationObjectsButton>
 
-            <Button asChild variant="outline" className="mx-auto w-full max-w-xs">
+            <Button asChild variant="outline" className="w-full">
                 <Link href={index()} prefetch>
                     <ListStart data-icon="inline-start" />
                     Просмотр приборов учёта

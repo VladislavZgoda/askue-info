@@ -1,10 +1,11 @@
 import { MoveLeft } from 'lucide-react';
+import type React from 'react';
 
 import { Button } from './ui/button';
 
-export default function BackButton() {
+export default function BackButton({ className, ...props }: React.ComponentPropsWithoutRef<'button'>) {
     return (
-        <Button className="mt-3.5 w-full" variant="outline" onClick={() => window.history.back()}>
+        <Button className={className} variant="outline" onClick={() => window.history.back()} {...props}>
             <MoveLeft data-icon="inline-start" />
             Назад
         </Button>

@@ -23,8 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     }, []);
 
     return (
-        <>
-            <NavigationMenu className="mx-auto mt-1.5 w-full max-w-xs justify-start">
+        <main className="h-dvh">
+            <NavigationMenu className="mx-auto w-full max-w-xs justify-start p-2">
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
@@ -35,6 +35,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </NavigationMenu>
             {children}
             <Toaster />
-        </>
+        </main>
     );
 }

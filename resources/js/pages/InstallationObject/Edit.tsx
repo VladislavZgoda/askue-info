@@ -7,13 +7,13 @@ import FormPartial from './partials/Form';
 
 export default function Edit(installationObject: InstallationObject) {
     return (
-        <>
+        <div className="mx-auto max-w-xs p-2">
             <FormPartial {...installationObject} />
 
-            <ButtonGroup orientation="vertical" className="mx-auto mt-2 w-full max-w-xs rounded-md shadow-sm">
+            <ButtonGroup orientation="vertical" className="mt-2 w-full rounded-md shadow-sm">
                 <ViewInstallationObjectsButton>Список объектов установки</ViewInstallationObjectsButton>
-                <BackButton />
+                <BackButton className="w-full" />
             </ButtonGroup>
-        </>
+        </div>
     );
 }

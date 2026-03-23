@@ -22,7 +22,7 @@ import type { InstallationObjectShowProps } from '@/types';
 
 export default function Show({ id, name, meters, uspds }: InstallationObjectShowProps) {
     return (
-        <div className="mx-auto mt-1.5 flex max-w-xs flex-col gap-6">
+        <div className="mx-auto flex max-w-xs flex-col gap-6 p-2">
             <Item variant="outline">
                 <ItemMedia variant="icon">
                     <Pyramid />

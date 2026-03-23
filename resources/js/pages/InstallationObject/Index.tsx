@@ -9,7 +9,7 @@ import type { InstallationObjectsProps } from '@/types';
 
 export default function Index({ installationObjects }: InstallationObjectsProps) {
     return (
-        <div className="mx-auto mt-2.5 flex h-[calc(100dvh-4rem)] w-full max-w-xs flex-col">
+        <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-xs flex-col gap-2 p-2.5">
             <Button asChild variant="outline" className="w-full">
                 <Link href={create()} prefetch>
                     <MapPlus data-icon="inline-start" />
@@ -17,7 +17,7 @@ export default function Index({ installationObjects }: InstallationObjectsProps)
                 </Link>
             </Button>
 
-            <ScrollArea className="mx-auto mt-2 w-full max-w-xs flex-initial overflow-auto rounded-md border p-2.5">
+            <ScrollArea className="flex-initial overflow-auto rounded-md border p-2.5">
                 <ItemGroup className="gap-2">
                     {installationObjects.map((installationObject) => (
                         <Item asChild key={installationObject.id} variant="outline" size="sm">
