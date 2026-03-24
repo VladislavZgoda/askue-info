@@ -14,15 +14,21 @@ export default function Index({ meters, filter }: MetersProps) {
     const [searchText, setSearchText] = useState(filter.search ?? '');
     const [debouncedSearchText, setDebouncedSearchText] = useState(filter.search ?? '');
 
+    const [showSearchResult, setShowSearchResult] = useState(false);
+
     const debouncedSetSearch = useDebouncedCallback(setDebouncedSearchText, {
         wait: 500,
     });
+
+    const isVisibleSearchResult = debouncedSearchText.length > 0 && showSearchResult;
 
     useEffect(() => {
         router.get(
             index(),
             { search: debouncedSearchText },
             {
+                onStart: () => setShowSearchResult(false),
+                onFinish: () => setShowSearchResult(true),
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
@@ -59,9 +65,7 @@ export default function Index({ meters, filter }: MetersProps) {
                 <InputGroupAddon>
                     <Search />
                 </InputGroupAddon>
-                {debouncedSearchText.length > 0 && (
-                    <InputGroupAddon align="inline-end">{meters.length} шт.</InputGroupAddon>
-                )}
+                {isVisibleSearchResult && <InputGroupAddon align="inline-end">{meters.length} шт.</InputGroupAddon>}
                 <InputGroupAddon align="inline-end">
                     <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
                         <X />
