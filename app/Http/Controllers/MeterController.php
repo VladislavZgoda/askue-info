@@ -14,7 +14,8 @@ class MeterController extends Controller
     {
         $search = $request->query('search');
 
-        $meters = Meter::whereAny(['model', 'serial_number'], 'ilike', "%$search%")
+        $meters = Meter::whereLike('model', "%$search%")
+            ->orWhereLike('serial_number', "%$search%")
             ->get()
             ->toResourceCollection();
 
