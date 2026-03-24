@@ -1,6 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
-import { Eye, ParkingMeter, Search, X } from 'lucide-react';
+import { Eye, LoaderIcon, ParkingMeter, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { index } from '@/actions/App/Http/Controllers/MeterController';
@@ -14,6 +14,7 @@ export default function Index({ meters, filter }: MetersProps) {
     const [searchText, setSearchText] = useState(filter.search ?? '');
     const [debouncedSearchText, setDebouncedSearchText] = useState(filter.search ?? '');
 
+    const [showSpinner, setShowSpinner] = useState(false);
     const [showSearchResult, setShowSearchResult] = useState(false);
 
     const debouncedSetSearch = useDebouncedCallback(setDebouncedSearchText, {
@@ -27,8 +28,14 @@ export default function Index({ meters, filter }: MetersProps) {
             index(),
             { search: debouncedSearchText },
             {
-                onStart: () => setShowSearchResult(false),
-                onFinish: () => setShowSearchResult(true),
+                onStart: () => {
+                    setShowSpinner(true);
+                    setShowSearchResult(false);
+                },
+                onFinish: () => {
+                    setShowSpinner(false);
+                    setShowSearchResult(true);
+                },
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
@@ -62,9 +69,7 @@ export default function Index({ meters, filter }: MetersProps) {
                     onChange={handleSearchChange}
                     placeholder="Поиск приборов учёта..."
                 />
-                <InputGroupAddon>
-                    <Search />
-                </InputGroupAddon>
+                <InputGroupAddon>{showSpinner ? <LoaderIcon className="animate-spin" /> : <Search />}</InputGroupAddon>
                 {isVisibleSearchResult && <InputGroupAddon align="inline-end">{meters.length} шт.</InputGroupAddon>}
                 <InputGroupAddon align="inline-end">
                     <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
