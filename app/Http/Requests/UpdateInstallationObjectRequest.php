@@ -23,13 +23,11 @@ class UpdateInstallationObjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        $installationObjectId = $this->route('installation_object')?->id;
-
         return [
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('installation_objects')->ignore($installationObjectId),
+                Rule::unique('installation_objects')->ignore($this->route('installation_object')),
             ],
             'address' => ['required', 'max:255'],
         ];
