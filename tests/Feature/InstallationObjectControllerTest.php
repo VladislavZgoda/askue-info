@@ -129,16 +129,27 @@ describe('InstallationObject update', function () {
             ->address->toBe('Updated address');
     });
 
-    it('validates required fields', function () {
+    it('requires valid data to update an installation object', function (string $field, mixed $value) {
         $installationObject = InstallationObject::factory()->create();
+
+        $validData = [
+            'name' => 'ТП-1',
+            'address' => 'ул. Розовая, 5',
+        ];
+
         $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject);
 
-        $response = $this->put($updateUrl, []);
+        $response = $this->put($updateUrl, [...$validData, $field => $value]);
 
-        $response->assertRedirectBackWithErrors(['name', 'address']);
-    });
+        $response->assertRedirectBackWithErrors([$field]);
+    })->with([
+        'name is required' => ['name', ''],
+        'name is too long' => ['name', Str::random(256)],
+        'address is required' => ['address', ''],
+        'address is too long' => ['address', Str::random(256)],
+    ]);
 
-    it('validates that the name is unique', function () {
+    it('requires a unique name', function () {
         $installationObject1 = InstallationObject::factory()->create();
         $installationObject2 = InstallationObject::factory()->create();
 
@@ -150,22 +161,10 @@ describe('InstallationObject update', function () {
 
         $response->assertRedirectBackWithErrors(['name']);
     });
-
-    it('validates the maximum length of input fields', function () {
-        $installationObject = InstallationObject::factory()->create();
-        $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject);
-
-        $response = $this->put($updateUrl, [
-            'name' => Str::random(256),
-            'address' => Str::random(256),
-        ]);
-
-        $response->assertRedirectBackWithErrors(['name', 'address']);
-    });
 });
 
 describe('InstallationObject store', function () {
-    it('can store the InstallationObject', function () {
+    it('can create an installation object', function () {
         $storeUrl = action([InstallationObjectController::class, 'store']);
 
         $response = $this->post($storeUrl, [
@@ -182,15 +181,25 @@ describe('InstallationObject store', function () {
             ->assertInertiaFlash('message', 'Объект установки успешно создан.');
     });
 
-    it('validates required fields', function () {
+    it('requires valid data to create an installation object', function (string $field, mixed $value) {
+        $validData = [
+            'name' => 'ТП-1',
+            'address' => 'ул. Розовая, 5',
+        ];
+
         $storeUrl = action([InstallationObjectController::class, 'store']);
 
-        $response = $this->post($storeUrl, []);
+        $response = $this->post($storeUrl, [...$validData, $field => $value]);
 
-        $response->assertRedirectBackWithErrors(['name', 'address']);
-    });
+        $response->assertRedirectBackWithErrors([$field]);
+    })->with([
+        'name is required' => ['name', ''],
+        'name is too long' => ['name', Str::random(256)],
+        'address is required' => ['address', ''],
+        'address is too long' => ['address', Str::random(256)],
+    ]);
 
-    it('validates that the name is unique', function () {
+    it('requires a unique name', function () {
         $installationObject = InstallationObject::factory()->create();
 
         $storeUrl = action([InstallationObjectController::class, 'store']);
@@ -200,17 +209,6 @@ describe('InstallationObject store', function () {
         ]);
 
         $response->assertRedirectBackWithErrors(['name']);
-    });
-
-    it('validates the maximum length of input fields', function () {
-        $storeUrl = action([InstallationObjectController::class, 'store']);
-
-        $response = $this->post($storeUrl, [
-            'name' => Str::random(256),
-            'address' => Str::random(256),
-        ]);
-
-        $response->assertRedirectBackWithErrors(['name', 'address']);
     });
 });
 
