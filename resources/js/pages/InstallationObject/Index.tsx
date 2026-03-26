@@ -11,7 +11,7 @@ export default function Index({ installationObjects }: InstallationObjectsProps)
     return (
         <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-xs flex-col gap-2 p-2.5">
             <Button asChild variant="outline" className="w-full">
-                <Link href={create()} prefetch>
+                <Link href={create()} prefetch instant>
                     <MapPlus data-icon="inline-start" />
                     Создать объект установки
                 </Link>

@@ -13,7 +13,7 @@ export default function Home() {
             </ViewInstallationObjectsButton>
 
             <Button asChild variant="outline" className="w-full">
-                <Link href={index()} prefetch>
+                <Link href={index()} prefetch instant>
                     <ListStart data-icon="inline-start" />
                     Просмотр приборов учёта
                 </Link>

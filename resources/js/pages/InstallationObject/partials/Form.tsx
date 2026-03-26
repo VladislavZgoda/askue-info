@@ -21,6 +21,7 @@ export default function FormPartial() {
             action={id ? update(id) : store()}
             invalidateCacheTags={['installationObjects', 'InstallationObjectEdit']}
             disableWhileProcessing
+            instant
         >
             {({ errors, processing, resetAndClearErrors, invalid, validate }) => (
                 <Card className="mx-auto mt-2 w-full max-w-xs">

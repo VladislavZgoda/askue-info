@@ -12,7 +12,7 @@ type ButtonProps = ComponentPropsWithoutRef<'button'> & VariantProps<typeof butt
 export default function ViewInstallationObjectsButton({ className, children, ...props }: ButtonProps) {
     return (
         <Button asChild variant="outline" {...props} className={`${className}`}>
-            <Link href={index()} prefetch cacheTags="installationObjects">
+            <Link href={index()} prefetch instant cacheTags="installationObjects">
                 <ListStart data-icon="inline-start" />
                 {children}
             </Link>

@@ -28,7 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                            <Link href="/">Главная</Link>
+                            <Link component="home" href="/">
+                                Главная
+                            </Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                 </NavigationMenuList>
