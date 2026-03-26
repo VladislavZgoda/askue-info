@@ -1,4 +1,4 @@
-import { Form } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
 import { FactoryIcon, MapPinHouseIcon, RotateCcwIcon, SaveIcon } from 'lucide-react';
 
 import { store, update } from '@/actions/App/Http/Controllers/InstallationObjectController';
@@ -9,7 +9,13 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { Spinner } from '@/components/ui/spinner';
 import type { InstallationObject } from '@/types';
 
-export default function FormPartial({ id, name, address }: Partial<InstallationObject>) {
+export default function FormPartial() {
+    const page = usePage<{
+        installationObject?: InstallationObject;
+    }>();
+
+    const { id, name, address } = page.props.installationObject ?? {};
+
     return (
         <Form<Omit<InstallationObject, 'id'>>
             action={id ? update(id) : store()}

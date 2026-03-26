@@ -93,15 +93,15 @@ it('can view the Edit page for the :dataset', function (InstallationObject $inst
     $response->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('InstallationObject/Edit')
-            ->has('id')
-            ->has('name')
-            ->has('address')
-            ->where('id', $installationObject->id)
-            ->where('name', $installationObject->name)
-            ->where('address', $installationObject->address)
-            ->whereType('id', 'integer')
-            ->whereType('name', 'string')
-            ->whereType('address', 'string')
+            ->has('installationObject.id')
+            ->has('installationObject.name')
+            ->has('installationObject.address')
+            ->where('installationObject.id', $installationObject->id)
+            ->where('installationObject.name', $installationObject->name)
+            ->where('installationObject.address', $installationObject->address)
+            ->whereType('installationObject.id', 'integer')
+            ->whereType('installationObject.name', 'string')
+            ->whereType('installationObject.address', 'string')
         );
 })->with([
     'ТП-1' => fn () => InstallationObject::factory()->create(['name' => 'ТП-1']),

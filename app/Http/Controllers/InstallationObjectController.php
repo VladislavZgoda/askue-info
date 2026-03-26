@@ -62,9 +62,9 @@ class InstallationObjectController extends Controller
     public function edit(InstallationObject $installationObject)
     {
         return inertia(
-            'InstallationObject/Edit',
-            new InstallationObjectResource($installationObject)
-                ->resolve()
+            'InstallationObject/Edit', [
+                'installationObject' => new InstallationObjectResource($installationObject),
+            ]
         );
     }
 
