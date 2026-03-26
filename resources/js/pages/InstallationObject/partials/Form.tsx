@@ -9,9 +9,14 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { Spinner } from '@/components/ui/spinner';
 import type { InstallationObject } from '@/types';
 
+interface InstallationObjectForm {
+    name: string;
+    address: string;
+}
+
 export default function FormPartial({ id, name, address }: Partial<InstallationObject>) {
     return (
-        <Form
+        <Form<InstallationObjectForm>
             action={id ? update(id) : store()}
             invalidateCacheTags={['installationObjects', 'InstallationObjectEdit']}
             disableWhileProcessing
