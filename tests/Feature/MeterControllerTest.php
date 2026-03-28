@@ -67,6 +67,7 @@ describe('MeterController index action', function () {
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->has('meters', 0)
+                    ->where('filter.search', 'Этого нет')
             );
     });
 });
