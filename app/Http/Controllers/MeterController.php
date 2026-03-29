@@ -16,6 +16,7 @@ class MeterController extends Controller
 
         $meters = Meter::whereLike('model', "%$search%")
             ->orWhereLike('serial_number', "%$search%")
+            ->latest()
             ->get()
             ->toResourceCollection();
 
