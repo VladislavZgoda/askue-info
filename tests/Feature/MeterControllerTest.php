@@ -63,11 +63,12 @@ describe('MeterController index action', function () {
     it('returns an empty collection when no results match', function () {
         Meter::factory()->count(3)->create();
 
-        $this->get(action([MeterController::class, 'index'], ['search' => 'Этого нет']))
-            ->assertInertia(
-                fn (Assert $page) => $page
-                    ->has('meters', 0)
-                    ->where('filter.search', 'Этого нет')
-            );
+        $response = $this->get(action([MeterController::class, 'index'], ['search' => 'Этого нет']));
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->has('meters', 0)
+                ->where('filter.search', 'Этого нет')
+        );
     });
 });
