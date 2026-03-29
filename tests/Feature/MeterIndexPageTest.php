@@ -2,7 +2,7 @@
 
 use App\Models\Meter;
 
-describe('Index page of MeterController', function () {
+describe('MeterController Index Page', function () {
     beforeEach(function () {
         Meter::factory()->create(['model' => 'Меркурий 236', 'serial_number' => '123456']);
         Meter::factory()->create(['model' => 'СЭТ-4ТМ.03М', 'serial_number' => '654321']);
@@ -10,7 +10,10 @@ describe('Index page of MeterController', function () {
 
     it('displays a page with a list of meters', function () {
         $meters = Meter::all();
-        $page = visit(route('meters.index'))->on()->mobile();
+
+        $page = visit(route('meters.index'))
+            ->on()
+            ->mobile();
 
         $page->assertUrlIs(route('meters.index'))
             ->assertSeeLink('Главная')
@@ -29,7 +32,9 @@ describe('Index page of MeterController', function () {
     });
 
     it('can search for meters and see results update dynamically', function () {
-        $page = visit(route('meters.index'))->on()->mobile();
+        $page = visit(route('meters.index'))
+            ->on()
+            ->mobile();
 
         $page->assertUrlIs(route('meters.index'))
             ->assertSee('Меркурий 236')
@@ -38,11 +43,14 @@ describe('Index page of MeterController', function () {
             ->wait(1)
             ->assertSee('Меркурий 236')
             ->assertDontSee('СЭТ-4ТМ.03М')
-            ->assertSee('1 шт.');
+            ->assertSee('1 шт.')
+            ->assertNoJavaScriptErrors();
     });
 
     it('clears the search when the X button is clicked', function () {
-        $page = visit(route('meters.index'))->on()->mobile();
+        $page = visit(route('meters.index'))
+            ->on()
+            ->mobile();
 
         $page->assertUrlIs(route('meters.index'))
             ->assertSee('Меркурий 236')
@@ -55,6 +63,7 @@ describe('Index page of MeterController', function () {
             ->wait(1)
             ->assertValue('input[placeholder="Поиск приборов учёта..."]', '')
             ->assertSee('Меркурий 236')
-            ->assertSee('СЭТ-4ТМ.03М');
+            ->assertSee('СЭТ-4ТМ.03М')
+            ->assertNoJavaScriptErrors();
     });
 });
