@@ -3,7 +3,7 @@ import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { Eye, LoaderIcon, ParkingMeter, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { index } from '@/actions/App/Http/Controllers/MeterController';
+import { create, index } from '@/actions/App/Http/Controllers/MeterController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
@@ -56,7 +56,7 @@ export default function Index({ meters, filter }: MetersProps) {
     return (
         <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-xs flex-col gap-2 p-2.5">
             <Button asChild variant="outline" className="w-full">
-                <Link prefetch>
+                <Link href={create()} prefetch instant>
                     <ParkingMeter data-icon="inline-start" />
                     Создать прибор учёта
                 </Link>

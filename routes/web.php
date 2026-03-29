@@ -13,4 +13,5 @@ Route::get('/', function () {
 Route::resource('installation-objects', InstallationObjectController::class)
     ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
 
-Route::resource('meters', MeterController::class);
+Route::resource('meters', MeterController::class)
+    ->middlewareFor(['store'], [HandlePrecognitiveRequests::class]);

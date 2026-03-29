@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMeterRequest;
 use App\Models\Meter;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MeterController extends Controller
 {
@@ -31,15 +34,19 @@ class MeterController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Meter/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMeterRequest $request): RedirectResponse
     {
-        //
+        Meter::create($request->validated());
+
+        Inertia::flash('message', 'Прибор учёта успешно создан.');
+
+        return to_route('meters.index');
     }
 
     /**
