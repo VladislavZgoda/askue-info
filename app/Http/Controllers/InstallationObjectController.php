@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInstallationObjectRequest;
 use App\Http\Resources\InstallationObjectResource;
 use App\Models\InstallationObject;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class InstallationObjectController extends Controller
@@ -14,11 +15,19 @@ class InstallationObjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search');
+
+        $installationObjects = InstallationObject::whereLike('name', "%$search%")
+            ->orWhereLike('address', "%$search%")
+            ->latest()
+            ->get()
+            ->toResourceCollection();
+
         return inertia('InstallationObject/Index', [
-            'installationObjects' => InstallationObject::all()
-                ->toResourceCollection(),
+            'installationObjects' => $installationObjects,
+            'filter' => $request->only(['search']),
         ]);
     }
 
