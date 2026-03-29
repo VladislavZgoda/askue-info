@@ -6,29 +6,88 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 
-it('can view a list of the :dataset installation objects', function (Collection $installationObjects) {
-    $installationObjectCount = $installationObjects->count();
-    $indexUrl = action([InstallationObjectController::class, 'index']);
+describe('InstallationObject index action', function () {
+    it('can view a list of the :dataset installation objects', function (Collection $installationObjects) {
+        $installationObjectCount = $installationObjects->count();
+        $indexUrl = action([InstallationObjectController::class, 'index']);
 
-    $response = $this->get($indexUrl);
+        $response = $this->get($indexUrl);
 
-    $response->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('InstallationObject/Index')
-            ->has('installationObjects', $installationObjectCount,
+        $response->assertOk()
+            ->assertInertia(
                 fn (Assert $page) => $page
-                    ->has('id')
-                    ->has('name')
-                    ->has('address')
-                    ->whereType('id', 'integer')
-                    ->whereType('name', 'string')
-                    ->whereType('address', 'string')
+                    ->component('InstallationObject/Index')
+                    ->has(
+                        'installationObjects',
+                        $installationObjectCount,
+                        fn (Assert $page) => $page
+                            ->has('id')
+                            ->has('name')
+                            ->has('address')
+                            ->whereType('id', 'integer')
+                            ->whereType('name', 'string')
+                            ->whereType('address', 'string')
+                    )
+                    ->has('filter')
+            );
+    })->with([
+        'three' => fn () => InstallationObject::factory()->count(3)->create(),
+        'five' => fn () => InstallationObject::factory()->count(5)->create(),
+    ]);
+
+    it('filters installation objects by name', function () {
+        InstallationObject::factory()->create(['name' => 'ТП-111']);
+        InstallationObject::factory()->create(['name' => 'ТП-222']);
+
+        $response = $this->get(
+            action([InstallationObjectController::class, 'index'],
+                ['search' => 'ТП-111']
             )
         );
-})->with([
-    'three' => fn () => InstallationObject::factory()->count(3)->create(),
-    'five' => fn () => InstallationObject::factory()->count(5)->create(),
-]);
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->has('installationObjects', 1)
+                ->where('installationObjects.0.name', 'ТП-111')
+                ->where('filter.search', 'ТП-111')
+        );
+    });
+
+    it('filters installation objects by address', function () {
+        InstallationObject::factory()->create(['address' => 'ул. Красная, 1']);
+        InstallationObject::factory()->create(['address' => 'ул. Белая, 2']);
+
+        $response = $this->get(
+            action([InstallationObjectController::class, 'index'],
+                ['search' => 'ул. Красная, 1']
+            )
+        );
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->has('installationObjects', 1)
+                ->where('installationObjects.0.address', 'ул. Красная, 1')
+                ->where('filter.search', 'ул. Красная, 1')
+        );
+    });
+
+    it('returns an empty collection when no results match', function () {
+        InstallationObject::factory()->count(3)->create();
+
+        $response = $this->get(
+            action(
+                [InstallationObjectController::class, 'index'],
+                ['search' => 'Этого нет']
+            )
+        );
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->has('installationObjects', 0)
+                ->where('filter.search', 'Этого нет')
+        );
+    });
+});
 
 it('can view the installation object with :dataset', function (InstallationObject $installationObject) {
     $showUrl = action([InstallationObjectController::class, 'show'], $installationObject);
