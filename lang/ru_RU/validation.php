@@ -139,7 +139,7 @@ return [
     'prohibited_if_declined' => 'The :attribute field is prohibited when :other is declined.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
-    'regex' => 'The :attribute field format is invalid.',
+    'regex' => 'Формат поля :attribute недопустим.',
     'required' => 'Поле ":Attribute" является обязательным.',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
@@ -198,6 +198,8 @@ return [
     'attributes' => [
         'name' => 'наименование',
         'address' => 'адрес',
+        'model' => 'модель',
+        'serial_number' => 'серийный номер',
     ],
 
 ];
