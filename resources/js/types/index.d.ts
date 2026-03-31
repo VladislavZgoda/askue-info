@@ -53,3 +53,8 @@ export interface Uspd {
     model: string;
     serial_number: number;
 }
+
+export interface InstallationObjectMetersProps {
+    installationObject: InstallationObject;
+    unassignedMeters: Meter[];
+}

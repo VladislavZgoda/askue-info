@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InstallationObjectController;
+use App\Http\Controllers\InstallationObjectMeterController;
 use App\Http\Controllers\MeterController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
@@ -15,3 +16,7 @@ Route::resource('installation-objects', InstallationObjectController::class)
 
 Route::resource('meters', MeterController::class)
     ->middlewareFor(['store'], [HandlePrecognitiveRequests::class]);
+
+Route::resource('installation-objects.meters', InstallationObjectMeterController::class)
+    ->only(['create', 'store', 'destroy'])
+    ->shallow();

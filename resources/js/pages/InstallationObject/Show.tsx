@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Cpu, Eye, Pencil, Plus, Pyramid, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { destroy, edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
+import { create } from '@/actions/App/Http/Controllers/InstallationObjectMeterController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -128,7 +129,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                     </Link>
                 </Button>
                 <Button asChild size="sm" variant="outline">
-                    <Link>
+                    <Link href={create(id)} prefetch instant>
                         <Plus />
                         Добавить ПУ
                     </Link>
