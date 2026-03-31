@@ -48,8 +48,12 @@ class InstallationObjectMeterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Meter $meter): RedirectResponse
     {
-        //
+        $meter->installationObject()->disassociate();
+        $meter->save();
+
+        return Inertia::flash('message', 'Прибор учёта успешно отсоединился.')
+            ->back();
     }
 }

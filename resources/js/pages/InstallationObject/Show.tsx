@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Cpu, Eye, Pencil, Plus, Pyramid, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { destroy, edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
-import { create } from '@/actions/App/Http/Controllers/InstallationObjectMeterController';
+import { create, destroy as disassociateMeter } from '@/actions/App/Http/Controllers/InstallationObjectMeterController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -81,11 +81,31 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                                         <Eye />
                                     </Link>
                                 </Button>
-                                <Button asChild variant="outline" size="sm">
-                                    <Link>
-                                        <Unplug />
-                                    </Link>
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button name="unplugMeter" variant="destructive" size="sm">
+                                            <Unplug />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent size="sm">
+                                        <AlertDialogHeader>
+                                            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                                                <Unplug />
+                                            </AlertDialogMedia>
+                                            <AlertDialogTitle>Отсоединить прибор учёта?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                Это не удалит прибор учёта и его можно будет присоединить к любому
+                                                объекту.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
+                                            <AlertDialogAction variant="destructive" asChild>
+                                                <Link href={disassociateMeter(meter.id)}>Отсоединить</Link>
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </ItemActions>
                         </Item>
                     ))}
