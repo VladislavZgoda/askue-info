@@ -5,7 +5,7 @@ import { store } from '@/actions/App/Http/Controllers/InstallationObjectMeterCon
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field, FieldLabel } from '@/components/ui/field';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Spinner } from '@/components/ui/spinner';
 import type { InstallationObjectMetersProps } from '@/types';
@@ -38,6 +38,7 @@ export default function Create({ installationObject, unassignedMeters }: Install
                                         </NativeSelectOption>
                                     ))}
                                 </NativeSelect>
+                                {errors.meter_id && <FieldError>Поле является обязательным.</FieldError>}
                             </Field>
                         </CardContent>
                         <CardFooter>
