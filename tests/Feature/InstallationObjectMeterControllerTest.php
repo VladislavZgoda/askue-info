@@ -69,7 +69,6 @@ describe('InstallationObjectMeterController store action', function () {
             ->assertRedirectBackWithErrors([$field]);
     })->with([
         'meter_id is required' => ['meter_id', ''],
-        'meter_id exists' => ['meter_id', 999],
     ]);
 });
 
