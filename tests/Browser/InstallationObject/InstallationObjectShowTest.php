@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\InstallationObject;
+use App\Models\Meter;
 
 it('renders a page with data with :dataset', function (InstallationObject $installationObject) {
     $installationObject->load(['meters', 'uspds']);
@@ -84,3 +85,23 @@ it('can delete :dataset', function (InstallationObject $installationObject) {
     'ТП-1' => fn () => InstallationObject::factory()->create(['name' => 'ТП-1']),
     'ТП-2' => fn () => InstallationObject::factory()->create(['name' => 'ТП-2']),
 ]);
+
+it('can disassociate the meter', function () {
+    $installationObject = InstallationObject::factory()->create();
+    $meter = Meter::factory()->create(['installation_object_id' => $installationObject->id]);
+
+    $url = route('installation-objects.show', [$installationObject]);
+    $page = visit($url)->on()->mobile();
+
+    $page->assertUrlIs($url)
+        ->press('unplugMeter')
+        ->assertSee('Отсоединить прибор учёта?')
+        ->assertSee('Это не удалит прибор учёта и его можно будет присоединить к любому объекту.')
+        ->assertButtonEnabled('Отменить')
+        ->assertSeeLink('Отсоединить')
+        ->click('Отсоединить')
+        ->assertUrlIs($url)
+        ->assertSee('Прибор учёта успешно отсоединился.');
+
+    expect($meter->fresh()->installation_object_id)->toBeNull();
+});
