@@ -3,7 +3,7 @@ import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { Eye, LoaderIcon, ParkingMeter, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { create, index } from '@/actions/App/Http/Controllers/MeterController';
+import { create, index, show } from '@/actions/App/Http/Controllers/MeterController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
@@ -82,7 +82,7 @@ export default function Index({ meters, filter }: MetersProps) {
                 <ItemGroup className="gap-2">
                     {meters.map((meter) => (
                         <Item asChild key={meter.id} variant="outline" size="sm">
-                            <Link prefetch>
+                            <Link href={show(meter.id)} prefetch instant>
                                 <ItemContent className="gap-1">
                                     <ItemTitle>{meter.model}</ItemTitle>
                                     <ItemDescription>{meter.serial_number}</ItemDescription>

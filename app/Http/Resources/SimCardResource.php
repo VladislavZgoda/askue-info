@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MeterResource extends JsonResource
+class SimCardResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,9 @@ class MeterResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'model' => $this->model,
-            'serial_number' => $this->serial_number,
-            'simCards' => SimCardResource::collection($this->whenLoaded('simCards')),
+            'number' => $this->number,
+            'ip' => $this->whenNotNull($this->ip),
+            'operator' => $this->operator,
         ];
     }
 }

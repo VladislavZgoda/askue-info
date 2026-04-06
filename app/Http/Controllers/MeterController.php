@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMeterRequest;
+use App\Http\Resources\MeterResource;
 use App\Models\Meter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,9 +53,11 @@ class MeterController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Meter $meter)
     {
-        //
+        $meter->load('simCards');
+
+        return inertia('Meter/Show', new MeterResource($meter)->resolve());
     }
 
     /**

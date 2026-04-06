@@ -37,6 +37,13 @@ export interface InstallationObjectShowProps {
     uspds: Uspd[];
 }
 
+export interface SimCards {
+    id: number;
+    number: string;
+    ip?: string;
+    operator: string;
+}
+
 export interface Meter {
     id: number;
     model: string;
@@ -47,6 +54,10 @@ export interface MetersProps {
     meters: Meter[];
     filter: { search: string | null };
 }
+
+export type MeterShowProps = Meter & {
+    simCards: SimCards[];
+};
 
 export interface Uspd {
     id: number;
