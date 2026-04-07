@@ -43,11 +43,11 @@ class MeterController extends Controller
      */
     public function store(StoreMeterRequest $request): RedirectResponse
     {
-        Meter::create($request->validated());
+        $meter = Meter::create($request->validated());
 
         Inertia::flash('message', 'Прибор учёта успешно создан.');
 
-        return to_route('meters.index');
+        return to_route('meters.show', $meter);
     }
 
     /**
