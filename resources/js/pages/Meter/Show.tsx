@@ -1,10 +1,23 @@
 import { Link } from '@inertiajs/react';
-import { CardSim, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Unplug } from 'lucide-react';
+import { CardSim, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Trash2Icon, Unplug } from 'lucide-react';
 
 import { index } from '@/actions/App/Http/Controllers/MeterController';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogMedia,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
+import { destroy } from '@/routes/meters';
 import type { MeterShowProps } from '@/types';
 
 export default function Show({ id, model, serial_number, simCards }: MeterShowProps) {
@@ -23,11 +36,30 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                             <Pencil />
                         </Link>
                     </Button>
-                    <Button asChild variant="destructive" size="icon">
-                        <Link prefetch instant>
-                            <Trash2 />
-                        </Link>
-                    </Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button name="delete" variant="destructive" size="icon">
+                                <Trash2 />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent size="sm">
+                            <AlertDialogHeader>
+                                <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                                    <Trash2Icon />
+                                </AlertDialogMedia>
+                                <AlertDialogTitle>Удалить прибор учёта?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Это навсегда удалит прибор учёта без возможности восстановления.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
+                                <AlertDialogAction variant="destructive" asChild>
+                                    <Link href={destroy(id)}>Удалить</Link>
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </ItemActions>
             </Item>
 
