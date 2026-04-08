@@ -48,7 +48,7 @@ class InstallationObjectMeterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Meter $meter): RedirectResponse
+    public function destroy(InstallationObject $installationObject, Meter $meter): RedirectResponse
     {
         $meter->installationObject()->disassociate();
         $meter->save();

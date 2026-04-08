@@ -101,7 +101,14 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                                         <AlertDialogFooter>
                                             <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
                                             <AlertDialogAction variant="destructive" asChild>
-                                                <Link href={disassociateMeter(meter.id)}>Отсоединить</Link>
+                                                <Link
+                                                    href={disassociateMeter({
+                                                        installation_object: id,
+                                                        meter: meter.id,
+                                                    })}
+                                                >
+                                                    Отсоединить
+                                                </Link>
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>

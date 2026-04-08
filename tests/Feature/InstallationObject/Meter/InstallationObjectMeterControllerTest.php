@@ -78,7 +78,7 @@ describe('InstallationObjectMeterController destroy action', function () {
         $meter = Meter::factory()->create(['installation_object_id' => $installationObject->id]);
 
         $this->from(route('installation-objects.show', $installationObject))
-            ->delete(route('meters.destroy', $meter))
+            ->delete(route('installation-objects.meters.destroy', [$installationObject, $meter]))
             ->assertRedirect(route('installation-objects.show', $installationObject))
             ->assertInertiaFlash('message', 'Прибор учёта успешно отсоединился.');
 
