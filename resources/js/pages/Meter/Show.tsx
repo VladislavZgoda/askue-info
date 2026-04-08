@@ -1,10 +1,11 @@
+import { Link } from '@inertiajs/react';
+import { CardSim, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Unplug } from 'lucide-react';
+
 import { index } from '@/actions/App/Http/Controllers/MeterController';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
 import type { MeterShowProps } from '@/types';
-import { Link } from '@inertiajs/react';
-import { CardSim, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Unplug } from 'lucide-react';
 
 export default function Show({ id, model, serial_number, simCards }: MeterShowProps) {
     return (
