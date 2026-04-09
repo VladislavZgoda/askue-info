@@ -41,3 +41,23 @@ it('navigates from the Show page to the Index page using the link "Просмо�
         ->assertSee($meter->serial_number)
         ->assertNoJavaScriptErrors();
 });
+
+it('deletes the meter', function () {
+    $meter = Meter::factory()->create();
+    $showUrl = route('meters.show', $meter);
+    $page = visit($showUrl)->on()->mobile();
+
+    $page->assertUrlIs($showUrl)
+        ->press('delete')
+        ->assertSee('Удалить прибор учёта?')
+        ->assertSee('Это навсегда удалит прибор учёта без возможности восстановления.')
+        ->assertButtonEnabled('Отменить')
+        ->assertSeeLink('Удалить')
+        ->click('Удалить')
+        ->assertUrlIs(route('meters.index'))
+        ->assertSee('Прибор учёта успешно удалён.');
+
+    $this->assertDatabaseMissing('meters', [
+        'id' => $meter->id,
+    ]);
+});
