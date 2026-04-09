@@ -166,3 +166,17 @@ describe('MeterController show action', function () {
             );
     });
 });
+
+describe('MeterController destroy action', function () {
+    it('deletes the meter', function () {
+        $meter = Meter::factory()->create();
+        $response = $this->delete(action([MeterController::class, 'destroy'], $meter));
+
+        $this->assertDatabaseMissing('meters', [
+            'id' => $meter->id,
+        ]);
+
+        $response->assertRedirect(action([MeterController::class, 'index']))
+            ->assertInertiaFlash('message', 'Прибор учёта успешно удалён.');
+    });
+});
