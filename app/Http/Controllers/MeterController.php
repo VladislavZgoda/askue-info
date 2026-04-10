@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMeterRequest;
+use App\Http\Requests\UpdateMeterRequest;
 use App\Http\Resources\MeterResource;
 use App\Models\Meter;
 use Illuminate\Http\RedirectResponse;
@@ -63,17 +64,23 @@ class MeterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Meter $meter)
     {
-        //
+        return inertia('Meter/Edit', [
+            'meter' => new MeterResource($meter)->resolve(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMeterRequest $request, Meter $meter): RedirectResponse
     {
-        //
+        $meter->update($request->validated());
+
+        Inertia::flash('message', 'Данные успешно обновлены.');
+
+        return to_route('meters.show', ['meter' => $meter->id]);
     }
 
     /**
