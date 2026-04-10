@@ -167,6 +167,91 @@ describe('MeterController show action', function () {
     });
 });
 
+describe('MeterController edit action', function () {
+    it('can view the edit page with meter data', function () {
+        $meter = Meter::factory()->create();
+        $response = $this->get(action([MeterController::class, 'edit'], $meter));
+
+        $response->assertOk()
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('Meter/Edit')
+                    ->has('meter')
+                    ->where('meter.id', $meter->id)
+                    ->where('meter.model', $meter->model)
+                    ->where('meter.serial_number', $meter->serial_number)
+                    ->whereType('meter.id', 'integer')
+                    ->whereType('meter.model', 'string')
+                    ->whereType('meter.serial_number', 'string')
+            );
+    });
+});
+
+describe('MeterController update action', function () {
+    beforeEach(function () {
+        $this->meter = Meter::factory()->create();
+    });
+
+    it('updates a meter with valid data and redirects', function () {
+        $updateUrl = action([MeterController::class, 'update'], $this->meter);
+
+        $response = $this->put($updateUrl, [
+            'model' => 'Updated model',
+            'serial_number' => '123456789',
+        ]);
+
+        $response->assertValid(['model', 'serial_number'])
+            ->assertRedirect(action([MeterController::class, 'show'], $this->meter))
+            ->assertInertiaFlash('message', 'Данные успешно обновлены.');
+
+        expect($this->meter->fresh())
+            ->model->toBe('Updated model')
+            ->serial_number->toBe('123456789');
+    });
+
+    it('allows updating a meter with its own serial number', function () {
+        $updateUrl = action([MeterController::class, 'update'], $this->meter);
+
+        $this->put($updateUrl, [
+            'model' => 'Updated model',
+            'serial_number' => $this->meter->serial_number,
+        ]);
+
+        expect($this->meter->fresh())->model->toBe('Updated model');
+    });
+
+    it('requires valid data to update a meter', function (string $field, mixed $value) {
+        $updateUrl = action([MeterController::class, 'update'], $this->meter);
+
+        $validData = [
+            'model' => Str::random(),
+            'serial_number' => Str::repeat('1', 10),
+        ];
+
+        $response = $this->put($updateUrl, [...$validData, $field => $value]);
+
+        $response->assertRedirectBackWithErrors($field);
+    })->with([
+        'model is required' => ['model', ''],
+        'model is too long' => ['model', Str::random(256)],
+        'serial_number is required' => ['serial_number', ''],
+        'serial_number is too long' => ['serial_number', Str::repeat('1', 256)],
+        'serial_number contains non-digits' => ['serial_number', '123qw231'],
+    ]);
+
+    it('fails validation when serial_number is already taken by another meter', function () {
+        $other = Meter::factory()->create();
+        $updateUrl = action([MeterController::class, 'update'], $this->meter);
+
+        $response = $this->put($updateUrl, [
+            'model' => 'Some Model',
+            'serial_number' => $other->serial_number,
+        ]);
+
+        $response->assertRedirectBackWithErrors('serial_number');
+    });
+});
+
 describe('MeterController destroy action', function () {
     it('deletes the meter', function () {
         $meter = Meter::factory()->create();
