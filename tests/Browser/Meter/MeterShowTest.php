@@ -55,9 +55,27 @@ it('deletes the meter', function () {
         ->assertSeeLink('Удалить')
         ->click('Удалить')
         ->assertUrlIs(route('meters.index'))
-        ->assertSee('Прибор учёта успешно удалён.');
+        ->assertSee('Прибор учёта успешно удалён.')
+        ->assertNoJavaScriptErrors();
 
     $this->assertDatabaseMissing('meters', [
         'id' => $meter->id,
     ]);
+});
+
+it('navigates from the Show page to the Edit using the link :dataset', function () {
+    $meter = Meter::factory()->create();
+
+    $page = visit(route('meters.show', $meter))
+        ->on()
+        ->mobile();
+
+    $page->click("a[href=\"/meters/$meter->id/edit\"]")
+        ->assertUrlIs(route('meters.edit', $meter))
+        ->assertSee('Редактировать прибор учёта')
+        ->assertSee('Наименование модели')
+        ->assertSee('Серийный номер')
+        ->assertValue('input[name=model]', $meter->model)
+        ->assertValue('input[name=serial_number]', $meter->serial_number)
+        ->assertNoJavaScriptErrors();
 });
