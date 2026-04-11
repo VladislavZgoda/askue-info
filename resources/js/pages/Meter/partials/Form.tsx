@@ -1,7 +1,7 @@
-import { Form } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
 import { ArrowUp01, ParkingMeter, RotateCcwIcon, SaveIcon } from 'lucide-react';
 
-import { store } from '@/actions/App/Http/Controllers/MeterController';
+import { store, update } from '@/actions/App/Http/Controllers/MeterController';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field';
@@ -10,23 +10,30 @@ import { Spinner } from '@/components/ui/spinner';
 import type { Meter } from '@/types';
 
 export default function FormPartial() {
+    const page = usePage<{
+        meter?: Meter;
+    }>();
+
+    const { id, model, serial_number } = page.props.meter ?? {};
+
     return (
-        <Form<Omit<Meter, 'id'>>
-            action={store()}
-            invalidateCacheTags={['installationObjects', 'InstallationObjectEdit']}
-            disableWhileProcessing
-            instant
-        >
+        <Form<Omit<Meter, 'id'>> action={id ? update(id) : store()} disableWhileProcessing instant>
             {({ errors, processing, resetAndClearErrors, invalid, validate }) => (
                 <Card className="mx-auto mt-2 w-full max-w-xs">
                     <CardHeader>
-                        <CardTitle>Создать прибор учёта</CardTitle>
+                        <CardTitle>{id ? 'Редактировать' : 'Создать'} прибор учёта</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Field data-invalid={errors.model ? true : false}>
                             <FieldLabel htmlFor="model">Наименование модели</FieldLabel>
                             <InputGroup>
-                                <InputGroupInput type="text" id="model" name="model" onBlur={() => validate('model')} />
+                                <InputGroupInput
+                                    type="text"
+                                    id="model"
+                                    name="model"
+                                    defaultValue={model}
+                                    onBlur={() => validate('model')}
+                                />
                                 <InputGroupAddon align="inline-start">
                                     <ParkingMeter />
                                 </InputGroupAddon>
@@ -40,6 +47,7 @@ export default function FormPartial() {
                                     type="text"
                                     id="serial_number"
                                     name="serial_number"
+                                    defaultValue={serial_number}
                                     onBlur={() => validate('serial_number')}
                                 />
                                 <InputGroupAddon align="inline-start">
@@ -58,7 +66,7 @@ export default function FormPartial() {
                                 ) : (
                                     <SaveIcon data-icon="inline-start" />
                                 )}
-                                {processing ? 'Подождите' : 'Создать'}
+                                {processing ? 'Подождите' : id ? 'Изменить' : 'Создать'}
                             </Button>
                             <Button
                                 type="button"

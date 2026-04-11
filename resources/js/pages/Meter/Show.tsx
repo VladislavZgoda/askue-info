@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { CardSim, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Trash2Icon, Unplug } from 'lucide-react';
 
-import { index } from '@/actions/App/Http/Controllers/MeterController';
+import { edit, index } from '@/actions/App/Http/Controllers/MeterController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -32,7 +32,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="icon">
-                        <Link prefetch instant>
+                        <Link href={edit(id)} prefetch instant>
                             <Pencil />
                         </Link>
                     </Button>

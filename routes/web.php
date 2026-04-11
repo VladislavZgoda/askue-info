@@ -15,7 +15,7 @@ Route::resource('installation-objects', InstallationObjectController::class)
     ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
 
 Route::resource('meters', MeterController::class)
-    ->middlewareFor(['store'], [HandlePrecognitiveRequests::class]);
+    ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
 
 Route::resource('installation-objects.meters', InstallationObjectMeterController::class)
     ->only(['create', 'store', 'destroy']);
