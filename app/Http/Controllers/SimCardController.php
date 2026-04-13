@@ -17,8 +17,7 @@ class SimCardController extends Controller
         $simCards = SimCard::whereLike('number', "%$search%")
             ->orWhereLike('operator', "%$search%")
             ->latest()
-            ->get()
-            ->toResourceCollection();
+            ->get(['id', 'number', 'operator']);
 
         return Inertia('SimCard/Index', [
             'simCards' => $simCards,
