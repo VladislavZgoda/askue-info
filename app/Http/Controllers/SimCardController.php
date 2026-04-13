@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SimCard;
 use Illuminate\Http\Request;
 
 class SimCardController extends Controller
@@ -9,9 +10,20 @@ class SimCardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->query('search');
+
+        $simCards = SimCard::whereLike('number', "%$search%")
+            ->orWhereLike('operator', "%$search%")
+            ->latest()
+            ->get()
+            ->toResourceCollection();
+
+        return Inertia('SimCard/Index', [
+            'simCards' => $simCards,
+            'filter' => $request->only(['search']),
+        ]);
     }
 
     /**
