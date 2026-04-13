@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SimCardResource;
 use App\Models\SimCard;
 use Illuminate\Http\Request;
 
@@ -44,9 +45,11 @@ class SimCardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(SimCard $simCard)
     {
-        //
+        $simCard->loadExists(['meters', 'uspd']);
+
+        return Inertia('SimCard/Show', new SimCardResource($simCard)->resolve());
     }
 
     /**

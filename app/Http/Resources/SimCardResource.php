@@ -19,6 +19,8 @@ class SimCardResource extends JsonResource
             'number' => $this->number,
             'ip' => $this->whenNotNull($this->ip),
             'operator' => $this->operator,
+            'meters' => $this->whenExistsLoaded('meters', MeterResource::collection($this->meters)),
+            'uspd' => $this->whenExistsLoaded('uspd', new UspdResource($this->uspd)),
         ];
     }
 }
