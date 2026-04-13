@@ -72,3 +72,41 @@ describe('SimCardController index action', function () {
         );
     });
 });
+
+describe('SimCardController show action', function () {
+    it('can view the sim card and the meters to which it belongs', function () {
+        $simCard = SimCard::factory()->hasMeters(1)->create();
+
+        $response = $this->get(action([SimCardController::class, 'show'], $simCard));
+
+        $response->assertOk()
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('SimCard/Show')
+                    ->has('id')
+                    ->has('number')
+                    ->has('operator')
+                    ->etc()
+                    ->where('id', $simCard->id)
+                    ->where('number', $simCard->number)
+                    ->where('operator', $simCard->operator)
+                    ->whereType('id', 'integer')
+                    ->whereType('number', 'string')
+                    ->whereType('operator', 'string')
+                    ->has(
+                        'meters',
+                        $simCard->meters_count,
+                        fn (Assert $meter) => $meter
+                            ->has('id')
+                            ->has('model')
+                            ->has('serial_number')
+                            ->where('id', $simCard->meters->first()->id)
+                            ->where('model', $simCard->meters->first()->model)
+                            ->where('serial_number', $simCard->meters->first()->serial_number)
+                            ->whereType('id', 'integer')
+                            ->whereType('model', 'string')
+                            ->whereType('serial_number', 'string')
+                    )
+            );
+    });
+});
