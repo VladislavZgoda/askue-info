@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { ListStart } from 'lucide-react';
 
 import { index } from '@/actions/App/Http/Controllers/MeterController';
+import { index as simCardIndex } from '@/actions/App/Http/Controllers/SimCardController';
 import { Button } from '@/components/ui/button';
 import ViewInstallationObjectsButton from '@/components/ViewInstallationObjectsButton';
 
@@ -16,6 +17,13 @@ export default function Home() {
                 <Link href={index()} prefetch instant>
                     <ListStart data-icon="inline-start" />
                     Просмотр приборов учёта
+                </Link>
+            </Button>
+
+            <Button asChild variant="outline" className="w-full">
+                <Link href={simCardIndex()} prefetch instant>
+                    <ListStart data-icon="inline-start" />
+                    Просмотр сим-карт
                 </Link>
             </Button>
         </div>
