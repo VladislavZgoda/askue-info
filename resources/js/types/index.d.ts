@@ -37,11 +37,16 @@ export interface InstallationObjectShowProps {
     uspds: Uspd[];
 }
 
-export interface SimCards {
+export interface SimCard {
     id: number;
     number: string;
     ip?: string;
     operator: string;
+}
+
+export interface SimCardIndexProps {
+    simCards: Omit<SimCard, 'ip'>[];
+    filter: { search: string | null };
 }
 
 export interface Meter {
@@ -56,7 +61,7 @@ export interface MetersProps {
 }
 
 export type MeterShowProps = Meter & {
-    simCards: SimCards[];
+    simCards: SimCard[];
 };
 
 export interface Uspd {
