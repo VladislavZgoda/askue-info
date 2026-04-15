@@ -49,6 +49,11 @@ export interface SimCardIndexProps {
     filter: { search: string | null };
 }
 
+export type SimCardShowProps = SimCard & {
+    meters: Meter[];
+    uspd: Uspd | null;
+};
+
 export interface Meter {
     id: number;
     model: string;
