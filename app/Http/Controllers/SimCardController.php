@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSimCardRequest;
 use App\Http\Resources\SimCardResource;
 use App\Models\SimCard;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SimCardController extends Controller
 {
@@ -31,15 +34,19 @@ class SimCardController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('SimCard/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSimCardRequest $request): RedirectResponse
     {
-        //
+        $simCard = SimCard::create($request->validated());
+
+        Inertia::flash('message', 'Сим-карта успешно создана.');
+
+        return to_route('sim-cards.show', $simCard);
     }
 
     /**
