@@ -78,8 +78,12 @@ class SimCardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SimCard $simCard): RedirectResponse
     {
-        //
+        $simCard->delete();
+
+        Inertia::flash('message', 'Сим-карта успешно удалена.');
+
+        return to_route('sim-cards.index');
     }
 }
