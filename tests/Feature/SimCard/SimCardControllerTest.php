@@ -73,6 +73,90 @@ describe('SimCardController index action', function () {
     });
 });
 
+describe('SimCardController create action', function () {
+    it('can view the Create page', function () {
+        $response = $this->get(action([SimCardController::class, 'create']));
+
+        $response->assertOk()
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('SimCard/Create')
+            );
+    });
+});
+
+describe('SimCardController store action', function () {
+    it('can store a simCard', function () {
+        $storeUrl = action([SimCardController::class, 'store']);
+
+        $response = $this->post($storeUrl, [
+            'operator' => 'МТС',
+            'number' => '89181111111',
+            'ip' => '192.168.8.1',
+        ]);
+
+        $simCard = SimCard::where('number', '89181111111')->first();
+
+        $response->assertValid(['operator', 'number', 'ip'])
+            ->assertRedirect(action([SimCardController::class, 'show'], $simCard))
+            ->assertInertiaFlash('message', 'Сим-карта успешно создана.');
+    });
+
+    it('requires valid data to store a sim card', function (string $field, mixed $value) {
+        $validData = [
+            'operator' => 'МТС',
+            'number' => '89181111111',
+            'ip' => '192.168.8.1',
+        ];
+
+        $storeUrl = action([SimCardController::class, 'store']);
+        $response = $this->post($storeUrl, [...$validData, $field => $value]);
+
+        $response->assertRedirectBackWithErrors([$field]);
+    })->with([
+        'operator is required' => ['operator', ''],
+        'operator is not in [МТС, Билайн, МегаФон]' => ['operator', 'abc'],
+        'number is required' => ['number', ''],
+        'number is too long' => ['number', '8918111111121'],
+        'number the number must match regex:/^(\+7|8)\d+$/' => ['number', '618111111s'],
+        'ip is not ipv4' => ['ip', '192.168.2.300'],
+    ]);
+
+    it('requires a unique number', function () {
+        $simCard = SimCard::factory()->create();
+        $storeUrl = action([SimCardController::class, 'store']);
+
+        $response = $this->post($storeUrl, [
+            'operator' => 'МТС',
+            'number' => $simCard->number,
+        ]);
+
+        $response->assertRedirectBackWithErrors(['number']);
+    });
+
+    it('requires a unique ip', function () {
+        $simCard = SimCard::factory()->create(['ip' => '192.168.0.100']);
+        $storeUrl = action([SimCardController::class, 'store']);
+
+        $response = $this->post($storeUrl, [
+            'operator' => 'МТС',
+            'number' => '89181111111',
+            'ip' => $simCard->ip,
+        ]);
+
+        $response->assertRedirectBackWithErrors(['ip']);
+    });
+
+    it('accepts null ip', function () {
+        $data = SimCard::factory()->make(['ip' => null])->toArray();
+
+        $response = $this->post(route('sim-cards.store'), $data);
+
+        $response->assertValid()
+            ->assertRedirect();
+    });
+});
+
 describe('SimCardController show action', function () {
     it('can view the sim card and the meters to which it belongs', function () {
         $simCard = SimCard::factory()->hasMeters(1)->create();
@@ -107,6 +191,36 @@ describe('SimCardController show action', function () {
                             ->whereType('model', 'string')
                             ->whereType('serial_number', 'string')
                     )
+            );
+    });
+
+    it('can view the sim card and the uspd to which it belongs', function () {
+        $simCard = SimCard::factory()->forUspd()->create();
+
+        $response = $this->get(action([SimCardController::class, 'show'], $simCard));
+
+        $response->assertOk()
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('SimCard/Show')
+                    ->has('id')
+                    ->has('number')
+                    ->has('operator')
+                    ->etc()
+                    ->where('id', $simCard->id)
+                    ->where('number', $simCard->number)
+                    ->where('operator', $simCard->operator)
+                    ->whereType('id', 'integer')
+                    ->whereType('number', 'string')
+                    ->whereType('operator', 'string')
+                    ->has('uspd')
+                    ->whereType('uspd', 'array')
+                    ->has('uspd.id')
+                    ->has('uspd.model')
+                    ->has('uspd.serial_number')
+                    ->whereType('uspd.id', 'integer')
+                    ->whereType('uspd.model', 'string')
+                    ->whereType('uspd.serial_number', 'integer')
             );
     });
 });
