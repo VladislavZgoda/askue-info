@@ -103,11 +103,7 @@ describe('SimCardController store action', function () {
     });
 
     it('requires valid data to store a sim card', function (string $field, mixed $value) {
-        $validData = [
-            'operator' => 'МТС',
-            'number' => '89181111111',
-            'ip' => '192.168.8.1',
-        ];
+        $validData = SimCard::factory()->raw();
 
         $storeUrl = action([SimCardController::class, 'store']);
         $response = $this->post($storeUrl, [...$validData, $field => $value]);
@@ -222,5 +218,19 @@ describe('SimCardController show action', function () {
                     ->whereType('uspd.model', 'string')
                     ->whereType('uspd.serial_number', 'integer')
             );
+    });
+});
+
+describe('SimCardController destroy action', function () {
+    it('deletes the sim card', function () {
+        $simCard = SimCard::factory()->create();
+        $response = $this->delete(action([SimCardController::class, 'destroy'], $simCard));
+
+        $this->assertDatabaseMissing('meters', [
+            'id' => $simCard->id,
+        ]);
+
+        $response->assertRedirect(action([SimCardController::class, 'index']))
+            ->assertInertiaFlash('message', 'Сим-карта успешно удалена.');
     });
 });
