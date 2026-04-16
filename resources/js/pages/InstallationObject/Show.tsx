@@ -3,6 +3,7 @@ import { Cpu, Eye, Pencil, Plus, Pyramid, Trash2, Trash2Icon, Unplug, Zap } from
 
 import { destroy, edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { create, destroy as disassociateMeter } from '@/actions/App/Http/Controllers/InstallationObjectMeterController';
+import { show as showMeter } from '@/actions/App/Http/Controllers/MeterController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -77,7 +78,7 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                             </ItemContent>
                             <ItemActions>
                                 <Button asChild variant="outline" size="sm">
-                                    <Link>
+                                    <Link href={showMeter(meter.id)} prefetch instant>
                                         <Eye />
                                     </Link>
                                 </Button>
