@@ -1,6 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
-import { Eye, LoaderIcon, ParkingMeter, Search, X } from 'lucide-react';
+import { Eye, LoaderIcon, Search, X, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { create, index, show } from '@/actions/App/Http/Controllers/MeterController';
@@ -57,7 +57,7 @@ export default function Index({ meters, filter }: MetersProps) {
         <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-xs flex-col gap-2 p-2.5">
             <Button asChild variant="outline" className="w-full">
                 <Link href={create()} prefetch instant>
-                    <ParkingMeter data-icon="inline-start" />
+                    <Zap data-icon="inline-start" />
                     Создать прибор учёта
                 </Link>
             </Button>

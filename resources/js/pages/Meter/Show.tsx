@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { CardSim, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Trash2Icon, Unplug } from 'lucide-react';
+import { CardSim, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { edit, index } from '@/actions/App/Http/Controllers/MeterController';
 import { show } from '@/actions/App/Http/Controllers/SimCardController';
@@ -26,7 +26,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
         <div className="mx-auto flex max-w-xs flex-col gap-6 p-2">
             <Item variant="outline">
                 <ItemMedia>
-                    <ParkingMeter />
+                    <Zap />
                 </ItemMedia>
                 <ItemContent>
                     <ItemTitle>{`${model} №${serial_number}`}</ItemTitle>

@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { CardSim, Cpu, Eye, ListStart, ParkingMeter, Pencil, Plus, Trash2, Trash2Icon, Unplug } from 'lucide-react';
+import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { show as showMeter } from '@/actions/App/Http/Controllers/MeterController';
 import { destroy, index } from '@/actions/App/Http/Controllers/SimCardController';
@@ -70,7 +70,7 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                     {meters.map((meter) => (
                         <Item key={meter.id} variant="outline" size="sm">
                             <ItemMedia variant="icon">
-                                <ParkingMeter />
+                                <Zap />
                             </ItemMedia>
                             <ItemContent className="gap-1">
                                 <ItemTitle>{`${meter.model}, №${meter.serial_number}`}</ItemTitle>
