@@ -29,7 +29,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                     <Zap />
                 </ItemMedia>
                 <ItemContent>
-                    <ItemTitle>{`${model} №${serial_number}`}</ItemTitle>
+                    <ItemTitle>{`${model}, №${serial_number}`}</ItemTitle>
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="icon">

@@ -9,7 +9,7 @@ it('renders the page with :dataset', function (Meter $meter) {
     $page = visit($url)->on()->mobile();
 
     $page->assertUrlIs($url)
-        ->assertSee("$meter->model №$meter->serial_number")
+        ->assertSee("$meter->model, №$meter->serial_number")
         ->assertSeeLink('Просмотр приборов учёта')
         ->assertSeeLink('Добавить сим-карту')
         ->assertNoJavaScriptErrors();

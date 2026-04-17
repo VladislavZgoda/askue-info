@@ -31,7 +31,7 @@ it('redirects to the Show page after successfully submitting the form', function
         ->pressAndWaitFor('Создать', 2)
         ->assertUrlIs(route('meters.show', 1))
         ->assertSee('Прибор учёта успешно создан.')
-        ->assertSee('Меркурий 234 №111111111')
+        ->assertSee('Меркурий 234, №111111111')
         ->assertNoJavaScriptErrors();
 });
 
