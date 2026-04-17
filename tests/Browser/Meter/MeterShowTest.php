@@ -28,6 +28,21 @@ it('renders the page with :dataset', function (Meter $meter) {
     'zero sim cards' => fn () => Meter::factory()->create(),
 ]);
 
+it('navigates to the sim-cards.show page', function () {
+    $meter = Meter::factory()->hasSimCards()->create();
+    $simCard = $meter->simCards()->first();
+
+    $page = visit(route('meters.show', $meter))
+        ->on()
+        ->mobile();
+
+    $page->click("a[href=\"/sim-cards/$simCard->id\"]")
+        ->assertUrlIs(route('sim-cards.show', $simCard))
+        ->assertSee($simCard->operator)
+        ->assertSee($simCard->number)
+        ->assertNoJavaScriptErrors();
+});
+
 it('navigates from the Show page to the Index page using the link "Просмотр приборов учёта"', function () {
     $meter = Meter::factory()->create();
 
