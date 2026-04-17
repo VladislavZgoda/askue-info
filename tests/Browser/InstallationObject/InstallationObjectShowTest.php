@@ -44,7 +44,8 @@ it('navigates from the Show page to the Edit using the link :dataset', function 
         ->assertSee('Наименование')
         ->assertSee('Адрес')
         ->assertValue('input[name=name]', $installationObject->name)
-        ->assertValue('input[name=address]', $installationObject->address);
+        ->assertValue('input[name=address]', $installationObject->address)
+        ->assertNoJavaScriptErrors();
 })->with([
     'ТП-1' => fn () => InstallationObject::factory()->create(['name' => 'ТП-1']),
     'ТП-2' => fn () => InstallationObject::factory()->create(['id' => 10, 'name' => 'ТП-2']),
@@ -60,7 +61,26 @@ it('navigates from the Show page to the Index page using the link "Список 
     $page->click('Список объектов установки')
         ->assertUrlIs(route('installation-objects.index'))
         ->assertSee($installationObject->name)
-        ->assertSee($installationObject->address);
+        ->assertSee($installationObject->address)
+        ->assertNoJavaScriptErrors();
+});
+
+it('navigates to the meters.show page', function () {
+    $installationObject = InstallationObject::factory()
+        ->hasMeters()
+        ->create();
+
+    $meter = $installationObject->meters()->first();
+
+    $page = visit(route('installation-objects.show', [$installationObject]))
+        ->on()
+        ->mobile();
+
+    $page->click("a[href=\"/meters/$meter->id\"]")
+        ->assertUrlIs(route('meters.show', $meter))
+        ->assertSee($meter->model)
+        ->assertSee($meter->serial_number)
+        ->assertNoJavaScriptErrors();
 });
 
 it('can delete :dataset', function (InstallationObject $installationObject) {
@@ -76,7 +96,8 @@ it('can delete :dataset', function (InstallationObject $installationObject) {
         ->assertSeeLink('Удалить')
         ->click('Удалить')
         ->assertUrlIs(route('installation-objects.index'))
-        ->assertSee('Объект установки успешно удалён.');
+        ->assertSee('Объект установки успешно удалён.')
+        ->assertNoJavaScriptErrors();
 
     $this->assertDatabaseMissing('installation_objects', [
         'id' => $installationObject->id,
@@ -101,7 +122,8 @@ it('can disassociate the meter', function () {
         ->assertSeeLink('Отсоединить')
         ->click('Отсоединить')
         ->assertUrlIs($url)
-        ->assertSee('Прибор учёта успешно отсоединился.');
+        ->assertSee('Прибор учёта успешно отсоединился.')
+        ->assertNoJavaScriptErrors();
 
     expect($meter->fresh()->installation_object_id)->toBeNull();
 });
