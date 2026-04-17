@@ -36,6 +36,21 @@ it('renders the page with :dataset', function (SimCard $simCard) {
     'associated uspd' => fn () => SimCard::factory()->forUspd()->create(),
 ]);
 
+it('navigates to the meters.show page', function () {
+    $simCard = SimCard::factory()->hasMeters()->create();
+    $meter = $simCard->meters()->first();
+
+    $page = visit(route('sim-cards.show', $simCard))
+        ->on()
+        ->mobile();
+
+    $page->click("a[href=\"/meters/$meter->id\"]")
+        ->assertUrlIs(route('meters.show', $meter))
+        ->assertSee($meter->model)
+        ->assertSee($meter->serial_number)
+        ->assertNoJavaScriptErrors();
+});
+
 it('navigates from the Show page to the Index page using the link "Просмотр сим-карт"', function () {
     $simCard = SimCard::factory()->create();
 
