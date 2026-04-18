@@ -24,12 +24,12 @@ class StoreSimCardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => ['required', 'max:12', 'unique:sim_cards', 'regex:/^(\+7|8)\d+$/'],
+            'number' => ['required', 'regex:/^(\+7|8)\d{10}$/', 'max:12', 'unique:sim_cards'],
             'operator' => [
                 'required',
                 Rule::in(['МТС', 'Билайн', 'МегаФон']),
             ],
-            'ip' => ['unique:sim_cards', 'nullable', 'ipv4'],
+            'ip' => ['nullable', 'ipv4', 'unique:sim_cards'],
         ];
     }
 }
