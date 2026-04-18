@@ -78,7 +78,7 @@ return [
     'in_array_keys' => 'The :attribute field must contain at least one of the following keys: :values.',
     'integer' => 'The :attribute field must be an integer.',
     'ip' => 'The :attribute field must be a valid IP address.',
-    'ipv4' => 'The :attribute field must be a valid IPv4 address.',
+    'ipv4' => 'В поле :attribute должен быть указан действительный IPv4-адрес.',
     'ipv6' => 'The :attribute field must be a valid IPv6 address.',
     'json' => 'The :attribute field must be a valid JSON string.',
     'list' => 'The :attribute field must be a list.',
@@ -200,6 +200,8 @@ return [
         'address' => 'адрес',
         'model' => 'модель',
         'serial_number' => 'серийный номер',
+        'operator' => 'оператор',
+        'number' => 'номер',
     ],
 
 ];
