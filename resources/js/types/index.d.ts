@@ -41,7 +41,7 @@ export interface SimCard {
     id: number;
     number: string;
     ip?: string;
-    operator: string;
+    operator: 'МТС' | 'Билайн' | 'МегаФон';
 }
 
 export interface SimCardIndexProps {
