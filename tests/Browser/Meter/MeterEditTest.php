@@ -29,7 +29,6 @@ it('renders the page with data', function () {
 
 it('displays validation errors', function () {
     $otherMeter = Meter::factory()->create();
-
     $editUrlMeter = route('meters.edit', $this->meter);
 
     visit($editUrlMeter)
@@ -45,12 +44,13 @@ it('displays validation errors', function () {
         ->type('serial_number', $otherMeter->serial_number)
         ->pressAndWaitFor('Изменить', 2)
         ->assertSee('Серийный номер уже используется.')
+        ->pressAndWaitFor('Очистить', 1)
         ->type('model', Str::random(256))
         ->type('serial_number', Str::repeat('1', 256))
         ->pressAndWaitFor('Изменить', 2)
         ->assertSee('Поле "Модель" не должно превышать значение 255 символов.')
         ->assertSee('Поле "Серийный номер" не должно превышать значение 255 символов.')
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->type('model', $this->meter->model)
         ->type('serial_number', '123f456')
         ->pressAndWaitFor('Изменить', 2)

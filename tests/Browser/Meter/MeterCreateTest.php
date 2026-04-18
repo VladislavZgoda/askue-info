@@ -55,7 +55,6 @@ it('can reset the form', function () {
 
 it('displays validation errors', function () {
     $meter = Meter::factory()->create();
-
     $createUrl = route('meters.create');
 
     visit($createUrl)
@@ -69,12 +68,13 @@ it('displays validation errors', function () {
         ->type('serial_number', $meter->serial_number)
         ->pressAndWaitFor('Создать', 2)
         ->assertSee('Серийный номер уже используется.')
+        ->pressAndWaitFor('Очистить', 1)
         ->type('model', Str::random(256))
         ->type('serial_number', Str::repeat('1', 256))
         ->pressAndWaitFor('Создать', 2)
         ->assertSee('Поле "Модель" не должно превышать значение 255 символов.')
         ->assertSee('Поле "Серийный номер" не должно превышать значение 255 символов.')
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->type('serial_number', Str::random())
         ->pressAndWaitFor('Создать', 2)
         ->assertSee('Формат поля серийный номер недопустим.')

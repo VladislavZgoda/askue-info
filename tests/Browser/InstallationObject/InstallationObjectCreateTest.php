@@ -24,7 +24,6 @@ it('renders the page', function () {
 
 it('displays validation errors', function () {
     $installationObject = InstallationObject::factory()->create();
-
     $createUrl = route('installation-objects.create');
 
     visit($createUrl)
@@ -38,6 +37,7 @@ it('displays validation errors', function () {
         ->type('address', $installationObject->address)
         ->pressAndWaitFor('Создать', 2)
         ->assertSee('Наименование уже используется.')
+        ->pressAndWaitFor('Сбросить', 1)
         ->type('name', Str::random(256))
         ->type('address', Str::random(256))
         ->pressAndWaitFor('Создать', 2)

@@ -44,6 +44,7 @@ it('displays validation errors', function () {
         ->type('address', $installationObject1->address)
         ->pressAndWaitFor('Изменить', 2)
         ->assertSee('Наименование уже используется.')
+        ->pressAndWaitFor('Сбросить', 1)
         ->type('name', Str::random(256))
         ->type('address', Str::random(256))
         ->pressAndWaitFor('Изменить', 2)
