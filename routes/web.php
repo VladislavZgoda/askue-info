@@ -3,6 +3,7 @@
 use App\Http\Controllers\InstallationObjectController;
 use App\Http\Controllers\InstallationObjectMeterController;
 use App\Http\Controllers\MeterController;
+use App\Http\Controllers\MeterSimCardController;
 use App\Http\Controllers\SimCardController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
@@ -23,3 +24,6 @@ Route::resource('installation-objects.meters', InstallationObjectMeterController
 
 Route::resource('sim-cards', SimCardController::class)
     ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
+
+Route::resource('meters.sim-cards', MeterSimCardController::class)
+    ->only(['create', 'store', 'destroy']);
