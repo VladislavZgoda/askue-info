@@ -16,7 +16,7 @@ it('renders the page', function () {
         ->assertValue('input[name=name]', '')
         ->assertValue('input[name=address]', '')
         ->assertButtonEnabled('Создать')
-        ->assertButtonEnabled('Сбросить')
+        ->assertButtonEnabled('Очистить')
         ->assertButtonEnabled('Назад')
         ->assertSee('Выберете уникальное наименование.')
         ->assertNoJavaScriptErrors();
@@ -37,7 +37,7 @@ it('displays validation errors', function () {
         ->type('address', $installationObject->address)
         ->pressAndWaitFor('Создать', 2)
         ->assertSee('Наименование уже используется.')
-        ->pressAndWaitFor('Сбросить', 1)
+        ->pressAndWaitFor('Очистить', 1)
         ->type('name', Str::random(256))
         ->type('address', Str::random(256))
         ->pressAndWaitFor('Создать', 2)
@@ -73,7 +73,7 @@ it('can reset the form', function () {
         ->type('address', $address)
         ->assertValue('input[name=name]', $name)
         ->assertValue('input[name=address]', $address)
-        ->pressAndWaitFor('Сбросить', 2)
+        ->pressAndWaitFor('Очистить', 2)
         ->assertValue('input[name=name]', '')
         ->assertValue('input[name=address]', '')
         ->assertNoJavaScriptErrors();

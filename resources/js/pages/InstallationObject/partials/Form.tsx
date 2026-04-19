@@ -79,7 +79,7 @@ export default function FormPartial() {
                                 onClick={() => resetAndClearErrors()}
                                 disabled={processing}
                             >
-                                <RotateCcwIcon data-icon="inline-start" /> Сбросить
+                                <RotateCcwIcon data-icon="inline-start" /> Очистить
                             </Button>
                         </Field>
                     </CardFooter>
