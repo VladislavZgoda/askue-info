@@ -79,3 +79,8 @@ export interface InstallationObjectMetersProps {
     installationObject: InstallationObject;
     unassignedMeters: Meter[];
 }
+
+export interface MeterSimCardsProps {
+    meter: Meter;
+    simCards: Omit<SimCard, 'ip'>[];
+}

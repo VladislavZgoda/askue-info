@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { CardSim, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { edit, index } from '@/actions/App/Http/Controllers/MeterController';
+import { create } from '@/actions/App/Http/Controllers/MeterSimCardController';
 import { show } from '@/actions/App/Http/Controllers/SimCardController';
 import {
     AlertDialog,
@@ -100,7 +101,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                     </Link>
                 </Button>
                 <Button asChild size="sm" variant="outline">
-                    <Link>
+                    <Link href={create(id)} prefetch instant>
                         <Plus />
                         Добавить сим-карту
                     </Link>
