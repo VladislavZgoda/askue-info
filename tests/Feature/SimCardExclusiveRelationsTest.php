@@ -16,7 +16,7 @@ it('checks that sim card with meter cannot be assigned to uspd', function () {
         ->create();
 
     expect(fn () => $simCard->uspd()->associate($uspd)->save())
-        ->toThrow(Exception::class, 'SimCard не может одновременно принадлежать Meter и Uspd');
+        ->toThrow(Exception::class, 'Сим-карта не может одновременно принадлежать прибору учёта и УСПД.');
 
     // Проверяем, что uspd_id не изменился.
     expect($simCard->fresh()->uspd_id)->toBeNull();
