@@ -15,7 +15,7 @@ class MeterSimCard extends Pivot
             $newMeter = Meter::find($pivot->meter_id);
 
             if ($simCard && ! is_null($simCard->uspd_id)) {
-                throw new \Exception('Нельзя привязать SimCard к Meter, так как она уже принадлежит Uspd');
+                throw new \Exception('Нельзя привязать сим-карту к прибору учёта, так как она уже связана с УСПД.');
             }
 
             $existingMeters = $simCard->meters;
@@ -24,11 +24,11 @@ class MeterSimCard extends Pivot
             $installationObjectIds = $allMeters->pluck('installation_object_id')->unique();
 
             if ($installationObjectIds->count() > 1) {
-                throw new \Exception('SimCard может быть привязана только к Meter, принадлежащим одному InstallationObject');
+                throw new \Exception('Сим-карта может быть привязана только к приборам учёта, установленным на одном и том же объекте.');
             }
 
             if ($installationObjectIds->contains(null)) {
-                throw new \Exception('Все Meter должны иметь InstallationObject');
+                throw new \Exception('Прибор учёта должен иметь объект установки.');
             }
         });
     }
