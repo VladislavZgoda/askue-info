@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { CardSim, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
-import { edit, index } from '@/actions/App/Http/Controllers/MeterController';
+import { destroy, edit, index } from '@/actions/App/Http/Controllers/MeterController';
 import { create } from '@/actions/App/Http/Controllers/MeterSimCardController';
 import { show } from '@/actions/App/Http/Controllers/SimCardController';
 import {
@@ -19,7 +19,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
-import { destroy } from '@/routes/meters';
 import type { MeterShowProps } from '@/types';
 
 export default function Show({ id, model, serial_number, simCards }: MeterShowProps) {
