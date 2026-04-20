@@ -61,10 +61,13 @@ class MeterSimCardController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Detach a SimCard from a Meter.
      */
-    public function destroy(string $id)
+    public function destroy(Meter $meter, SimCard $simCard): RedirectResponse
     {
-        //
+        $meter->simCards()->detach($simCard->id);
+
+        return Inertia::flash('message', 'Сим-карта успешно отвязана от прибора учёта.')
+            ->back();
     }
 }

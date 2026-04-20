@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { CardSim, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { destroy, edit, index } from '@/actions/App/Http/Controllers/MeterController';
-import { create } from '@/actions/App/Http/Controllers/MeterSimCardController';
+import { create, destroy as detachSimCard } from '@/actions/App/Http/Controllers/MeterSimCardController';
 import { show } from '@/actions/App/Http/Controllers/SimCardController';
 import {
     AlertDialog,
@@ -81,11 +81,32 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                                         <Eye />
                                     </Link>
                                 </Button>
-                                <Button asChild variant="destructive" size="icon">
-                                    <Link prefetch instant>
-                                        <Unplug />
-                                    </Link>
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button name="detachSimCard" variant="destructive" size="icon">
+                                            <Unplug />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent size="sm">
+                                        <AlertDialogHeader>
+                                            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                                                <Trash2Icon />
+                                            </AlertDialogMedia>
+                                            <AlertDialogTitle>Отвязать сим-карту?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                Это отвяжет прибор учёта от сим-карты.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
+                                            <AlertDialogAction variant="destructive" asChild>
+                                                <Link href={detachSimCard({ meter: id, sim_card: simCard.id })}>
+                                                    Отвязать
+                                                </Link>
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </ItemActions>
                         </Item>
                     ))}
