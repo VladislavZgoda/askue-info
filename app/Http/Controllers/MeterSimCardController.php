@@ -18,11 +18,11 @@ class MeterSimCardController extends Controller
      */
     public function create(Meter $meter)
     {
-        $simCards = SimCard::whereNull('uspd_id')
+        $simCards = SimCard::doesntHave('uspd')
             ->where(function (Builder $query) use ($meter) {
                 $query->whereDoesntHave('meters')
                     ->orWhereHas('meters', function (Builder $q) use ($meter) {
-                        $q->where('installation_object_id', $meter->installation_object_id);
+                        $q->whereBelongsTo($meter->installationObject);
                     });
             })
             ->whereDoesntHave('meters', function (Builder $query) use ($meter) {

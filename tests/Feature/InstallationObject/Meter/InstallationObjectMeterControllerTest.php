@@ -11,7 +11,8 @@ describe('InstallationObjectMeterController create action', function () {
 
         $unassignedMeters = Meter::factory()
             ->count(3)
-            ->create(['installation_object_id' => null]);
+            ->withoutInstallationObject()
+            ->create();
 
         $response = $this->get(action([InstallationObjectMeterController::class, 'create'], $installationObject));
 
@@ -31,9 +32,11 @@ describe('InstallationObjectMeterController create action', function () {
 
     it('only includes meters without an installation object', function () {
         $installationObject = InstallationObject::factory()->create();
-        $unassignedMeter = Meter::factory()->create(['installation_object_id' => null]);
+        Meter::factory()->for($installationObject)->create();
 
-        Meter::factory()->create(['installation_object_id' => $installationObject->id]);
+        $unassignedMeter = Meter::factory()
+            ->withoutInstallationObject()
+            ->create();
 
         $response = $this->get(action([InstallationObjectMeterController::class, 'create'], $installationObject));
 
@@ -49,7 +52,10 @@ describe('InstallationObjectMeterController create action', function () {
 describe('InstallationObjectMeterController store action', function () {
     it('associates the meter with the installation object and redirects', function () {
         $installationObject = InstallationObject::factory()->create();
-        $meter = Meter::factory()->create(['installation_object_id' => null]);
+
+        $meter = Meter::factory()
+            ->withoutInstallationObject()
+            ->create();
 
         $response = $this->post(
             action([InstallationObjectMeterController::class, 'store'], $installationObject),
@@ -64,8 +70,9 @@ describe('InstallationObjectMeterController store action', function () {
 
     it('requires valid data to associate the meter with the installation object', function (string $field, mixed $value) {
         $installationObject = InstallationObject::factory()->create();
+        $action = action([InstallationObjectMeterController::class, 'store'], $installationObject);
 
-        $this->post(route('installation-objects.meters.store', $installationObject), [])
+        $this->post($action, [$field => $value])
             ->assertRedirectBackWithErrors([$field]);
     })->with([
         'meter_id is required' => ['meter_id', ''],
@@ -75,7 +82,7 @@ describe('InstallationObjectMeterController store action', function () {
 describe('InstallationObjectMeterController destroy action', function () {
     it('disassociates the meter from its installation object and redirects back', function () {
         $installationObject = InstallationObject::factory()->create();
-        $meter = Meter::factory()->create(['installation_object_id' => $installationObject->id]);
+        $meter = Meter::factory()->for($installationObject)->create();
 
         $this->from(route('installation-objects.show', $installationObject))
             ->delete(route('installation-objects.meters.destroy', [$installationObject, $meter]))
