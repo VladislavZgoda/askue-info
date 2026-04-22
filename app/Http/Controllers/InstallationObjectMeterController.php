@@ -16,7 +16,7 @@ class InstallationObjectMeterController extends Controller
      */
     public function create(InstallationObject $installationObject)
     {
-        $unassignedMeters = Meter::whereNull('installation_object_id')
+        $unassignedMeters = Meter::doesntHave('installationObject')
             ->get()
             ->toResourceCollection();
 
