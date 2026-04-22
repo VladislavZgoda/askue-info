@@ -4,10 +4,7 @@ use App\Models\InstallationObject;
 use App\Models\Meter;
 
 it('renders form with installation object details', function () {
-    $installationObject = InstallationObject::factory()->create([
-        'name' => 'ТП-1',
-        'address' => 'ул. Ленина, 1',
-    ]);
+    $installationObject = InstallationObject::factory()->create();
 
     $url = route('installation-objects.meters.create', $installationObject);
     $page = $this->visit($url)->on()->mobile();
@@ -24,8 +21,11 @@ it('renders form with installation object details', function () {
 
 it('lists only unassigned meters in the select', function () {
     $installationObject = InstallationObject::factory()->create();
-    $assignedMeter = Meter::factory()->create(['installation_object_id' => $installationObject->id]);
-    $unassignedMeter = Meter::factory()->create(['installation_object_id' => null]);
+    $assignedMeter = Meter::factory()->for($installationObject)->create();
+
+    $unassignedMeter = Meter::factory()
+        ->withoutInstallationObject()
+        ->create();
 
     $url = route('installation-objects.meters.create', $installationObject);
     $page = $this->visit($url)->on()->mobile();
@@ -39,11 +39,9 @@ it('lists only unassigned meters in the select', function () {
 it('submits the form with a selected meter, associates it and redirects', function () {
     $installationObject = InstallationObject::factory()->create();
 
-    $meter = Meter::factory()->create([
-        'installation_object_id' => null,
-        'model' => 'CE303',
-        'serial_number' => '123456789',
-    ]);
+    $meter = Meter::factory()
+        ->withoutInstallationObject()
+        ->create();
 
     $url = route('installation-objects.meters.create', $installationObject);
     $page = $this->visit($url)->on()->mobile();
@@ -59,8 +57,8 @@ it('submits the form with a selected meter, associates it and redirects', functi
 });
 
 it('shows a validation error when submitting the form without selecting a meter', function () {
+    Meter::factory()->withoutInstallationObject()->create();
     $installationObject = InstallationObject::factory()->create();
-    Meter::factory()->create(['installation_object_id' => null]);
 
     $url = route('installation-objects.meters.create', $installationObject);
     $page = $this->visit($url)->on()->mobile();
@@ -74,11 +72,9 @@ it('shows a validation error when submitting the form without selecting a meter'
 it('resets the select back to placeholder', function () {
     $installationObject = InstallationObject::factory()->create();
 
-    $meter = Meter::factory()->create([
-        'installation_object_id' => null,
-        'model' => 'Меркурий',
-        'serial_number' => 'SN-999',
-    ]);
+    $meter = Meter::factory()
+        ->withoutInstallationObject()
+        ->create();
 
     $url = route('installation-objects.meters.create', $installationObject);
     $page = $this->visit($url)->on()->mobile();
