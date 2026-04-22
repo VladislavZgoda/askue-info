@@ -22,7 +22,7 @@ class MeterSimCardController extends Controller
             ->where(function (Builder $query) use ($meter) {
                 $query->whereDoesntHave('meters')
                     ->orWhereHas('meters', function (Builder $q) use ($meter) {
-                        $q->whereBelongsTo($meter->installationObject);
+                        $q->where('installation_object_id', $meter->installation_object_id);
                     });
             })
             ->whereDoesntHave('meters', function (Builder $query) use ($meter) {
