@@ -234,3 +234,110 @@ describe('SimCardController destroy action', function () {
             ->assertInertiaFlash('message', 'Сим-карта успешно удалена.');
     });
 });
+
+describe('SimCardController edit action', function () {
+    it('can view the edit page with sim card data', function () {
+        $simCard = SimCard::factory()->create(['ip' => '192.168.1.1']);
+        $response = $this->get(action([SimCardController::class, 'edit'], $simCard));
+
+        $response->assertOk()
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('SimCard/Edit')
+                    ->has('simCard')
+                    ->where('simCard.id', $simCard->id)
+                    ->where('simCard.operator', $simCard->operator)
+                    ->where('simCard.number', $simCard->number)
+                    ->where('simCard.ip', $simCard->ip)
+                    ->whereType('simCard.id', 'integer')
+                    ->whereType('simCard.operator', 'string')
+                    ->whereType('simCard.number', 'string')
+                    ->whereType('simCard.ip', 'string')
+            );
+    });
+});
+
+describe('SimCardController update action', function () {
+    beforeEach(function () {
+        $this->simCard = SimCard::factory()->create([
+            'operator' => 'Билайн',
+            'ip' => '192.168.1.1',
+        ]);
+    });
+
+    it('updates a sim card with valid data and redirects', function () {
+        $updateUrl = action([SimCardController::class, 'update'], $this->simCard);
+
+        $response = $this->put($updateUrl, [
+            'operator' => 'МТС',
+            'number' => '89181112233',
+            'ip' => '192.168.1.10',
+        ]);
+
+        $response->assertValid(['operator', 'number', 'ip'])
+            ->assertRedirect(action([SimCardController::class, 'show'], $this->simCard))
+            ->assertInertiaFlash('message', 'Сим-карта успешно обновлена.');
+
+        expect($this->simCard->fresh())
+            ->operator->toBe('МТС')
+            ->number->toBe('89181112233')
+            ->ip->toBe('192.168.1.10');
+    });
+
+    it('allows updating a sim card with its own operator and number', function () {
+        $updateUrl = action([SimCardController::class, 'update'], $this->simCard);
+
+        $this->put($updateUrl, [
+            'operator' => 'МТС',
+            'number' => $this->simCard->number,
+            'ip' => $this->simCard->ip,
+        ]);
+
+        expect($this->simCard->fresh())->operator->toBe('МТС');
+    });
+
+    it('requires valid data to update a sim card', function (string $field, mixed $value) {
+        $updateUrl = action([SimCardController::class, 'update'], $this->simCard);
+
+        $validData = [
+            'operator' => 'МТС',
+            'number' => '89181112233',
+            'ip' => '192.168.1.2',
+        ];
+
+        $response = $this->put($updateUrl, [...$validData, $field => $value]);
+
+        $response->assertRedirectBackWithErrors($field);
+    })->with([
+        'operator is required' => ['operator', ''],
+        'operator is not in [МТС, Билайн, МегаФон]' => ['operator', 'abc'],
+        'number is required' => ['number', ''],
+        'number is too long' => ['number', '8918111222333'],
+        'number format is incorrect' => ['number', '39181112233'],
+        'ip format is incorrect' => ['ip', '192.168.1.300'],
+    ]);
+
+    it('fails validation when number is already taken by another sim card', function () {
+        $simCard2 = SimCard::factory()->create();
+        $updateUrl = action([SimCardController::class, 'update'], $this->simCard);
+
+        $response = $this->put($updateUrl, [
+            'operator' => 'МТС',
+            'number' => $simCard2->number,
+        ]);
+
+        $response->assertRedirectBackWithErrors('number');
+    });
+
+    it('fails validation when ip is already taken by another sim card', function () {
+        $simCard2 = SimCard::factory()->create(['ip' => '192.168.0.1']);
+        $updateUrl = action([SimCardController::class, 'update'], $this->simCard);
+
+        $response = $this->put($updateUrl, [
+            'operator' => 'МТС',
+            'ip' => $simCard2->ip,
+        ]);
+
+        $response->assertRedirectBackWithErrors('ip');
+    });
+});
