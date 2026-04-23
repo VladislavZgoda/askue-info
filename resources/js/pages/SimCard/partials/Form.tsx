@@ -1,7 +1,7 @@
-import { Form } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
 import { DecimalsArrowRight, Phone, RotateCcwIcon, SaveIcon } from 'lucide-react';
 
-import { store } from '@/actions/App/Http/Controllers/SimCardController';
+import { store, update } from '@/actions/App/Http/Controllers/SimCardController';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
@@ -11,12 +11,16 @@ import { Spinner } from '@/components/ui/spinner';
 import type { SimCard } from '@/types';
 
 export default function FormPartial() {
+    const page = usePage<{ simCard?: SimCard }>();
+
+    const { id, operator, number, ip } = page.props.simCard ?? {};
+
     return (
-        <Form<Omit<SimCard, 'id'>> action={store()} disableWhileProcessing instant>
+        <Form<Omit<SimCard, 'id'>> action={id ? update(id) : store()} disableWhileProcessing instant>
             {({ errors, processing, resetAndClearErrors, invalid, validate }) => (
                 <Card className="mx-auto mt-2 w-full max-w-xs">
                     <CardHeader>
-                        <CardTitle>Добавить сим-карту</CardTitle>
+                        <CardTitle>{id ? 'Редактировать' : 'Добавить'} сим-карту</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Field data-invalid={errors.operator ? true : false}>
@@ -24,7 +28,7 @@ export default function FormPartial() {
                             <NativeSelect
                                 id="operator"
                                 name="operator"
-                                defaultValue=""
+                                defaultValue={operator ?? ''}
                                 aria-invalid={errors.operator ? true : false}
                                 onBlur={() => validate('operator')}
                             >
@@ -44,6 +48,7 @@ export default function FormPartial() {
                                     type="text"
                                     id="number"
                                     name="number"
+                                    defaultValue={number}
                                     onBlur={() => validate('number')}
                                 />
                                 <InputGroupAddon align="inline-start">
@@ -55,7 +60,13 @@ export default function FormPartial() {
                         <Field data-invalid={errors.ip ? true : false} className="mt-2">
                             <FieldLabel htmlFor="ip">IP адрес</FieldLabel>
                             <InputGroup>
-                                <InputGroupInput type="text" id="ip" name="ip" onBlur={() => validate('ip')} />
+                                <InputGroupInput
+                                    type="text"
+                                    id="ip"
+                                    name="ip"
+                                    defaultValue={ip}
+                                    onBlur={() => validate('ip')}
+                                />
                                 <InputGroupAddon align="inline-start">
                                     <DecimalsArrowRight />
                                 </InputGroupAddon>
@@ -71,7 +82,7 @@ export default function FormPartial() {
                                 ) : (
                                     <SaveIcon data-icon="inline-start" />
                                 )}
-                                {processing ? 'Подождите' : 'Создать'}
+                                {processing ? 'Подождите' : id ? 'Изменить' : 'Добавить'}
                             </Button>
                             <Button
                                 type="button"
