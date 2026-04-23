@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { show as showMeter } from '@/actions/App/Http/Controllers/MeterController';
-import { destroy, index } from '@/actions/App/Http/Controllers/SimCardController';
+import { destroy, edit, index } from '@/actions/App/Http/Controllers/SimCardController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -33,7 +33,7 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="icon">
-                        <Link prefetch instant>
+                        <Link href={edit(id)} prefetch instant>
                             <Pencil />
                         </Link>
                     </Button>

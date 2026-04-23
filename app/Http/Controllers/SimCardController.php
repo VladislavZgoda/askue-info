@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSimCardRequest;
+use App\Http\Requests\UpdateSimCardRequest;
 use App\Http\Resources\SimCardResource;
 use App\Models\SimCard;
 use Illuminate\Http\RedirectResponse;
@@ -62,17 +63,23 @@ class SimCardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SimCard $simCard)
     {
-        //
+        return inertia('SimCard/Edit', [
+            'simCard' => new SimCardResource($simCard),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSimCardRequest $request, SimCard $simCard): RedirectResponse
     {
-        //
+        $simCard->update($request->validated());
+
+        Inertia::flash('message', 'Сим-карта успешно обновлена.');
+
+        return to_route('sim-cards.show', $simCard);
     }
 
     /**
