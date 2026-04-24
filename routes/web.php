@@ -5,6 +5,7 @@ use App\Http\Controllers\InstallationObjectMeterController;
 use App\Http\Controllers\MeterController;
 use App\Http\Controllers\MeterSimCardController;
 use App\Http\Controllers\SimCardController;
+use App\Http\Controllers\UspdController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,3 +28,6 @@ Route::resource('sim-cards', SimCardController::class)
 
 Route::resource('meters.sim-cards', MeterSimCardController::class)
     ->only(['create', 'store', 'destroy']);
+
+Route::resource('uspds', UspdController::class)
+    ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
