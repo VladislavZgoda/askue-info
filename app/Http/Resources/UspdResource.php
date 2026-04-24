@@ -18,6 +18,7 @@ class UspdResource extends JsonResource
             'id' => $this->id,
             'model' => $this->model,
             'serial_number' => $this->serial_number,
+            'lan_ip' => $this->lan_ip,
         ];
     }
 }
