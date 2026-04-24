@@ -73,6 +73,7 @@ export interface Uspd {
     id: number;
     model: string;
     serial_number: number;
+    lan_ip: string;
 }
 
 export interface InstallationObjectMetersProps {
