@@ -3,7 +3,10 @@
 use App\Models\SimCard;
 
 beforeEach(function () {
-    $this->simCard = SimCard::factory()->create(['ip' => '192.168.1.1']);
+    $this->simCard = SimCard::factory()->create([
+        'operator' => 'МТС',
+        'ip' => '192.168.1.1',
+    ]);
 });
 
 it('renders the page with data', function () {
@@ -64,5 +67,42 @@ it('redirects to the Show page after successfully submitting the form', function
         ->assertUrlIs(route('sim-cards.show', $this->simCard))
         ->assertSee('Сим-карта успешно обновлена.')
         ->assertSee('192.168.2.2')
+        ->assertNoJavaScriptErrors();
+});
+
+it('can reset the form', function () {
+    $editUrl = route('sim-cards.edit', $this->simCard);
+    $page = visit($editUrl)->on()->mobile();
+
+    $page->assertUrlIs($editUrl)
+        ->select('operator', 'Билайн')
+        ->clear('number')
+        ->type('number', '89181112233')
+        ->clear('ip')
+        ->type('ip', '192.168.3.3')
+        ->assertSelected('operator', 'Билайн')
+        ->assertValue('input[name=number]', '89181112233')
+        ->assertValue('input[name=ip]', '192.168.3.3')
+        ->pressAndWaitFor('Очистить', 2)
+        ->assertSelected('operator', $this->simCard->operator)
+        ->assertValue('input[name=number]', $this->simCard->number)
+        ->assertValue('input[name=ip]', $this->simCard->ip)
+        ->assertNoJavaScriptErrors();
+});
+
+it('navigates back in the browser history after clicking on "Назад"', function () {
+    $showUrl = route('sim-cards.show', $this->simCard);
+    $page = visit($showUrl)->on()->mobile();
+
+    $simCardId = $this->simCard->id;
+
+    $page->assertUrlIs($showUrl)
+        ->assertSee($this->simCard->number)
+        ->click("a[href=\"/sim-cards/$simCardId/edit\"]")
+        ->assertUrlIs(route('sim-cards.edit', $this->simCard))
+        ->assertSee('Редактировать сим-карту')
+        ->pressAndWaitFor('Назад', 2)
+        ->assertUrlIs($showUrl)
+        ->assertSee($this->simCard->number)
         ->assertNoJavaScriptErrors();
 });
