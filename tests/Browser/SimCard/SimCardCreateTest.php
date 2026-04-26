@@ -8,7 +8,7 @@ it('renders the page', function () {
 
     $page->assertUrlIs($createUrl)
         ->assertSourceHas('<form action="/sim-cards" method="post">')
-        ->assertSee('Добавить сим-карту')
+        ->assertSee('Создать сим-карту')
         ->assertSee('Оператор')
         ->assertSee('Номер')
         ->assertSee('IP адрес')
@@ -98,7 +98,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->assertSeeLink('Создать сим-карту')
         ->click('Создать сим-карту')
         ->assertUrlIs(route('sim-cards.create'))
-        ->assertSee('Добавить сим-карту')
+        ->assertSee('Создать сим-карту')
         ->pressAndWaitFor('Назад', 2)
         ->assertUrlIs($indexUrl)
         ->assertSeeLink('Создать сим-карту')

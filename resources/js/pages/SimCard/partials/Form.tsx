@@ -20,7 +20,7 @@ export default function FormPartial() {
             {({ errors, processing, resetAndClearErrors, invalid, validate }) => (
                 <Card className="mx-auto mt-2 w-full max-w-xs">
                     <CardHeader>
-                        <CardTitle>{id ? 'Редактировать' : 'Добавить'} сим-карту</CardTitle>
+                        <CardTitle>{id ? 'Редактировать' : 'Создать'} сим-карту</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Field data-invalid={errors.operator ? true : false}>
@@ -82,7 +82,7 @@ export default function FormPartial() {
                                 ) : (
                                     <SaveIcon data-icon="inline-start" />
                                 )}
-                                {processing ? 'Подождите' : id ? 'Изменить' : 'Добавить'}
+                                {processing ? 'Подождите' : id ? 'Изменить' : 'Создать'}
                             </Button>
                             <Button
                                 type="button"
