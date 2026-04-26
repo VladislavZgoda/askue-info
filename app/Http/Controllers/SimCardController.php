@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSimCardRequest;
 use App\Http\Requests\UpdateSimCardRequest;
 use App\Http\Resources\SimCardResource;
 use App\Models\SimCard;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,13 +20,19 @@ class SimCardController extends Controller
     {
         $search = $request->query('search');
 
-        $simCards = SimCard::whereLike('number', "%$search%")
-            ->orWhereLike('operator', "%$search%")
-            ->latest()
-            ->get(['id', 'number', 'operator']);
+        $simCards = SimCard::query()
+            ->when($search,
+                fn (Builder $query) => $query->where(
+                    fn (Builder $q) => $q->whereLike('number', "%$search%")
+                        ->orWhereLike('operator', "%$search%")
+                )
+            )
+            ->orderByDesc('id')
+            ->cursorPaginate(12)
+            ->toResourceCollection();
 
-        return Inertia('SimCard/Index', [
-            'simCards' => $simCards,
+        return Inertia::render('SimCard/Index', [
+            'simCards' => Inertia::scroll($simCards),
             'filter' => $request->only(['search']),
         ]);
     }

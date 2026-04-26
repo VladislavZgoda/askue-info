@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react';
+import { InfiniteScroll, Link, router } from '@inertiajs/react';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { CardSim, Eye, LoaderIcon, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { create, index, show } from '@/actions/App/Http/Controllers/SimCardController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Spinner } from '@/components/ui/spinner';
 import { SimCardIndexProps } from '@/types';
 
 export default function Index({ simCards, filter }: SimCardIndexProps) {
@@ -39,6 +40,7 @@ export default function Index({ simCards, filter }: SimCardIndexProps) {
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
+                reset: ['simCards'],
             },
         );
     }, [debouncedSearchText]);
@@ -70,7 +72,9 @@ export default function Index({ simCards, filter }: SimCardIndexProps) {
                     placeholder="Поиск сим-карты..."
                 />
                 <InputGroupAddon>{showSpinner ? <LoaderIcon className="animate-spin" /> : <Search />}</InputGroupAddon>
-                {isVisibleSearchResult && <InputGroupAddon align="inline-end">{simCards.length} шт.</InputGroupAddon>}
+                {isVisibleSearchResult && (
+                    <InputGroupAddon align="inline-end">{simCards.data.length} шт.</InputGroupAddon>
+                )}
                 <InputGroupAddon align="inline-end">
                     <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
                         <X />
@@ -79,8 +83,22 @@ export default function Index({ simCards, filter }: SimCardIndexProps) {
             </InputGroup>
 
             <ScrollArea className="flex-initial overflow-auto rounded-md border p-2.5">
-                <ItemGroup className="gap-2">
-                    {simCards.map((simCard) => (
+                <InfiniteScroll
+                    className="flex flex-col gap-2"
+                    data="simCards"
+                    onlyNext
+                    loading={() => (
+                        <Item>
+                            <ItemMedia>
+                                <Spinner />
+                            </ItemMedia>
+                            <ItemContent>
+                                <ItemTitle className="line-clamp-1">Загрузка SIM-карт...</ItemTitle>
+                            </ItemContent>
+                        </Item>
+                    )}
+                >
+                    {simCards.data.map((simCard) => (
                         <Item asChild key={simCard.id} variant="outline" size="sm">
                             <Link href={show(simCard.id)} prefetch instant>
                                 <ItemContent className="gap-1">
@@ -93,7 +111,7 @@ export default function Index({ simCards, filter }: SimCardIndexProps) {
                             </Link>
                         </Item>
                     ))}
-                </ItemGroup>
+                </InfiniteScroll>
             </ScrollArea>
         </div>
     );

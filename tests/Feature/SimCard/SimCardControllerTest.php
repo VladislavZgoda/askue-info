@@ -15,7 +15,7 @@ describe('SimCardController index action', function () {
                 fn (Assert $page) => $page
                     ->component('SimCard/Index')
                     ->has(
-                        'simCards',
+                        'simCards.data',
                         $simCardsCount,
                         fn (Assert $page) => $page
                             ->has('id')
@@ -24,6 +24,7 @@ describe('SimCardController index action', function () {
                             ->whereType('id', 'integer')
                             ->whereType('number', 'string')
                             ->whereType('operator', 'string')
+                            ->etc()
                     )
                     ->has('filter')
             );
@@ -40,8 +41,8 @@ describe('SimCardController index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('simCards', 1)
-                ->where('simCards.0.number', '89181111111')
+                ->has('simCards.data', 1)
+                ->where('simCards.data.0.number', '89181111111')
                 ->where('filter.search', '89181')
         );
     });
@@ -54,8 +55,8 @@ describe('SimCardController index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('simCards', 1)
-                ->where('simCards.0.operator', 'МТС')
+                ->has('simCards.data', 1)
+                ->where('simCards.data.0.operator', 'МТС')
                 ->where('filter.search', 'МТС')
         );
     });
@@ -67,7 +68,7 @@ describe('SimCardController index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('simCards', 0)
+                ->has('simCards.data', 0)
                 ->where('filter.search', 'Этого нет')
         );
     });

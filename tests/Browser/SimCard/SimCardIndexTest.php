@@ -21,7 +21,6 @@ describe('SimCardController Index Page', function () {
             ->assertValue('input[placeholder="Поиск сим-карты..."]', '')
             // Крестик, очистить поиск.
             ->assertButtonEnabled('button[type="button"]')
-            ->assertPresent('.group\/item-group')
             ->assertCount('.group\/item', $simCards->count())
             ->assertNoJavaScriptErrors();
 

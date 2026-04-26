@@ -45,7 +45,9 @@ export interface SimCard {
 }
 
 export interface SimCardIndexProps {
-    simCards: Omit<SimCard, 'ip'>[];
+    simCards: {
+        data: Omit<SimCard, 'ip'>[];
+    };
     filter: { search: string | null };
 }
 
