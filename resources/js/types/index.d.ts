@@ -78,6 +78,13 @@ export interface Uspd {
     lan_ip: string;
 }
 
+export interface UspdIndexProps {
+    uspds: {
+        data: Omit<Uspd, 'lan_ip'>[];
+    };
+    filter: { search: string | null };
+}
+
 export interface InstallationObjectMetersProps {
     installationObject: InstallationObject;
     unassignedMeters: Meter[];
