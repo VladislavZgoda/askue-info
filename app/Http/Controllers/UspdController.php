@@ -3,16 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Uspd;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UspdController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->query('search');
+
+        $uspds = Uspd::query()
+            ->select(['id', 'model', 'serial_number'])
+            ->when($search,
+                fn (Builder $query) => $query->where(
+                    fn (Builder $q) => $q->whereLike('serial_number', "%$search%")
+                        ->orWhereLike('model', "%$search%")
+                )
+            )
+            ->orderByDesc('id')
+            ->cursorPaginate(12);
+
+        return Inertia::render('Uspd/Index', [
+            'uspds' => Inertia::scroll($uspds),
+            'filter' => $request->only(['search']),
+        ]);
     }
 
     /**
