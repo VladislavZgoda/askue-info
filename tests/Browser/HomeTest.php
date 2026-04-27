@@ -3,6 +3,7 @@
 use App\Models\InstallationObject;
 use App\Models\Meter;
 use App\Models\SimCard;
+use App\Models\Uspd;
 
 it('visits the Home page', function () {
     $page = visit('/')->on()->mobile();
@@ -10,6 +11,7 @@ it('visits the Home page', function () {
     $page->assertSeeLink('Просмотр объектов установки')
         ->assertSeeLink('Просмотр приборов учёта')
         ->assertSeeLink('Просмотр сим-карт')
+        ->assertSeeLink('Просмотр УСПД')
         ->assertNoJavaScriptErrors();
 });
 
@@ -46,5 +48,17 @@ it('navigates from the Home page to sim-cards.index using the link', function ()
         ->assertUrlIs(route('sim-cards.index'))
         ->assertSee($simCard->operator)
         ->assertSee($simCard->number)
+        ->assertNoJavaScriptErrors();
+});
+
+it('navigates from the Home page to uspds.index using the link', function () {
+    $uspd = Uspd::factory()->create();
+
+    $page = visit('/')->on()->mobile();
+
+    $page->click('Просмотр УСПД')
+        ->assertUrlIs(route('uspds.index'))
+        ->assertSee($uspd->model)
+        ->assertSee($uspd->serial_number)
         ->assertNoJavaScriptErrors();
 });
