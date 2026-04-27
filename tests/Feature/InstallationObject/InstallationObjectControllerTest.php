@@ -122,7 +122,6 @@ it('can view the installation object with :dataset', function (InstallationObjec
                 ->has('id')
                 ->has('model')
                 ->has('serial_number')
-                ->etc()
                 ->where('id', $installationObject->uspds->first()->id)
                 ->where('model', $installationObject->uspds->first()->model)
                 ->where('serial_number', $installationObject->uspds->first()->serial_number)
