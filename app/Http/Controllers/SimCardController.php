@@ -21,6 +21,7 @@ class SimCardController extends Controller
         $search = $request->query('search');
 
         $simCards = SimCard::query()
+            ->select(['id', 'number', 'operator'])
             ->when($search,
                 fn (Builder $query) => $query->where(
                     fn (Builder $q) => $q->whereLike('number', "%$search%")
@@ -28,8 +29,7 @@ class SimCardController extends Controller
                 )
             )
             ->orderByDesc('id')
-            ->cursorPaginate(12)
-            ->toResourceCollection();
+            ->cursorPaginate(12);
 
         return Inertia::render('SimCard/Index', [
             'simCards' => Inertia::scroll($simCards),

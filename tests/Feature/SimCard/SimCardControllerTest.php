@@ -24,7 +24,6 @@ describe('SimCardController index action', function () {
                             ->whereType('id', 'integer')
                             ->whereType('number', 'string')
                             ->whereType('operator', 'string')
-                            ->etc()
                     )
                     ->has('filter')
             );
