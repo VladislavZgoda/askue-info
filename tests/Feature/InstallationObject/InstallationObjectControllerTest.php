@@ -92,8 +92,6 @@ describe('InstallationObject index action', function () {
 it('can view the installation object with :dataset', function (InstallationObject $installationObject) {
     $showUrl = action([InstallationObjectController::class, 'show'], $installationObject);
 
-    $installationObject->load(['meters', 'uspds']);
-
     $meterCount = $installationObject->meters_count;
     $uspdCount = $installationObject->uspds_count;
 
@@ -197,7 +195,6 @@ describe('InstallationObject update', function () {
         ];
 
         $updateUrl = action([InstallationObjectController::class, 'update'], $installationObject);
-
         $response = $this->put($updateUrl, [...$validData, $field => $value]);
 
         $response->assertRedirectBackWithErrors([$field]);
@@ -232,7 +229,6 @@ describe('InstallationObject store', function () {
         ]);
 
         $installationObject = InstallationObject::where('name', 'Created object')->first();
-
         $showUrl = action([InstallationObjectController::class, 'show'], $installationObject);
 
         $response->assertValid(['name', 'address'])
@@ -247,7 +243,6 @@ describe('InstallationObject store', function () {
         ];
 
         $storeUrl = action([InstallationObjectController::class, 'store']);
-
         $response = $this->post($storeUrl, [...$validData, $field => $value]);
 
         $response->assertRedirectBackWithErrors([$field]);

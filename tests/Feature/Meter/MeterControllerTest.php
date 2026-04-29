@@ -135,8 +135,6 @@ describe('MeterController store action', function () {
 describe('MeterController show action', function () {
     it('can view the meter', function () {
         $meter = Meter::factory()->hasSimCards(2)->create();
-        $meter->load('simCards');
-
         $response = $this->get(action([MeterController::class, 'show'], $meter));
 
         $response->assertOk()
