@@ -73,7 +73,7 @@ export type MeterShowProps = Meter & {
 
 export interface Uspd {
     id: number;
-    model: 'RTR8A.LRsGE-2-1-RUFG' | 'RTR8A.LGE-2-2-RUF' | 'RTR58A.LG-1-1' | 'RTR58A.LG-2-1';
+    model: 'RTR8A.LRsGE-1-1-RUFG' | 'RTR8A.LRsGE-2-1-RUFG' | 'RTR8A.LGE-2-2-RUF' | 'RTR58A.LG-1-1' | 'RTR58A.LG-2-1';
     serial_number: number;
     lan_ip: string;
 }
