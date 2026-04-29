@@ -72,3 +72,44 @@ describe('UspdController index action', function () {
         );
     });
 });
+
+describe('UspdController show action', function () {
+    it('can view the uspd', function () {
+        $uspd = Uspd::factory()->hasSimCards(2)->create();
+        $response = $this->get(action([UspdController::class, 'show'], $uspd));
+
+        $response->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Uspd/Show')
+                ->has('uspd.id')
+                ->has('uspd.model')
+                ->has('uspd.serial_number')
+                ->where('uspd.id', $uspd->id)
+                ->where('uspd.model', $uspd->model)
+                ->where('uspd.serial_number', $uspd->serial_number)
+                ->whereType('uspd.id', 'integer')
+                ->whereType('uspd.model', 'string')
+                ->whereType('uspd.serial_number', 'integer')
+                ->has('uspd.simCards', $uspd->simCards_count, fn (Assert $simCard) => $simCard
+                    ->has('id')
+                    ->has('number')
+                    ->has('operator')
+                    ->etc()
+                    ->where('id', $uspd->simCards->first()->id)
+                    ->where('number', $uspd->simCards->first()->number)
+                    ->where('operator', $uspd->simCards->first()->operator)
+                    ->whereType('id', 'integer')
+                    ->whereType('number', 'string')
+                    ->whereType('operator', 'string')
+                )
+                ->has('uspd.installationObject')
+                ->whereType('uspd.installationObject', 'array')
+                ->has('uspd.installationObject.id')
+                ->has('uspd.installationObject.name')
+                ->has('uspd.installationObject.address')
+                ->whereType('uspd.installationObject.id', 'integer')
+                ->whereType('uspd.installationObject.name', 'string')
+                ->whereType('uspd.installationObject.address', 'string')
+            );
+    });
+});
