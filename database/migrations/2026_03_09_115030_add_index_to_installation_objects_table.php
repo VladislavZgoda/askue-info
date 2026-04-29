@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('installation_objects', function (Blueprint $table) {
-            $table->dropUnique('name');
+            $table->dropUnique('installation_objects_name_unique');
         });
     }
 };
