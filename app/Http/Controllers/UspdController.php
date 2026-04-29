@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UspdResource;
 use App\Models\Uspd;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -54,7 +55,12 @@ class UspdController extends Controller
      */
     public function show(Uspd $uspd)
     {
-        //
+        $uspd->load('simCards')
+            ->loadExists('installationObject');
+
+        return Inertia('Uspd/Show', [
+            'uspd' => new UspdResource($uspd),
+        ]);
     }
 
     /**

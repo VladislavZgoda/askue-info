@@ -3,7 +3,7 @@ import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { Cpu, Eye, LoaderIcon, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { index } from '@/actions/App/Http/Controllers/UspdController';
+import { index, show } from '@/actions/App/Http/Controllers/UspdController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
@@ -98,7 +98,7 @@ export default function Index({ uspds, filter }: UspdIndexProps) {
                 >
                     {uspds.data.map((uspd) => (
                         <Item asChild key={uspd.id} variant="outline" size="sm">
-                            <Link prefetch instant>
+                            <Link href={show(uspd.id)} prefetch instant>
                                 <ItemContent className="gap-1">
                                     <ItemTitle>{uspd.model}</ItemTitle>
                                     <ItemDescription>{uspd.serial_number}</ItemDescription>

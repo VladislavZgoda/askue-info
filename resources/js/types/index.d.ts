@@ -85,6 +85,13 @@ export interface UspdIndexProps {
     filter: { search: string | null };
 }
 
+export interface UspdShowProps {
+    uspd: Uspd & {
+        simCards: Omit<SimCard, 'ip'>[];
+        installationObject?: InstallationObject;
+    };
+}
+
 export interface InstallationObjectMetersProps {
     installationObject: InstallationObject;
     unassignedMeters: Meter[];

@@ -1,9 +1,9 @@
 import { Link } from '@inertiajs/react';
-import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
+import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Pyramid, Trash2, Trash2Icon, Unplug } from 'lucide-react';
 
-import { show as showMeter } from '@/actions/App/Http/Controllers/MeterController';
-import { destroy, edit, index } from '@/actions/App/Http/Controllers/SimCardController';
-import { show as showUspd } from '@/actions/App/Http/Controllers/UspdController';
+import { show as showInstallationObject } from '@/actions/App/Http/Controllers/InstallationObjectController';
+import { show as showSimCard } from '@/actions/App/Http/Controllers/SimCardController';
+import { index } from '@/actions/App/Http/Controllers/UspdController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -19,22 +19,22 @@ import {
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
-import { SimCardShowProps } from '@/types';
+import { UspdShowProps } from '@/types';
 
-export default function Show({ id, number, operator, ip, meters, uspd }: SimCardShowProps) {
+export default function Show({ uspd }: UspdShowProps) {
     return (
         <div className="mx-auto flex max-w-xs flex-col gap-6 p-2">
             <Item variant="outline">
                 <ItemMedia>
-                    <CardSim />
+                    <Cpu />
                 </ItemMedia>
                 <ItemContent>
-                    <ItemTitle>{`${operator}, ${number}`}</ItemTitle>
-                    {ip && <ItemDescription>{`IP адрес: ${ip}`}</ItemDescription>}
+                    <ItemTitle>{`${uspd.model}, №${uspd.serial_number}`}</ItemTitle>
+                    <ItemDescription>{`Lan IP: ${uspd.lan_ip}`}</ItemDescription>
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="icon">
-                        <Link href={edit(id)} prefetch instant>
+                        <Link prefetch instant>
                             <Pencil />
                         </Link>
                     </Button>
@@ -49,15 +49,15 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                                 <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
                                     <Trash2Icon />
                                 </AlertDialogMedia>
-                                <AlertDialogTitle>Удалить сим-карту?</AlertDialogTitle>
+                                <AlertDialogTitle>Удалить успд?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Это навсегда удалит сим-карту без возможности восстановления.
+                                    Это навсегда удалит успд без возможности восстановления.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
                                 <AlertDialogAction variant="destructive" asChild>
-                                    <Link href={destroy(id)}>Удалить</Link>
+                                    <Link>Удалить</Link>
                                 </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
@@ -65,20 +65,19 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                 </ItemActions>
             </Item>
 
-            {meters.length > 0 && <h2 className="font-semibold subpixel-antialiased">Относится к следующим ПУ:</h2>}
-            {meters.length > 0 && (
+            {uspd.simCards.length > 0 && (
                 <ItemGroup className="max-w-xs gap-1.5">
-                    {meters.map((meter) => (
-                        <Item key={meter.id} variant="outline" size="sm">
+                    {uspd.simCards.map((simCard) => (
+                        <Item key={simCard.id} variant="outline" size="sm">
                             <ItemMedia variant="icon">
-                                <Zap />
+                                <CardSim />
                             </ItemMedia>
                             <ItemContent className="gap-1">
-                                <ItemTitle>{`${meter.model}, №${meter.serial_number}`}</ItemTitle>
+                                <ItemTitle>{`${simCard.operator}, ${simCard.number}`}</ItemTitle>
                             </ItemContent>
                             <ItemActions>
                                 <Button asChild variant="outline" size="icon">
-                                    <Link href={showMeter(meter.id)} prefetch instant>
+                                    <Link href={showSimCard(simCard.id)} prefetch instant>
                                         <Eye />
                                     </Link>
                                 </Button>
@@ -93,18 +92,18 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                 </ItemGroup>
             )}
 
-            {uspd && <h2 className="font-semibold subpixel-antialiased">Относится к УСПД:</h2>}
-            {uspd && (
+            {uspd.installationObject && <h2 className="font-semibold subpixel-antialiased">Место установки:</h2>}
+            {uspd.installationObject && (
                 <Item variant="outline" size="sm" className="max-w-xs gap-1.5">
                     <ItemMedia variant="icon">
-                        <Cpu />
+                        <Pyramid />
                     </ItemMedia>
                     <ItemContent className="gap-1">
-                        <ItemTitle>{`${uspd.model}, №${uspd.serial_number}`}</ItemTitle>
+                        <ItemTitle>{`${uspd.installationObject.name}, ${uspd.installationObject.address}`}</ItemTitle>
                     </ItemContent>
                     <ItemActions>
                         <Button asChild variant="outline" size="icon">
-                            <Link href={showUspd(uspd.id)} prefetch instant>
+                            <Link href={showInstallationObject(uspd.installationObject.id)} prefetch instant>
                                 <Eye />
                             </Link>
                         </Button>
@@ -119,21 +118,15 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
 
             <ButtonGroup orientation="vertical" className="w-full">
                 <Button asChild size="sm" variant="outline">
+                    <Link>
+                        <Plus />
+                        Добавить сим-карту
+                    </Link>
+                </Button>
+                <Button asChild size="sm" variant="outline">
                     <Link href={index()} prefetch instant>
                         <ListStart />
-                        Просмотр сим-карт
-                    </Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                    <Link>
-                        <Plus />
-                        Связать с УСПД
-                    </Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                    <Link>
-                        <Plus />
-                        Связать с ПУ
+                        Просмотр УСПД
                     </Link>
                 </Button>
             </ButtonGroup>
