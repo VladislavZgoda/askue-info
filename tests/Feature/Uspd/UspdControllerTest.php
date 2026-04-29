@@ -94,7 +94,6 @@ describe('UspdController show action', function () {
                     ->has('id')
                     ->has('number')
                     ->has('operator')
-                    ->etc()
                     ->where('id', $uspd->simCards->first()->id)
                     ->where('number', $uspd->simCards->first()->number)
                     ->where('operator', $uspd->simCards->first()->operator)

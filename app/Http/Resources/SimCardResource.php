@@ -14,10 +14,12 @@ class SimCardResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $showUspdRoute = $request->routeIs('uspds.show');
+
         return [
             'id' => $this->id,
             'number' => $this->number,
-            'ip' => $this->whenNotNull($this->ip),
+            'ip' => $this->when(! $showUspdRoute, $this->whenNotNull($this->ip)),
             'operator' => $this->operator,
             'meters' => $this->whenExistsLoaded('meters', MeterResource::collection($this->meters)),
             'uspd' => $this->whenExistsLoaded('uspd', new UspdResource($this->uspd)),
