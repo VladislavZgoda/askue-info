@@ -25,8 +25,8 @@ describe('UspdController Index Page', function () {
             ->assertNoJavaScriptErrors();
 
         foreach ($uspds as $uspd) {
-            $page->assertSeeLink($uspd->model)
-                ->assertSee($uspd->serial_number);
+            $page->assertSeeLink("$uspd->serial_number")
+                ->assertSee($uspd->model);
         }
     });
 
