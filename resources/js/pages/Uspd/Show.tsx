@@ -3,7 +3,7 @@ import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Pyramid, Trash2, Trash2Icon
 
 import { show as showInstallationObject } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { show as showSimCard } from '@/actions/App/Http/Controllers/SimCardController';
-import { edit, index } from '@/actions/App/Http/Controllers/UspdController';
+import { destroy, edit, index } from '@/actions/App/Http/Controllers/UspdController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -49,15 +49,15 @@ export default function Show({ uspd }: UspdShowProps) {
                                 <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
                                     <Trash2Icon />
                                 </AlertDialogMedia>
-                                <AlertDialogTitle>Удалить успд?</AlertDialogTitle>
+                                <AlertDialogTitle>Удалить УСПД?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Это навсегда удалит успд без возможности восстановления.
+                                    Это навсегда удалит УСПД без возможности восстановления.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
                                 <AlertDialogAction variant="destructive" asChild>
-                                    <Link>Удалить</Link>
+                                    <Link href={destroy(uspd.id)}>Удалить</Link>
                                 </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
