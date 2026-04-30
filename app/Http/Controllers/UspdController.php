@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUspdRequest;
+use App\Http\Requests\UpdateUspdRequest;
 use App\Http\Resources\UspdResource;
 use App\Models\Uspd;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,15 +42,19 @@ class UspdController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Uspd/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUspdRequest $request): RedirectResponse
     {
-        //
+        $uspd = Uspd::create($request->validated());
+
+        Inertia::flash('message', 'УСПД успешно создан.');
+
+        return to_route('uspds.show', $uspd);
     }
 
     /**
@@ -68,22 +75,32 @@ class UspdController extends Controller
      */
     public function edit(Uspd $uspd)
     {
-        //
+        return inertia('Uspd/Edit', [
+            'uspd' => new UspdResource($uspd),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Uspd $uspd)
+    public function update(UpdateUspdRequest $request, Uspd $uspd): RedirectResponse
     {
-        //
+        $uspd->update($request->validated());
+
+        Inertia::flash('message', 'УСПД успешно обновлён.');
+
+        return to_route('uspds.show', $uspd);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Uspd $uspd)
+    public function destroy(Uspd $uspd): RedirectResponse
     {
-        //
+        $uspd->delete();
+
+        Inertia::flash('message', 'УСПД успешно удалён.');
+
+        return to_route('uspds.index');
     }
 }
