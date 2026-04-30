@@ -3,7 +3,7 @@ import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Pyramid, Trash2, Trash2Icon
 
 import { show as showInstallationObject } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { show as showSimCard } from '@/actions/App/Http/Controllers/SimCardController';
-import { index } from '@/actions/App/Http/Controllers/UspdController';
+import { edit, index } from '@/actions/App/Http/Controllers/UspdController';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -34,7 +34,7 @@ export default function Show({ uspd }: UspdShowProps) {
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="icon">
-                        <Link prefetch instant>
+                        <Link href={edit(uspd.id)} prefetch instant>
                             <Pencil />
                         </Link>
                     </Button>

@@ -3,7 +3,7 @@ import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { Cpu, Eye, LoaderIcon, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { index, show } from '@/actions/App/Http/Controllers/UspdController';
+import { create, index, show } from '@/actions/App/Http/Controllers/UspdController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
@@ -58,7 +58,7 @@ export default function Index({ uspds, filter }: UspdIndexProps) {
     return (
         <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-xs flex-col gap-2 p-2.5">
             <Button asChild variant="outline" className="w-full">
-                <Link prefetch instant>
+                <Link href={create()} prefetch instant>
                     <Cpu data-icon="inline-start" />
                     Создать УСПД
                 </Link>
