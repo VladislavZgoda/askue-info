@@ -70,7 +70,7 @@ export default function FormPartial() {
                                     type="text"
                                     id="lan_ip"
                                     name="lan_ip"
-                                    defaultValue={lan_ip}
+                                    defaultValue={lan_ip || '192.168.0.100'}
                                     onBlur={() => validate('lan_ip')}
                                 />
                                 <InputGroupAddon align="inline-start">
