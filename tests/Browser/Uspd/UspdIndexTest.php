@@ -65,4 +65,30 @@ describe('UspdController Index Page', function () {
             ->assertSee('3865434')
             ->assertNoJavaScriptErrors();
     });
+
+    it('navigates to uspds.show after clicking on an item in the list', function () {
+        $uspd = Uspd::first();
+
+        $page = visit(route('uspds.index'))
+            ->on()
+            ->mobile();
+
+        $page->assertUrlIs(route('uspds.index'))
+            ->click("$uspd->serial_number")
+            ->assertUrlIs(route('uspds.show', $uspd))
+            ->assertSee("$uspd->serial_number")
+            ->assertNoJavaScriptErrors();
+    });
+
+    it('navigates to uspds.create after clicking on the link', function () {
+        $page = visit(route('uspds.index'))
+            ->on()
+            ->mobile();
+
+        $page->assertUrlIs(route('uspds.index'))
+            ->click('Создать УСПД')
+            ->assertUrlIs(route('uspds.create'))
+            ->assertSee('Создать УСПД')
+            ->assertNoJavaScriptErrors();
+    });
 });
