@@ -155,7 +155,9 @@ describe('SimCardController store action', function () {
 
 describe('SimCardController show action', function () {
     it('can view the sim card and the meters to which it belongs', function () {
-        $simCard = SimCard::factory()->hasMeters(1)->create();
+        $simCard = SimCard::factory()
+            ->hasMeters(1)
+            ->create(['ip' => '192.168.1.1']);
 
         $response = $this->get(action([SimCardController::class, 'show'], $simCard));
 
@@ -166,13 +168,15 @@ describe('SimCardController show action', function () {
                     ->has('id')
                     ->has('number')
                     ->has('operator')
-                    ->etc()
+                    ->has('ip')
                     ->where('id', $simCard->id)
                     ->where('number', $simCard->number)
                     ->where('operator', $simCard->operator)
+                    ->where('ip', $simCard->ip)
                     ->whereType('id', 'integer')
                     ->whereType('number', 'string')
                     ->whereType('operator', 'string')
+                    ->whereType('ip', 'string')
                     ->has(
                         'meters',
                         $simCard->meters_count,
@@ -191,7 +195,9 @@ describe('SimCardController show action', function () {
     });
 
     it('can view the sim card and the uspd to which it belongs', function () {
-        $simCard = SimCard::factory()->forUspd()->create();
+        $simCard = SimCard::factory()
+            ->forUspd()
+            ->create(['ip' => null]);
 
         $response = $this->get(action([SimCardController::class, 'show'], $simCard));
 
@@ -202,7 +208,7 @@ describe('SimCardController show action', function () {
                     ->has('id')
                     ->has('number')
                     ->has('operator')
-                    ->etc()
+                    ->missing('ip')
                     ->where('id', $simCard->id)
                     ->where('number', $simCard->number)
                     ->where('operator', $simCard->operator)
@@ -284,7 +290,7 @@ describe('SimCardController update action', function () {
             ->ip->toBe('192.168.1.10');
     });
 
-    it('allows updating a sim card with its own operator and number', function () {
+    it('allows updating a sim card with its own number and ip', function () {
         $updateUrl = action([SimCardController::class, 'update'], $this->simCard);
 
         $this->put($updateUrl, [
