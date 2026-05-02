@@ -21,7 +21,8 @@ it('renders the page :dataset', function (Uspd $uspd) {
 
     if ($uspd->installationObject) {
         $page->assertSee('Место установки:')
-            ->assertSee($uspd->installationObject->name.', '.$uspd->installationObject->address);
+            ->assertSee($uspd->installationObject->name)
+            ->assertSee($uspd->installationObject->address);
     }
 })->with([
     'without sim cards and installation object' => fn () => Uspd::factory()->withoutInstallationObject()->create(),

@@ -99,17 +99,13 @@ export default function Show({ uspd }: UspdShowProps) {
                         <Pyramid />
                     </ItemMedia>
                     <ItemContent className="gap-1">
-                        <ItemTitle>{`${uspd.installationObject.name}, ${uspd.installationObject.address}`}</ItemTitle>
+                        <ItemTitle>{uspd.installationObject.name}</ItemTitle>
+                        <ItemDescription>{uspd.installationObject.address}</ItemDescription>
                     </ItemContent>
                     <ItemActions>
                         <Button asChild variant="outline" size="icon">
                             <Link href={showInstallationObject(uspd.installationObject.id)} prefetch instant>
                                 <Eye />
-                            </Link>
-                        </Button>
-                        <Button asChild variant="destructive" size="icon">
-                            <Link prefetch instant>
-                                <Unplug />
                             </Link>
                         </Button>
                     </ItemActions>
