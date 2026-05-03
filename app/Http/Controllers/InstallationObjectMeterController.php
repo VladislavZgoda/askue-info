@@ -32,11 +32,10 @@ class InstallationObjectMeterController extends Controller
     public function store(Request $request, InstallationObject $installationObject): RedirectResponse
     {
         $validated = $request->validate([
-            'meter_id' => ['required'],
+            'meter_id' => ['required', 'integer', 'exists:meters,id'],
         ]);
 
-        $meter = Meter::findOrFail($validated['meter_id']);
-
+        $meter = Meter::find($validated['meter_id']);
         $meter->installationObject()->associate($installationObject);
         $meter->save();
 
