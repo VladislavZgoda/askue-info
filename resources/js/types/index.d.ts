@@ -97,6 +97,11 @@ export interface InstallationObjectMetersProps {
     unassignedMeters: Meter[];
 }
 
+export interface InstallationObjectUspdsProps {
+    installationObject: InstallationObject;
+    unassignedUspds: Omit<Uspd, 'lan_ip'>[];
+}
+
 export interface MeterSimCardsProps {
     meter: Meter;
     simCards: Omit<SimCard, 'ip'>[];

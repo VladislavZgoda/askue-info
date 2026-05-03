@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InstallationObjectController;
 use App\Http\Controllers\InstallationObjectMeterController;
+use App\Http\Controllers\InstallationObjectUspdController;
 use App\Http\Controllers\MeterController;
 use App\Http\Controllers\MeterSimCardController;
 use App\Http\Controllers\SimCardController;
@@ -21,6 +22,9 @@ Route::resource('meters', MeterController::class)
     ->middlewareFor(['store', 'update'], [HandlePrecognitiveRequests::class]);
 
 Route::resource('installation-objects.meters', InstallationObjectMeterController::class)
+    ->only(['create', 'store', 'destroy']);
+
+Route::resource('installation-objects.uspds', InstallationObjectUspdController::class)
     ->only(['create', 'store', 'destroy']);
 
 Route::resource('sim-cards', SimCardController::class)

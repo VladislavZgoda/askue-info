@@ -2,7 +2,14 @@ import { Link } from '@inertiajs/react';
 import { Cpu, Eye, Pencil, Plus, Pyramid, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
 import { destroy, edit } from '@/actions/App/Http/Controllers/InstallationObjectController';
-import { create, destroy as disassociateMeter } from '@/actions/App/Http/Controllers/InstallationObjectMeterController';
+import {
+    create as associateMeter,
+    destroy as disassociateMeter,
+} from '@/actions/App/Http/Controllers/InstallationObjectMeterController';
+import {
+    create as associateUspd,
+    destroy as disassociateUspd,
+} from '@/actions/App/Http/Controllers/InstallationObjectUspdController';
 import { show as showMeter } from '@/actions/App/Http/Controllers/MeterController';
 import { show as showUspd } from '@/actions/App/Http/Controllers/UspdController';
 import {
@@ -138,11 +145,37 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
                                         <Eye />
                                     </Link>
                                 </Button>
-                                <Button asChild variant="outline" size="sm">
-                                    <Link>
-                                        <Unplug />
-                                    </Link>
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button name="unplugUspd" variant="destructive" size="sm">
+                                            <Unplug />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent size="sm">
+                                        <AlertDialogHeader>
+                                            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                                                <Unplug />
+                                            </AlertDialogMedia>
+                                            <AlertDialogTitle>Отсоединить УСПД?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                Это не удалит УСПД и его можно будет присоединить к любому объекту.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
+                                            <AlertDialogAction variant="destructive" asChild>
+                                                <Link
+                                                    href={disassociateUspd({
+                                                        installation_object: id,
+                                                        uspd: uspd.id,
+                                                    })}
+                                                >
+                                                    Отсоединить
+                                                </Link>
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </ItemActions>
                         </Item>
                     ))}
@@ -152,13 +185,13 @@ export default function Show({ id, name, meters, uspds }: InstallationObjectShow
             <ButtonGroup orientation="vertical" className="w-full">
                 <ViewInstallationObjectsButton size="sm">Список объектов установки</ViewInstallationObjectsButton>
                 <Button asChild size="sm" variant="outline">
-                    <Link>
+                    <Link href={associateUspd(id)} prefetch instant>
                         <Plus />
                         Добавить УСПД
                     </Link>
                 </Button>
                 <Button asChild size="sm" variant="outline">
-                    <Link href={create(id)} prefetch instant>
+                    <Link href={associateMeter(id)} prefetch instant>
                         <Plus />
                         Добавить ПУ
                     </Link>
