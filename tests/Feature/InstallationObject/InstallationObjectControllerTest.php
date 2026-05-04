@@ -18,7 +18,7 @@ describe('InstallationObject index action', function () {
                 fn (Assert $page) => $page
                     ->component('InstallationObject/Index')
                     ->has(
-                        'installationObjects',
+                        'installationObjects.data',
                         $installationObjectCount,
                         fn (Assert $page) => $page
                             ->has('id')
@@ -47,8 +47,8 @@ describe('InstallationObject index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('installationObjects', 1)
-                ->where('installationObjects.0.name', 'ТП-111')
+                ->has('installationObjects.data', 1)
+                ->where('installationObjects.data.0.name', 'ТП-111')
                 ->where('filter.search', 'ТП-111')
         );
     });
@@ -65,8 +65,8 @@ describe('InstallationObject index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('installationObjects', 1)
-                ->where('installationObjects.0.address', 'ул. Красная, 1')
+                ->has('installationObjects.data', 1)
+                ->where('installationObjects.data.0.address', 'ул. Красная, 1')
                 ->where('filter.search', 'ул. Красная, 1')
         );
     });
@@ -83,7 +83,7 @@ describe('InstallationObject index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('installationObjects', 0)
+                ->has('installationObjects.data', 0)
                 ->where('filter.search', 'Этого нет')
         );
     });

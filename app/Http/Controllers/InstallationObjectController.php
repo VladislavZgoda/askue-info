@@ -6,6 +6,7 @@ use App\Http\Requests\StoreInstallationObjectRequest;
 use App\Http\Requests\UpdateInstallationObjectRequest;
 use App\Http\Resources\InstallationObjectResource;
 use App\Models\InstallationObject;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,14 +20,19 @@ class InstallationObjectController extends Controller
     {
         $search = $request->query('search');
 
-        $installationObjects = InstallationObject::whereLike('name', "%$search%")
-            ->orWhereLike('address', "%$search%")
-            ->latest()
-            ->get()
-            ->toResourceCollection();
+        $installationObjects = InstallationObject::query()
+            ->select(['id', 'name', 'address'])
+            ->when($search,
+                fn (Builder $query) => $query->where(
+                    fn (Builder $q) => $q->whereLike('name', "%$search%")
+                        ->orWhereLike('address', "%$search%")
+                )
+            )
+            ->orderByDesc('id')
+            ->cursorPaginate(12);
 
-        return inertia('InstallationObject/Index', [
-            'installationObjects' => $installationObjects,
+        return Inertia::render('InstallationObject/Index', [
+            'installationObjects' => Inertia::scroll($installationObjects),
             'filter' => $request->only(['search']),
         ]);
     }

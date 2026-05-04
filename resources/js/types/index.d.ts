@@ -26,7 +26,7 @@ export interface InstallationObject {
 }
 
 export interface InstallationObjectsProps {
-    installationObjects: InstallationObject[];
+    installationObjects: { data: InstallationObject[] };
     filter: { search: string | null };
 }
 

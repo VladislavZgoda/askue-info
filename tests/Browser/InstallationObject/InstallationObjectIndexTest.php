@@ -21,7 +21,6 @@ describe('InstallationObjectController Index Page', function () {
             ->assertValue('input[placeholder="Поиск объекта установки..."]', '')
             // Крестик, очистить поиск.
             ->assertButtonEnabled('button[type="button"]')
-            ->assertPresent('.group\/item-group')
             ->assertCount('.group\/item', $installationObjects->count())
             ->assertNoJavaScriptErrors();
 

@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react';
+import { InfiniteScroll, Link, router } from '@inertiajs/react';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { Eye, LoaderIcon, MapPlus, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { create, index, show } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Spinner } from '@/components/ui/spinner';
 import type { InstallationObjectsProps } from '@/types';
 
 export default function Index({ installationObjects, filter }: InstallationObjectsProps) {
@@ -39,6 +40,7 @@ export default function Index({ installationObjects, filter }: InstallationObjec
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
+                reset: ['installationObjects'],
             },
         );
     }, [debouncedSearchText]);
@@ -71,7 +73,7 @@ export default function Index({ installationObjects, filter }: InstallationObjec
                 />
                 <InputGroupAddon>{showSpinner ? <LoaderIcon className="animate-spin" /> : <Search />}</InputGroupAddon>
                 {isVisibleSearchResult && (
-                    <InputGroupAddon align="inline-end">{installationObjects.length} шт.</InputGroupAddon>
+                    <InputGroupAddon align="inline-end">{installationObjects.data.length} шт.</InputGroupAddon>
                 )}
                 <InputGroupAddon align="inline-end">
                     <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
@@ -81,10 +83,24 @@ export default function Index({ installationObjects, filter }: InstallationObjec
             </InputGroup>
 
             <ScrollArea className="flex-initial overflow-auto rounded-md border p-2.5">
-                <ItemGroup className="gap-2">
-                    {installationObjects.map((installationObject) => (
+                <InfiniteScroll
+                    className="flex flex-col gap-2"
+                    data="installationObjects"
+                    onlyNext
+                    loading={() => (
+                        <Item>
+                            <ItemMedia>
+                                <Spinner />
+                            </ItemMedia>
+                            <ItemContent>
+                                <ItemTitle className="line-clamp-1">Загрузка объектов...</ItemTitle>
+                            </ItemContent>
+                        </Item>
+                    )}
+                >
+                    {installationObjects.data.map((installationObject) => (
                         <Item asChild key={installationObject.id} variant="outline" size="sm">
-                            <Link href={show(installationObject.id)} prefetch>
+                            <Link href={show(installationObject.id)} prefetch instant>
                                 <ItemContent className="gap-1">
                                     <ItemTitle>{installationObject.name}</ItemTitle>
                                     <ItemDescription>{installationObject.address}</ItemDescription>
@@ -95,7 +111,7 @@ export default function Index({ installationObjects, filter }: InstallationObjec
                             </Link>
                         </Item>
                     ))}
-                </ItemGroup>
+                </InfiniteScroll>
             </ScrollArea>
         </div>
     );
