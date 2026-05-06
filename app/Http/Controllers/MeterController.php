@@ -6,6 +6,7 @@ use App\Http\Requests\StoreMeterRequest;
 use App\Http\Requests\UpdateMeterRequest;
 use App\Http\Resources\MeterResource;
 use App\Models\Meter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,14 +20,20 @@ class MeterController extends Controller
     {
         $search = $request->query('search');
 
-        $meters = Meter::whereLike('model', "%$search%")
-            ->orWhereLike('serial_number', "%$search%")
-            ->latest()
-            ->get()
-            ->toResourceCollection();
+        $meters = Meter::query()
+            ->select(['id', 'model', 'serial_number'])
+            ->when(
+                $search,
+                fn (Builder $query) => $query->where(
+                    fn (Builder $q) => $q->whereLike('serial_number', "%$search%")
+                        ->orWhereLike('model', "%$search%")
+                )
+            )
+            ->orderByDesc('id')
+            ->cursorPaginate(12);
 
-        return Inertia('Meter/Index', [
-            'meters' => $meters,
+        return Inertia::render('Meter/Index', [
+            'meters' => Inertia::scroll($meters),
             'filter' => $request->only(['search']),
         ]);
     }

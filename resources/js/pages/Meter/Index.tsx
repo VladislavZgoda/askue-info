@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react';
+import { InfiniteScroll, Link, router } from '@inertiajs/react';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
 import { Eye, LoaderIcon, Search, X, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { create, index, show } from '@/actions/App/Http/Controllers/MeterController';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item';
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Spinner } from '@/components/ui/spinner';
 import type { MetersProps } from '@/types';
 
 export default function Index({ meters, filter }: MetersProps) {
@@ -39,6 +40,7 @@ export default function Index({ meters, filter }: MetersProps) {
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
+                reset: ['meters'],
             },
         );
     }, [debouncedSearchText]);
@@ -70,7 +72,9 @@ export default function Index({ meters, filter }: MetersProps) {
                     placeholder="Поиск приборов учёта..."
                 />
                 <InputGroupAddon>{showSpinner ? <LoaderIcon className="animate-spin" /> : <Search />}</InputGroupAddon>
-                {isVisibleSearchResult && <InputGroupAddon align="inline-end">{meters.length} шт.</InputGroupAddon>}
+                {isVisibleSearchResult && (
+                    <InputGroupAddon align="inline-end">{meters.data.length} шт.</InputGroupAddon>
+                )}
                 <InputGroupAddon align="inline-end">
                     <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
                         <X />
@@ -79,8 +83,22 @@ export default function Index({ meters, filter }: MetersProps) {
             </InputGroup>
 
             <ScrollArea className="flex-initial overflow-auto rounded-md border p-2.5">
-                <ItemGroup className="gap-2">
-                    {meters.map((meter) => (
+                <InfiniteScroll
+                    className="flex flex-col gap-2"
+                    data="meters"
+                    onlyNext
+                    loading={() => (
+                        <Item>
+                            <ItemMedia>
+                                <Spinner />
+                            </ItemMedia>
+                            <ItemContent>
+                                <ItemTitle className="line-clamp-1">Загрузка УСПД...</ItemTitle>
+                            </ItemContent>
+                        </Item>
+                    )}
+                >
+                    {meters.data.map((meter) => (
                         <Item asChild key={meter.id} variant="outline" size="sm">
                             <Link href={show(meter.id)} prefetch instant>
                                 <ItemContent className="gap-1">
@@ -93,7 +111,7 @@ export default function Index({ meters, filter }: MetersProps) {
                             </Link>
                         </Item>
                     ))}
-                </ItemGroup>
+                </InfiniteScroll>
             </ScrollArea>
         </div>
     );

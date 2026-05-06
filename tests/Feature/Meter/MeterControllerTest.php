@@ -16,7 +16,7 @@ describe('MeterController index action', function () {
                 fn (Assert $page) => $page
                     ->component('Meter/Index')
                     ->has(
-                        'meters',
+                        'meters.data',
                         $meterCount,
                         fn (Assert $page) => $page
                             ->has('id')
@@ -41,8 +41,8 @@ describe('MeterController index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('meters', 1)
-                ->where('meters.0.model', 'Меркурий 236')
+                ->has('meters.data', 1)
+                ->where('meters.data.0.model', 'Меркурий 236')
                 ->where('filter.search', '236')
         );
     });
@@ -55,8 +55,8 @@ describe('MeterController index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('meters', 1)
-                ->where('meters.0.serial_number', '123456789')
+                ->has('meters.data', 1)
+                ->where('meters.data.0.serial_number', '123456789')
                 ->where('filter.search', '123456789')
         );
     });
@@ -68,7 +68,7 @@ describe('MeterController index action', function () {
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->has('meters', 0)
+                ->has('meters.data', 0)
                 ->where('filter.search', 'Этого нет')
         );
     });

@@ -63,7 +63,7 @@ export interface Meter {
 }
 
 export interface MetersProps {
-    meters: Meter[];
+    meters: { data: Meter[] };
     filter: { search: string | null };
 }
 

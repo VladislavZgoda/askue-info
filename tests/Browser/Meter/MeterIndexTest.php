@@ -21,7 +21,6 @@ describe('MeterController Index Page', function () {
             ->assertValue('input[placeholder="Поиск приборов учёта..."]', '')
             // Крестик, очистить поиск.
             ->assertButtonEnabled('button[type="button"]')
-            ->assertPresent('.group\/item-group')
             ->assertCount('.group\/item', $meters->count())
             ->assertNoJavaScriptErrors();
 
