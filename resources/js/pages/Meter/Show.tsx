@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
-import { CardSim, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
+import { CardSim, Eye, ListStart, Pencil, Plus, Pyramid, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
 
+import { show as showInstallationObject } from '@/actions/App/Http/Controllers/InstallationObjectController';
 import { destroy, edit, index } from '@/actions/App/Http/Controllers/MeterController';
 import { create, destroy as detachSimCard } from '@/actions/App/Http/Controllers/MeterSimCardController';
 import { show } from '@/actions/App/Http/Controllers/SimCardController';
@@ -21,7 +22,7 @@ import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
 import type { MeterShowProps } from '@/types';
 
-export default function Show({ id, model, serial_number, simCards }: MeterShowProps) {
+export default function Show({ meter }: MeterShowProps) {
     return (
         <div className="mx-auto flex max-w-xs flex-col gap-6 p-2">
             <Item variant="outline">
@@ -29,11 +30,11 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                     <Zap />
                 </ItemMedia>
                 <ItemContent>
-                    <ItemTitle>{`${model}, №${serial_number}`}</ItemTitle>
+                    <ItemTitle>{`${meter.model}, №${meter.serial_number}`}</ItemTitle>
                 </ItemContent>
                 <ItemActions>
                     <Button asChild variant="outline" size="icon">
-                        <Link href={edit(id)} prefetch instant>
+                        <Link href={edit(meter.id)} prefetch instant>
                             <Pencil />
                         </Link>
                     </Button>
@@ -56,7 +57,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                             <AlertDialogFooter>
                                 <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
                                 <AlertDialogAction variant="destructive" asChild>
-                                    <Link href={destroy(id)}>Удалить</Link>
+                                    <Link href={destroy(meter.id)}>Удалить</Link>
                                 </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
@@ -64,9 +65,9 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                 </ItemActions>
             </Item>
 
-            {simCards.length > 0 && (
+            {meter.simCards.length > 0 && (
                 <ItemGroup className="max-w-xs gap-1.5">
-                    {simCards.map((simCard) => (
+                    {meter.simCards.map((simCard) => (
                         <Item key={simCard.id} variant="outline" size="sm">
                             <ItemMedia variant="icon">
                                 <CardSim />
@@ -100,7 +101,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                                         <AlertDialogFooter>
                                             <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
                                             <AlertDialogAction variant="destructive" asChild>
-                                                <Link href={detachSimCard({ meter: id, sim_card: simCard.id })}>
+                                                <Link href={detachSimCard({ meter: meter.id, sim_card: simCard.id })}>
                                                     Отвязать
                                                 </Link>
                                             </AlertDialogAction>
@@ -113,6 +114,26 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                 </ItemGroup>
             )}
 
+            {meter.installationObject && <h2 className="font-semibold subpixel-antialiased">Место установки:</h2>}
+            {meter.installationObject && (
+                <Item variant="outline" size="sm" className="max-w-xs gap-1.5">
+                    <ItemMedia variant="icon">
+                        <Pyramid />
+                    </ItemMedia>
+                    <ItemContent className="gap-1">
+                        <ItemTitle>{meter.installationObject.name}</ItemTitle>
+                        <ItemDescription>{meter.installationObject.address}</ItemDescription>
+                    </ItemContent>
+                    <ItemActions>
+                        <Button asChild variant="outline" size="icon">
+                            <Link href={showInstallationObject(meter.installationObject.id)} prefetch instant>
+                                <Eye />
+                            </Link>
+                        </Button>
+                    </ItemActions>
+                </Item>
+            )}
+
             <ButtonGroup orientation="vertical" className="w-full">
                 <Button asChild size="sm" variant="outline">
                     <Link href={index()} prefetch instant>
@@ -121,7 +142,7 @@ export default function Show({ id, model, serial_number, simCards }: MeterShowPr
                     </Link>
                 </Button>
                 <Button asChild size="sm" variant="outline">
-                    <Link href={create(id)} prefetch instant>
+                    <Link href={create(meter.id)} prefetch instant>
                         <Plus />
                         Добавить сим-карту
                     </Link>

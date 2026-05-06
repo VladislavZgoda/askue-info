@@ -2,7 +2,7 @@
 
 use App\Models\Meter;
 
-it('renders the page with :dataset', function (Meter $meter) {
+it('renders the page :dataset', function (Meter $meter) {
     $meter->load('simCards');
 
     $url = route('meters.show', $meter);
@@ -22,10 +22,17 @@ it('renders the page with :dataset', function (Meter $meter) {
             $page->assertSee($simCard->ip);
         }
     }
+
+    if ($meter->installationObject) {
+        $page->assertSee('Место установки:')
+            ->assertSee($meter->installationObject->name)
+            ->assertSee($meter->installationObject->address);
+    }
 })->with([
-    'one sim card' => fn () => Meter::factory()->hasSimCards(1)->create(),
-    'two sim cards' => fn () => Meter::factory()->hasSimCards(2)->create(),
-    'zero sim cards' => fn () => Meter::factory()->create(),
+    'with one sim card' => fn () => Meter::factory()->hasSimCards(1)->create(),
+    'with two sim cards' => fn () => Meter::factory()->hasSimCards(2)->create(),
+    'without sim cards and installation object' => fn () => Meter::factory()->withoutInstallationObject()->create(),
+    'with installation object only' => fn () => Meter::factory()->create(),
 ]);
 
 it('navigates to the sim-cards.show page', function () {

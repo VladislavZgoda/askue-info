@@ -63,9 +63,12 @@ class MeterController extends Controller
      */
     public function show(Meter $meter)
     {
-        $meter->load('simCards');
+        $meter->load('simCards')
+            ->loadExists('installationObject');
 
-        return inertia('Meter/Show', new MeterResource($meter)->resolve());
+        return inertia('Meter/Show', [
+            'meter' => new MeterResource($meter),
+        ]);
     }
 
     /**

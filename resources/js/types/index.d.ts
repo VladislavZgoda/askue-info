@@ -67,9 +67,12 @@ export interface MetersProps {
     filter: { search: string | null };
 }
 
-export type MeterShowProps = Meter & {
-    simCards: SimCard[];
-};
+export interface MeterShowProps {
+    meter: Meter & {
+        simCards: SimCard[];
+        installationObject?: InstallationObject;
+    };
+}
 
 export interface Uspd {
     id: number;

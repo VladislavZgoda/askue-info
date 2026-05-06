@@ -19,6 +19,10 @@ class MeterResource extends JsonResource
             'model' => $this->model,
             'serial_number' => $this->serial_number,
             'simCards' => SimCardResource::collection($this->whenLoaded('simCards')),
+            'installationObject' => $this->whenExistsLoaded(
+                'installationObject',
+                new InstallationObjectResource($this->installationObject)
+            ),
         ];
     }
 }
