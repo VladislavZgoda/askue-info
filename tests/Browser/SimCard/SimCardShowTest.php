@@ -11,8 +11,6 @@ it('renders the page with :dataset', function (SimCard $simCard) {
     $page->assertUrlIs($url)
         ->assertSee("$simCard->operator, $simCard->number")
         ->assertSeeLink('Просмотр сим-карт')
-        ->assertSeeLink('Связать с УСПД')
-        ->assertSeeLink('Связать с ПУ')
         ->assertNoJavaScriptErrors();
 
     if ($simCard?->ip) {
@@ -23,13 +21,15 @@ it('renders the page with :dataset', function (SimCard $simCard) {
         $page->assertSee('Относится к следующим ПУ:');
 
         foreach ($simCard->meters as $meter) {
-            $page->assertSee("$meter->model, №$meter->serial_number");
+            $page->assertSee($meter->model)
+                ->assertSee("№$meter->serial_number");
         }
     }
 
     if ($simCard->uspd_exists) {
         $page->assertSee('Относится к УСПД:')
-            ->assertSee($simCard->uspd->model.', №'.$simCard->uspd->serial_number);
+            ->assertSee($simCard->uspd->model)
+            ->assertSee('№'.$simCard->uspd->serial_number);
     }
 })->with([
     'attached meter' => fn () => SimCard::factory()->hasMeters()->create(),

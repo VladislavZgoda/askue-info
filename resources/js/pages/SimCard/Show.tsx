@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { CardSim, Cpu, Eye, ListStart, Pencil, Plus, Trash2, Trash2Icon, Unplug, Zap } from 'lucide-react';
+import { CardSim, Cpu, Eye, ListStart, Pencil, Trash2, Trash2Icon, Zap } from 'lucide-react';
 
 import { show as showMeter } from '@/actions/App/Http/Controllers/MeterController';
 import { destroy, edit, index } from '@/actions/App/Http/Controllers/SimCardController';
@@ -17,7 +17,6 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { ButtonGroup } from '@/components/ui/button-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { SimCardShowProps } from '@/types';
 
@@ -74,17 +73,13 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                                 <Zap />
                             </ItemMedia>
                             <ItemContent className="gap-1">
-                                <ItemTitle>{`${meter.model}, №${meter.serial_number}`}</ItemTitle>
+                                <ItemTitle>{meter.model}</ItemTitle>
+                                <ItemDescription>{`№${meter.serial_number}`}</ItemDescription>
                             </ItemContent>
                             <ItemActions>
                                 <Button asChild variant="outline" size="icon">
                                     <Link href={showMeter(meter.id)} prefetch instant>
                                         <Eye />
-                                    </Link>
-                                </Button>
-                                <Button asChild variant="destructive" size="icon">
-                                    <Link prefetch instant>
-                                        <Unplug />
                                     </Link>
                                 </Button>
                             </ItemActions>
@@ -100,7 +95,8 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                         <Cpu />
                     </ItemMedia>
                     <ItemContent className="gap-1">
-                        <ItemTitle>{`${uspd.model}, №${uspd.serial_number}`}</ItemTitle>
+                        <ItemTitle>{uspd.model}</ItemTitle>
+                        <ItemDescription>{`№${uspd.serial_number}`}</ItemDescription>
                     </ItemContent>
                     <ItemActions>
                         <Button asChild variant="outline" size="icon">
@@ -108,35 +104,16 @@ export default function Show({ id, number, operator, ip, meters, uspd }: SimCard
                                 <Eye />
                             </Link>
                         </Button>
-                        <Button asChild variant="destructive" size="icon">
-                            <Link prefetch instant>
-                                <Unplug />
-                            </Link>
-                        </Button>
                     </ItemActions>
                 </Item>
             )}
 
-            <ButtonGroup orientation="vertical" className="w-full">
-                <Button asChild size="sm" variant="outline">
-                    <Link href={index()} prefetch instant>
-                        <ListStart />
-                        Просмотр сим-карт
-                    </Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                    <Link>
-                        <Plus />
-                        Связать с УСПД
-                    </Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                    <Link>
-                        <Plus />
-                        Связать с ПУ
-                    </Link>
-                </Button>
-            </ButtonGroup>
+            <Button asChild size="sm" variant="outline">
+                <Link href={index()} prefetch instant>
+                    <ListStart />
+                    Просмотр сим-карт
+                </Link>
+            </Button>
         </div>
     );
 }
