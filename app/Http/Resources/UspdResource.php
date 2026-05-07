@@ -15,12 +15,15 @@ class UspdResource extends JsonResource
     public function toArray(Request $request): array
     {
         $installationObjectShowRoute = $request->routeIs('installation-objects.show');
+        $UspdSimCardCreateRoute = $request->routeIs('uspds.sim-cards.create');
+
+        $condition = $installationObjectShowRoute || $UspdSimCardCreateRoute;
 
         return [
             'id' => $this->id,
             'model' => $this->model,
             'serial_number' => $this->serial_number,
-            'lan_ip' => $this->when(! $installationObjectShowRoute, $this->lan_ip),
+            'lan_ip' => $this->when(! $condition, $this->lan_ip),
             'simCards' => SimCardResource::collection($this->whenLoaded('simCards')),
             'installationObject' => $this->whenExistsLoaded(
                 'installationObject',
