@@ -5,6 +5,10 @@ import { show as showInstallationObject } from '@/actions/App/Http/Controllers/I
 import { show as showSimCard } from '@/actions/App/Http/Controllers/SimCardController';
 import { destroy, edit, index } from '@/actions/App/Http/Controllers/UspdController';
 import {
+    create as associateSimCard,
+    destroy as disassociateSimCard,
+} from '@/actions/App/Http/Controllers/UspdSimCardController';
+import {
     AlertDialog,
     AlertDialogAction,
     AlertDialogCancel,
@@ -81,11 +85,34 @@ export default function Show({ uspd }: UspdShowProps) {
                                         <Eye />
                                     </Link>
                                 </Button>
-                                <Button asChild variant="destructive" size="icon">
-                                    <Link prefetch instant>
-                                        <Unplug />
-                                    </Link>
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button name="detachSimCard" variant="destructive" size="icon">
+                                            <Unplug />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent size="sm">
+                                        <AlertDialogHeader>
+                                            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                                                <Trash2Icon />
+                                            </AlertDialogMedia>
+                                            <AlertDialogTitle>Отвязать сим-карту?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                Это отвяжет УСПД от сим-карты.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel variant="outline">Отменить</AlertDialogCancel>
+                                            <AlertDialogAction variant="destructive" asChild>
+                                                <Link
+                                                    href={disassociateSimCard({ uspd: uspd.id, sim_card: simCard.id })}
+                                                >
+                                                    Отвязать
+                                                </Link>
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </ItemActions>
                         </Item>
                     ))}
@@ -114,7 +141,7 @@ export default function Show({ uspd }: UspdShowProps) {
 
             <ButtonGroup orientation="vertical" className="w-full">
                 <Button asChild size="sm" variant="outline">
-                    <Link>
+                    <Link href={associateSimCard(uspd.id)} prefetch instant>
                         <Plus />
                         Добавить сим-карту
                     </Link>

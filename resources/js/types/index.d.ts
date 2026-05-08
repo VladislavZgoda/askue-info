@@ -109,3 +109,8 @@ export interface MeterSimCardsProps {
     meter: Meter;
     simCards: Omit<SimCard, 'ip'>[];
 }
+
+export interface UspdSimCardsProps {
+    uspd: Omit<Uspd, 'lan_ip'>;
+    simCards: Omit<SimCard, 'ip'>[];
+}
