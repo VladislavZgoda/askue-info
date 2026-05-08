@@ -19,7 +19,7 @@ class UspdSimCardController extends Controller
     {
         $simCards = SimCard::query()
             ->doesntHave('meters')
-            ->doesntHave('uspds')
+            ->doesntHave('uspd')
             ->get(['id', 'number', 'operator']);
 
         return inertia('Uspd/SimCard/Create', [
