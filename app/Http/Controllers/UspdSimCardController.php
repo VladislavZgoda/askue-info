@@ -62,7 +62,7 @@ class UspdSimCardController extends Controller
         $simCard->uspd()->disassociate();
         $simCard->save();
 
-        return Inertia::flash('message', 'Сим-карта успешно отвязана.')
+        return Inertia::flash('message', 'Сим-карта успешно отвязана от УСПД.')
             ->back();
     }
 }
