@@ -9,7 +9,11 @@ import RootLayout from './layouts/RootLayout';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    layout: () => RootLayout,
+    layout: (name) => {
+        if (name === 'Login') return null;
+
+        return RootLayout;
+    },
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) =>
         resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob<ResolvedComponent>('./pages/**/*.tsx')),

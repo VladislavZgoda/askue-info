@@ -3,13 +3,8 @@ import type React from 'react';
 import { useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu';
+import { destroy } from '@/actions/Laravel/Fortify/Http/Controllers/AuthenticatedSessionController';
+import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     useEffect(() => {
@@ -24,17 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <main className="h-dvh">
-            <NavigationMenu className="mx-auto w-full max-w-xs justify-start p-2">
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                            <Link component="home" href="/">
-                                Главная
-                            </Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
+            <nav className="mx-auto flex w-full max-w-xs items-center justify-between p-2">
+                <Link component="home" href="/" className={navigationMenuTriggerStyle()}>
+                    Главная
+                </Link>
+
+                <Link href={destroy()} className={navigationMenuTriggerStyle()}>
+                    Выйти
+                </Link>
+            </nav>
             {children}
             <Toaster />
         </main>
