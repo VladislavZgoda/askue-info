@@ -2,9 +2,15 @@
 
 use App\Http\Controllers\InstallationObjectController;
 use App\Models\InstallationObject;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('InstallationObject index action', function () {
     it('can view a list of the :dataset installation objects', function (Collection $installationObjects) {

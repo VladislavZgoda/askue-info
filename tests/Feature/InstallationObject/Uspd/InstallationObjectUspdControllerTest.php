@@ -2,8 +2,14 @@
 
 use App\Http\Controllers\InstallationObjectUspdController;
 use App\Models\InstallationObject;
+use App\Models\User;
 use App\Models\Uspd;
 use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('InstallationObjectUspdController create action', function () {
     it('can view the Create page', function () {

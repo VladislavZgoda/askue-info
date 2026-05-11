@@ -1,9 +1,15 @@
 <?php
 
 use App\Http\Controllers\UspdController;
+use App\Models\User;
 use App\Models\Uspd;
 use Illuminate\Database\Eloquent\Collection;
 use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('UspdController index action', function () {
     it('renders the uspds index page', function (Collection $uspds) {

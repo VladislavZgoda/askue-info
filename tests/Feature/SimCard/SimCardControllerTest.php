@@ -2,8 +2,14 @@
 
 use App\Http\Controllers\SimCardController;
 use App\Models\SimCard;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('SimCardController index action', function () {
     it('renders the sim cards index page', function (Collection $simCards) {

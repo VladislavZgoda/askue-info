@@ -5,7 +5,13 @@ use App\Http\Controllers\MeterSimCardController;
 use App\Models\InstallationObject;
 use App\Models\Meter;
 use App\Models\SimCard;
+use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('MeterSimCardController create action', function () {
     it('can view the Create page', function () {

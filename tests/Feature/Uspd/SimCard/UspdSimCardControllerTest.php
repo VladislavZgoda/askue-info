@@ -3,8 +3,14 @@
 use App\Http\Controllers\UspdController;
 use App\Http\Controllers\UspdSimCardController;
 use App\Models\SimCard;
+use App\Models\User;
 use App\Models\Uspd;
 use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('UspdSimCardController create action', function () {
     it('can view the Create page', function () {

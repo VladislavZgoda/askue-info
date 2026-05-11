@@ -35,5 +35,6 @@ class DatabaseSeeder extends Seeder
             ->count(2)
             ->withoutInstallationObject()
             ->create();
+
     }
 }
