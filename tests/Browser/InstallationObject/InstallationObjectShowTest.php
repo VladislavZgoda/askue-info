@@ -2,6 +2,12 @@
 
 use App\Models\InstallationObject;
 use App\Models\Meter;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders a page with data with :dataset', function (InstallationObject $installationObject) {
     $installationObject->load(['meters', 'uspds']);

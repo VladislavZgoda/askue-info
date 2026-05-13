@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\InstallationObject;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('InstallationObjectController Index Page', function () {
     beforeEach(function () {
@@ -20,7 +26,7 @@ describe('InstallationObjectController Index Page', function () {
             ->assertSeeLink('Создать объект установки')
             ->assertValue('input[placeholder="Поиск объекта установки..."]', '')
             // Крестик, очистить поиск.
-            ->assertButtonEnabled('button[type="button"]')
+            ->assertButtonEnabled('button[aria-label="Очистить поиск"]')
             ->assertCount('.group\/item', $installationObjects->count())
             ->assertNoJavaScriptErrors();
 
@@ -58,7 +64,7 @@ describe('InstallationObjectController Index Page', function () {
             ->wait(1)
             ->assertDontSee('ТП-222')
             // Крестик, очистить поиск.
-            ->click('button[type="button"]')
+            ->click('button[aria-label="Очистить поиск"]')
             ->wait(1)
             ->assertValue('input[placeholder="Поиск объекта установки..."]', '')
             ->assertSee('ТП-111')

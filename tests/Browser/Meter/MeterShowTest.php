@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\Meter;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page :dataset', function (Meter $meter) {
     $meter->load('simCards');

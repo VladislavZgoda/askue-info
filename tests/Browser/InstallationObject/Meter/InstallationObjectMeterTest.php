@@ -2,6 +2,12 @@
 
 use App\Models\InstallationObject;
 use App\Models\Meter;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders form with installation object details', function () {
     $installationObject = InstallationObject::factory()->create();

@@ -2,6 +2,12 @@
 
 use App\Models\Meter;
 use App\Models\SimCard;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders form with som cards details', function () {
     $meter = Meter::factory()->create();

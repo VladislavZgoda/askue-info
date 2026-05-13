@@ -76,7 +76,12 @@ export default function Index({ meters, filter }: MetersProps) {
                     <InputGroupAddon align="inline-end">{meters.data.length} шт.</InputGroupAddon>
                 )}
                 <InputGroupAddon align="inline-end">
-                    <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
+                    <InputGroupButton
+                        type="button"
+                        aria-label="Очистить поиск"
+                        size="icon-xs"
+                        onClick={handleClearSearch}
+                    >
                         <X />
                     </InputGroupButton>
                 </InputGroupAddon>

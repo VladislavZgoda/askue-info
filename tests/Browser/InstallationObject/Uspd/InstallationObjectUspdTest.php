@@ -1,7 +1,13 @@
 <?php
 
 use App\Models\InstallationObject;
+use App\Models\User;
 use App\Models\Uspd;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders form with installation object details', function () {
     $installationObject = InstallationObject::factory()->create();

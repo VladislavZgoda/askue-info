@@ -1,7 +1,13 @@
 <?php
 
 use App\Models\InstallationObject;
+use App\Models\User;
 use Illuminate\Support\Str;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page with data', function () {
     $installationObject = InstallationObject::factory()->create();
@@ -42,12 +48,12 @@ it('displays validation errors', function () {
         ->assertSee('Поле "Адрес" является обязательным.')
         ->type('name', $installationObject2->name)
         ->type('address', $installationObject1->address)
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Наименование уже используется.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('name', Str::random(256))
         ->type('address', Str::random(256))
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Поле "Наименование" не должно превышать значение 255 символов.')
         ->assertSee('Поле "Адрес" не должно превышать значение 255 символов.')
         ->assertNoJavaScriptErrors();
@@ -63,7 +69,7 @@ it('redirects to the Show page after successfully submitting the form', function
 
     $page->assertUrlIs($editUrl)
         ->typeSlowly('name', 'ТП-2')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertUrlIs(route('installation-objects.show', $installationObject))
         ->assertSee('Данные успешно обновлены.')
         ->assertSee('ТП-2')
@@ -86,7 +92,7 @@ it('can reset the form', function () {
         ->type('address', $newAddress)
         ->assertValue('input[name=name]', $newName)
         ->assertValue('input[name=address]', $newAddress)
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertValue('input[name=name]', $installationObject->name)
         ->assertValue('input[name=address]', $installationObject->address)
         ->assertNoJavaScriptErrors();
@@ -118,7 +124,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->click("a[href=\"/installation-objects/$installationObject->id/edit\"]")
         ->assertUrlIs(route('installation-objects.edit', $installationObject))
         ->assertSee('Редактировать объект установки')
-        ->pressAndWaitFor('Назад', 2)
+        ->pressAndWaitFor('Назад', 1)
         ->assertUrlIs($showUrl)
         ->assertSee($installationObject->name)
         ->assertNoJavaScriptErrors();

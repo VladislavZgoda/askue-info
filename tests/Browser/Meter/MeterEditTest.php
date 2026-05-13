@@ -1,9 +1,13 @@
 <?php
 
 use App\Models\Meter;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
     $this->meter = Meter::factory()->create();
 });
 
@@ -37,23 +41,23 @@ it('displays validation errors', function () {
         ->assertUrlIs($editUrlMeter)
         ->clear('model')
         ->clear('serial_number')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Поле "Модель" является обязательным.')
         ->assertSee('Поле "Серийный номер" является обязательным.')
         ->type('model', $this->meter->model)
         ->type('serial_number', $otherMeter->serial_number)
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Серийный номер уже используется.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('model', Str::random(256))
         ->type('serial_number', Str::repeat('1', 256))
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Поле "Модель" не должно превышать значение 255 символов.')
         ->assertSee('Поле "Серийный номер" не должно превышать значение 255 символов.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('model', $this->meter->model)
         ->type('serial_number', '123f456')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Формат поля серийный номер недопустим.')
         ->assertNoJavaScriptErrors();
 });
@@ -67,7 +71,7 @@ it('redirects to the Show page after successfully submitting the form', function
 
     $page->assertUrlIs($editUrl)
         ->typeSlowly('model', 'Меркурий 234')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertUrlIs(route('meters.show', $meter))
         ->assertSee('Данные успешно обновлены.')
         ->assertSee('Меркурий 234')
@@ -88,7 +92,7 @@ it('can reset the form', function () {
         ->type('serial_number', $newSerialNumber)
         ->assertValue('input[name=model]', $newModel)
         ->assertValue('input[name=serial_number]', $newSerialNumber)
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertValue('input[name=model]', $this->meter->model)
         ->assertValue('input[name=serial_number]', $this->meter->serial_number)
         ->assertNoJavaScriptErrors();
@@ -105,7 +109,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->click("a[href=\"/meters/$meterId/edit\"]")
         ->assertUrlIs(route('meters.edit', $this->meter))
         ->assertSee('Редактировать прибор учёта')
-        ->pressAndWaitFor('Назад', 2)
+        ->pressAndWaitFor('Назад', 1)
         ->assertUrlIs($showUrl)
         ->assertSee($this->meter->serial_number)
         ->assertNoJavaScriptErrors();

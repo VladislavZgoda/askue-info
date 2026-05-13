@@ -1,7 +1,13 @@
 <?php
 
 use App\Models\InstallationObject;
+use App\Models\User;
 use Illuminate\Support\Str;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page', function () {
     $createUrl = route('installation-objects.create');
@@ -30,17 +36,17 @@ it('displays validation errors', function () {
         ->on()
         ->mobile()
         ->assertUrlIs($createUrl)
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Поле "Наименование" является обязательным.')
         ->assertSee('Поле "Адрес" является обязательным.')
         ->type('name', $installationObject->name)
         ->type('address', $installationObject->address)
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Наименование уже используется.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('name', Str::random(256))
         ->type('address', Str::random(256))
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Поле "Наименование" не должно превышать значение 255 символов.')
         ->assertSee('Поле "Адрес" не должно превышать значение 255 символов.')
         ->assertNoJavaScriptErrors();
@@ -54,7 +60,7 @@ it('redirects to the Show page after successfully submitting the form', function
     $page->assertUrlIs($createUrl)
         ->typeSlowly('name', 'ТП-2')
         ->typeSlowly('address', 'ул. Уличная, 5')
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertUrlIs(route('installation-objects.show', 1))
         ->assertSee('Объект установки успешно создан.')
         ->assertSee('ТП-2')
@@ -73,7 +79,7 @@ it('can reset the form', function () {
         ->type('address', $address)
         ->assertValue('input[name=name]', $name)
         ->assertValue('input[name=address]', $address)
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertValue('input[name=name]', '')
         ->assertValue('input[name=address]', '')
         ->assertNoJavaScriptErrors();
@@ -89,7 +95,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->click('Создать объект установки')
         ->assertUrlIs(route('installation-objects.create'))
         ->assertSee('Создать объект установки')
-        ->pressAndWaitFor('Назад', 2)
+        ->pressAndWaitFor('Назад', 1)
         ->assertUrlIs($indexUrl)
         ->assertSeeLink('Создать объект установки')
         ->assertNoJavaScriptErrors();

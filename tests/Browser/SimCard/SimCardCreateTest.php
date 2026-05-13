@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\SimCard;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page', function () {
     $createUrl = route('sim-cards.create');
@@ -33,7 +39,7 @@ it('redirects to the Show page after successfully submitting the form', function
         ->select('operator', $simCard['operator'])
         ->type('number', $simCard['number'])
         ->type('ip', $simCard['ip'])
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertUrlIs(route('sim-cards.show', 1))
         ->assertSee('Сим-карта успешно создана.')
         ->assertSee($simCard['operator'])
@@ -58,7 +64,7 @@ it('can reset the form', function () {
         ->assertSelected('operator', $simCard['operator'])
         ->assertValue('input[name=number]', $simCard['number'])
         ->assertValue('input[name=ip]', $simCard['ip'])
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertSelected('operator', '')
         ->assertValue('input[name=number]', '')
         ->assertValue('input[name=ip]', '')
@@ -73,18 +79,18 @@ it('displays validation errors', function () {
         ->on()
         ->mobile()
         ->assertUrlIs($createUrl)
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Поле "Оператор" является обязательным.')
         ->assertSee('Поле "Номер" является обязательным.')
         ->type('number', $simCard->number)
         ->type('ip', $simCard->ip)
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Номер уже используется.')
         ->assertSee('Ip уже используется.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('number', '7932487878878')
         ->type('ip', '192.2.3.1000')
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Формат поля номер недопустим.')
         ->assertSee('В поле ip должен быть указан действительный IPv4-адрес.')
         ->assertNoJavaScriptErrors();
@@ -99,7 +105,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->click('Создать сим-карту')
         ->assertUrlIs(route('sim-cards.create'))
         ->assertSee('Создать сим-карту')
-        ->pressAndWaitFor('Назад', 2)
+        ->pressAndWaitFor('Назад', 1)
         ->assertUrlIs($indexUrl)
         ->assertSeeLink('Создать сим-карту')
         ->assertNoJavaScriptErrors();

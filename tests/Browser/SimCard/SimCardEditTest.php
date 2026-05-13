@@ -1,8 +1,12 @@
 <?php
 
 use App\Models\SimCard;
+use App\Models\User;
 
 beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
     $this->simCard = SimCard::factory()->create([
         'operator' => 'МТС',
         'ip' => '192.168.1.1',
@@ -39,18 +43,18 @@ it('displays validation errors', function () {
         ->mobile()
         ->assertUrlIs($editUrl)
         ->clear('number')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Поле "Номер" является обязательным.')
         ->select('operator', $this->simCard->operator)
         ->type('number', $simCard2->number)
         ->type('ip', $simCard2->ip)
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Номер уже используется.')
         ->assertSee('Ip уже используется.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('number', '7932487878878')
         ->type('ip', '192.2.3.1000')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertSee('Формат поля номер недопустим.')
         ->assertSee('В поле ip должен быть указан действительный IPv4-адрес.')
         ->assertNoJavaScriptErrors();
@@ -63,7 +67,7 @@ it('redirects to the Show page after successfully submitting the form', function
 
     $page->assertUrlIs($editUrl)
         ->type('ip', '192.168.2.2')
-        ->pressAndWaitFor('Изменить', 2)
+        ->pressAndWaitFor('Изменить', 1)
         ->assertUrlIs(route('sim-cards.show', $this->simCard))
         ->assertSee('Сим-карта успешно обновлена.')
         ->assertSee('192.168.2.2')
@@ -83,7 +87,7 @@ it('can reset the form', function () {
         ->assertSelected('operator', 'Билайн')
         ->assertValue('input[name=number]', '89181112233')
         ->assertValue('input[name=ip]', '192.168.3.3')
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertSelected('operator', $this->simCard->operator)
         ->assertValue('input[name=number]', $this->simCard->number)
         ->assertValue('input[name=ip]', $this->simCard->ip)
@@ -101,7 +105,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->click("a[href=\"/sim-cards/$simCardId/edit\"]")
         ->assertUrlIs(route('sim-cards.edit', $this->simCard))
         ->assertSee('Редактировать сим-карту')
-        ->pressAndWaitFor('Назад', 2)
+        ->pressAndWaitFor('Назад', 1)
         ->assertUrlIs($showUrl)
         ->assertSee($this->simCard->number)
         ->assertNoJavaScriptErrors();

@@ -1,7 +1,13 @@
 <?php
 
 use App\Models\Meter;
+use App\Models\User;
 use Illuminate\Support\Str;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page', function () {
     $createUrl = route('meters.create');
@@ -28,7 +34,7 @@ it('redirects to the Show page after successfully submitting the form', function
     $page->assertUrlIs($createUrl)
         ->typeSlowly('model', 'Меркурий 234')
         ->typeSlowly('serial_number', '111111111')
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertUrlIs(route('meters.show', 1))
         ->assertSee('Прибор учёта успешно создан.')
         ->assertSee('Меркурий 234, №111111111')
@@ -47,7 +53,7 @@ it('can reset the form', function () {
         ->type('serial_number', $serial_number)
         ->assertValue('input[name=model]', $model)
         ->assertValue('input[name=serial_number]', $serial_number)
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertValue('input[name=model]', '')
         ->assertValue('input[name=serial_number]', '')
         ->assertNoJavaScriptErrors();
@@ -61,22 +67,22 @@ it('displays validation errors', function () {
         ->on()
         ->mobile()
         ->assertUrlIs($createUrl)
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Поле "Модель" является обязательным.')
         ->assertSee('Поле "Серийный номер" является обязательным.')
         ->type('model', $meter->model)
         ->type('serial_number', $meter->serial_number)
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Серийный номер уже используется.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('model', Str::random(256))
         ->type('serial_number', Str::repeat('1', 256))
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Поле "Модель" не должно превышать значение 255 символов.')
         ->assertSee('Поле "Серийный номер" не должно превышать значение 255 символов.')
         ->pressAndWaitFor('Очистить', 1)
         ->type('serial_number', Str::random())
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertSee('Формат поля серийный номер недопустим.')
         ->assertNoJavaScriptErrors();
 });
@@ -90,7 +96,7 @@ it('navigates back in the browser history after clicking on "Назад"', funct
         ->click('Создать прибор учёта')
         ->assertUrlIs(route('meters.create'))
         ->assertSee('Создать прибор учёта')
-        ->pressAndWaitFor('Назад', 2)
+        ->pressAndWaitFor('Назад', 1)
         ->assertUrlIs($indexUrl)
         ->assertSeeLink('Создать прибор учёта')
         ->assertNoJavaScriptErrors();

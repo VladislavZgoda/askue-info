@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\Meter;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('MeterController Index Page', function () {
     beforeEach(function () {
@@ -20,7 +26,7 @@ describe('MeterController Index Page', function () {
             ->assertSeeLink('Создать прибор учёта')
             ->assertValue('input[placeholder="Поиск приборов учёта..."]', '')
             // Крестик, очистить поиск.
-            ->assertButtonEnabled('button[type="button"]')
+            ->assertButtonEnabled('button[aria-label="Очистить поиск"]')
             ->assertCount('.group\/item', $meters->count())
             ->assertNoJavaScriptErrors();
 
@@ -58,7 +64,7 @@ describe('MeterController Index Page', function () {
             ->wait(1)
             ->assertDontSee('СЭТ-4ТМ.03М')
             // Крестик, очистить поиск.
-            ->click('button[type="button"]')
+            ->click('button[aria-label="Очистить поиск"]')
             ->wait(1)
             ->assertValue('input[placeholder="Поиск приборов учёта..."]', '')
             ->assertSee('Меркурий 236')
