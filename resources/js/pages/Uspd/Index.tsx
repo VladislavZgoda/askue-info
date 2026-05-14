@@ -74,7 +74,12 @@ export default function Index({ uspds, filter }: UspdIndexProps) {
                 <InputGroupAddon>{showSpinner ? <LoaderIcon className="animate-spin" /> : <Search />}</InputGroupAddon>
                 {isVisibleSearchResult && <InputGroupAddon align="inline-end">{uspds.data.length} шт.</InputGroupAddon>}
                 <InputGroupAddon align="inline-end">
-                    <InputGroupButton type="button" size="icon-xs" onClick={handleClearSearch}>
+                    <InputGroupButton
+                        type="button"
+                        aria-label="Очистить поиск"
+                        size="icon-xs"
+                        onClick={handleClearSearch}
+                    >
                         <X />
                     </InputGroupButton>
                 </InputGroupAddon>

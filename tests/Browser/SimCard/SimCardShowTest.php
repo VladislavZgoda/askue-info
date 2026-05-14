@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\SimCard;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page with :dataset', function (SimCard $simCard) {
     $simCard->loadExists(['meters', 'uspd']);

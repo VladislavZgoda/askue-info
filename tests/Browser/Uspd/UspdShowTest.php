@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\Uspd;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page :dataset', function (Uspd $uspd) {
     $url = route('uspds.show', $uspd);

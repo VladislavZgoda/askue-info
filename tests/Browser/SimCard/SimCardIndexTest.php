@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\SimCard;
+use App\Models\User;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('SimCardController Index Page', function () {
     beforeEach(function () {
@@ -20,7 +26,7 @@ describe('SimCardController Index Page', function () {
             ->assertSeeLink('Создать сим-карту')
             ->assertValue('input[placeholder="Поиск сим-карты..."]', '')
             // Крестик, очистить поиск.
-            ->assertButtonEnabled('button[type="button"]')
+            ->assertButtonEnabled('button[aria-label="Очистить поиск"]')
             ->assertCount('.group\/item', $simCards->count())
             ->assertNoJavaScriptErrors();
 
@@ -58,7 +64,7 @@ describe('SimCardController Index Page', function () {
             ->wait(1)
             ->assertDontSee('Билайн')
             // Крестик, очистить поиск.
-            ->click('button[type="button"]')
+            ->click('button[aria-label="Очистить поиск"]')
             ->wait(1)
             ->assertValue('input[placeholder="Поиск сим-карты..."]', '')
             ->assertSee('МТС')

@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\Uspd;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders the page', function () {
     $createUrl = route('uspds.create');
@@ -33,7 +39,7 @@ it('redirects to the Show page after successfully submitting the form', function
         ->select('model', $uspd['model'])
         ->type('serial_number', strval($uspd['serial_number']))
         ->type('lan_ip', $uspd['lan_ip'])
-        ->pressAndWaitFor('Создать', 2)
+        ->pressAndWaitFor('Создать', 1)
         ->assertUrlIs(route('uspds.show', 1))
         ->assertSee('УСПД успешно создан.')
         ->assertSee($uspd['model'])
@@ -58,7 +64,7 @@ it('can reset the form', function () {
         ->assertSelected('model', $uspd['model'])
         ->assertValue('input[name=serial_number]', $uspd['serial_number'])
         ->assertValue('input[name=lan_ip]', $uspd['lan_ip'])
-        ->pressAndWaitFor('Очистить', 2)
+        ->pressAndWaitFor('Очистить', 1)
         ->assertSelected('model', '')
         ->assertValue('input[name=serial_number]', '')
         ->assertValue('input[name=lan_ip]', '192.168.0.100')

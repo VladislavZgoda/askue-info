@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\Uspd;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 describe('UspdController Index Page', function () {
     beforeEach(function () {
@@ -20,7 +26,7 @@ describe('UspdController Index Page', function () {
             ->assertSeeLink('Создать УСПД')
             ->assertValue('input[placeholder="Поиск УСПД..."]', '')
             // Крестик, очистить поиск.
-            ->assertButtonEnabled('button[type="button"]')
+            ->assertButtonEnabled('button[aria-label="Очистить поиск"]')
             ->assertCount('.group\/item', $uspds->count())
             ->assertNoJavaScriptErrors();
 
@@ -58,7 +64,7 @@ describe('UspdController Index Page', function () {
             ->wait(1)
             ->assertDontSee('3865434')
             // Крестик, очистить поиск.
-            ->click('button[type="button"]')
+            ->click('button[aria-label="Очистить поиск"]')
             ->wait(1)
             ->assertValue('input[placeholder="Поиск УСПД..."]', '')
             ->assertSee('4784312')

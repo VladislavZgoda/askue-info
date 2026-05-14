@@ -1,8 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\Uspd;
 
 beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
     $this->uspd = Uspd::factory()->create([
         'model' => 'RTR8A.LGE-2-2-RUF',
         'lan_ip' => '192.168.3.1',

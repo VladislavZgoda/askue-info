@@ -1,7 +1,13 @@
 <?php
 
 use App\Models\SimCard;
+use App\Models\User;
 use App\Models\Uspd;
+
+beforeEach(function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+});
 
 it('renders form with sim cards details', function () {
     $uspd = Uspd::factory()->create();
